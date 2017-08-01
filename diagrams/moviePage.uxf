@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>117</y>
+      <w>1044</w>
+      <h>513</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>117</y>
+      <w>1044</w>
+      <h>513</h>
+    </coordinates>
+    <panel_attributes>
+
+
+
+
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>63</y>
+      <w>1044</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>
+MENU BAR
+
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>216</x>
+      <y>180</y>
+      <w>396</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>
+
+
+
+MOVIE PROMO IMAGE
+bg=white
+layer=60</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>648</x>
+      <y>243</y>
+      <w>405</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Ex facilis platLorem ipsum dolor sit amet, errem commodo sea ne, inermis definiebas sea cu. Cu ius posse soluta, viris legimus reformidans in quo. Adhuc soluta scaevola ut eos. His cu illud iisque, sit id eirmod qualisque scriptorem. Duo no ridens convenire qualisque.
+
+Rating - Run Time ...
+
+TRAILER LINK
+style=wordwrap
+fg=blue
+layer=50</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>747</y>
+      <w>1044</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>COPYRIGHT
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>144</x>
+      <y>747</y>
+      <w>153</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>SOCIAL MEDIA LINKS</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>441</x>
+      <y>684</y>
+      <w>504</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>LINKS            -            LINKS            -            LINKS            -            LINKS
+style=wordwrap
+fg=blue
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>657</y>
+      <w>1044</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>117</y>
+      <w>1044</w>
+      <h>513</h>
+    </coordinates>
+    <panel_attributes>bg=orange
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>657</y>
+      <w>1044</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>99</x>
+      <y>630</y>
+      <w>1116</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>648</x>
+      <y>216</y>
+      <w>270</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Movie Title
+style=wordwrap
+fontsize=20
+layer=51</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>216</x>
+      <y>495</y>
+      <w>855</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>
+halign=left
+layer=52
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>612</x>
+      <y>180</y>
+      <w>459</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>
+
+
+layer=49
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>216</x>
+      <y>180</y>
+      <w>396</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>
+
+
+
+
+layer=2
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>216</x>
+      <y>180</y>
+      <w>396</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>
+
+
+
+
+layer=2
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>216</x>
+      <y>180</y>
+      <w>396</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>
+
+
+
+
+layer=2
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>324</x>
+      <y>513</y>
+      <w>729</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>TIMES.....................................................................................................................................................................
+
+TIMES.....................................................................................................................................................................
+
+TIMES.....................................................................................................................................................................
+
+TIMES.....................................................................................................................................................................
+style=wordwrap
+layer=65</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>225</x>
+      <y>513</y>
+      <w>117</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>WEDNESDAY
+
+THURSDAY
+
+FRIDAY
+
+SATURDAY
+style=wordwrap
+layer=65</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>234</x>
+      <y>153</y>
+      <w>1044</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>
+MENU BAR
+
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>414</x>
+      <y>288</y>
+      <w>666</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>
+Information
+
+Lorem ipsum dolor sit amet, cu vis soleat impetus contentiones. Ex debet voluptatum 
+mediocritatem usu, ea fabulas periculis comprehensam usu, sed liber soluta facilisis an. 
+Ei vim euismod corrumpit. Ei tacimates posidonium per, nulla fierent pertinacia ad duo. 
+At nam modo atomorum definitiones, eam no odio forensibus, mei graeco adipiscing 
+ullamcorper no. Ei enim noluisse eos.
+
+Lorem ipsum dolor sit amet, cu vis soleat impetus contentiones. Ex debet voluptatum 
+mediocritatem usu, ea fabulas periculis comprehensam usu, sed liber soluta facilisis an. 
+Ei vim euismod corrumpit. Ei tacimates posidonium per, nulla fierent pertinacia ad duo. 
+
+halign=left
+style=wordwrap
+layer=2
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>234</x>
+      <y>837</y>
+      <w>1044</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>COPYRIGHT
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>243</x>
+      <y>837</y>
+      <w>153</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>SOCIAL MEDIA LINKS</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>540</x>
+      <y>774</y>
+      <w>504</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>LINKS            -            LINKS            -            LINKS            -            LINKS
+style=wordwrap
+fg=blue
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>234</x>
+      <y>747</y>
+      <w>1044</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>234</x>
+      <y>207</y>
+      <w>1044</w>
+      <h>513</h>
+    </coordinates>
+    <panel_attributes>bg=orange
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>234</x>
+      <y>747</y>
+      <w>1044</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>198</x>
+      <y>720</y>
+      <w>1116</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>234</x>
+      <y>207</y>
+      <w>1044</w>
+      <h>513</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>234</x>
+      <y>207</y>
+      <w>1044</w>
+      <h>513</h>
+    </coordinates>
+    <panel_attributes>
+
+
+
+
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>414</x>
+      <y>549</y>
+      <w>666</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes>
+Locations
+
+Lorem ipsum dolor sit amet, cu vis soleat impetus contentiones. Ex debet voluptatum 
+mediocritatem usu, ea fabulas periculis comprehensam usu, sed liber soluta facilisis an. 
+Ei vim euismod corrumpit. Ei tacimates posidonium per, nulla fierent pertinacia ad duo. 
+At nam modo atomorum definitiones, eam no odio forensibus, mei graeco adipiscing 
+ullamcorper no. Ei enim noluisse eos.
+
+Lorem ipsum dolor sit amet, cu vis soleat impetus contentiones. Ex debet voluptatum 
+mediocritatem usu, ea fabulas periculis comprehensam usu, sed liber soluta facilisis an. 
+Ei vim euismod corrumpit. Ei tacimates posidonium per, nulla fierent pertinacia ad duo. 
+
+halign=left
+layer=2
+bg=white
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>927</x>
+      <y>594</y>
+      <w>135</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>
+Image
+layer=100
+bg=white
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>927</x>
+      <y>333</y>
+      <w>135</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>
+
+
+Image
+layer=100
+bg=white
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>927</x>
+      <y>693</y>
+      <w>135</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>
+Image
+layer=100
+bg=white
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>612</x>
+      <y>234</y>
+      <w>279</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>About us
+halign=center
+layer=101
+fontsize=25
+
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
