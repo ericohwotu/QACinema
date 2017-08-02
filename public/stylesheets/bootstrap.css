@@ -9355,4 +9355,9 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
     display: none !important;
   }
 }
+
+.home-movie-img {
+    width: 100%;
+    height: 304px;
+}
 /*# sourceMappingURL=bootstrap.css.map */
