@@ -693,14 +693,6 @@ mark,
   height: auto;
 }
 
-.img-responsive {
-  width: 100%;
-  max-width: 320px;
-  height: 100%;
-  max-height: 180px;
-
-}
-
 .img-thumbnail {
   padding: 0.25rem;
   background-color: #fff;
@@ -4645,6 +4637,8 @@ tbody.collapse.show {
 .card-img-top {
   border-top-right-radius: calc(0.25rem - 1px);
   border-top-left-radius: calc(0.25rem - 1px);
+  max-height: 50%;
+  max-width: 50%;
 }
 
 .card-img-bottom {
@@ -5859,18 +5853,25 @@ button.close {
 
 .carousel {
   position: relative;
+  width: 100%;
 }
 
 .carousel-inner {
   position: relative;
   width: 100%;
   overflow: hidden;
+  height: auto;
+
 }
 
 .carousel-item {
   position: relative;
   display: none;
+}
+
+.carousel-img {
   width: 100%;
+  height: 350px;
 }
 
 @media (-webkit-transform-3d) {
@@ -6196,8 +6197,6 @@ a.bg-inverse:focus, a.bg-inverse:hover {
   border-bottom-left-radius: 0.25rem;
 }
 
-
-
 .rounded-left {
   border-bottom-left-radius: 0.25rem;
   border-top-left-radius: 0.25rem;
@@ -6205,13 +6204,6 @@ a.bg-inverse:focus, a.bg-inverse:hover {
 
 .rounded-circle {
   border-radius: 50%;
-}
-
-.pageNos{
-  position: relative;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
 }
 
 .rounded-0 {
@@ -7642,7 +7634,7 @@ a.bg-inverse:focus, a.bg-inverse:hover {
 }
 
 .my-4 {
-  margin-top: 1.5rem !important;
+  margin-top: 0rem !important;
   margin-bottom: 1.5rem !important;
 }
 
