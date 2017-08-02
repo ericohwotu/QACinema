@@ -9,4 +9,4 @@ GET     /                           controllers.Application.index
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 #MongoDB
-GET     /table                      controllers.Mongo.create()
+GET     /addMovies                  controllers.Mongo.createAPI()

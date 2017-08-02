@@ -14,8 +14,36 @@ case class Movie(
                  releaseDate: String
                )
 
+case class MovieDB(
+                  title: String,
+                  backdrop_path: String,
+                  overview: String,
+                  poster_path: String,
+                  release_date: String,
+                  genre_ids: List[Int],
+                  vote_average: Double
+                  )
+
+case class MovieDB2(
+                    title: String,
+                    backdrop_path: String,
+                    overview: String,
+                    poster_path: String,
+                    release_date: String,
+                    genre_ids: List[String],
+                    vote_average: Double
+                  )
+
+case class genreConverter(
+                         id: Int,
+                         name: String
+                         )
+
 object JsonFormats {
   import play.api.libs.json.Json
-  implicit val itemFormat = Json.format[Movie]
+  implicit val movieFormat = Json.format[MovieDB]
+  implicit val movieFormat2 = Json.format[MovieDB2]
+  implicit val genreFormat = Json.format[genreConverter]
+
 }
 
