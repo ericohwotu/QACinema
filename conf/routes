@@ -3,7 +3,14 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET     /                           controllers.Application.index()
+
+# Movie routes
+GET     /movie/$id<[0-9]+>          controllers.APIController.movieByID(id: Int)
+GET     /movie/                     controllers.APIController.movies()
+
+GET     /payment/token              controllers.PaymentController.getClientToken
+POST    /payment/make               controllers.PaymentController.makePayment
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
