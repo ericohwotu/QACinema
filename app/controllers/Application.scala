@@ -12,4 +12,8 @@ class Application extends Controller {
   def listings = Action {
     Ok(views.html.listings())
   }
+
+  def movie = Action {
+    Ok(views.html.movie())
+  }
 }
