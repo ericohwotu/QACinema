@@ -9,7 +9,6 @@ class APIController extends Controller {
       case Some(movie) => Ok(views.html.moviepage(movie))
       case None => Ok("No movie found!")
     }
-
   }
 
   def movies() : Action[AnyContent] = Action {

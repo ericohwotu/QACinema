@@ -8,5 +8,5 @@ import scala.collection.mutable.ListBuffer
 case class Movie(id:Int) {}
 
 object Movie {
-  val movies = ListBuffer[Movie](Movie(1), Movie(2))
+  val movies = ListBuffer[Movie](Movie(1), Movie(2), Movie(3), Movie(4), Movie(5))
 }
