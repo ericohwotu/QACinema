@@ -13,7 +13,36 @@ html {
 }
 
 body {
+  padding-top: 54px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
   margin: 0;
+}
+
+.tinymovie{
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-bottom:50px;
+  width: 33%;
+  max-height: 350px;
+  float: left;
+  overflow:hidden;
+}
+
+.tinytext{
+  overflow:hidden;
+}
+
+.img-responsive {
+    width: 100%;
+    max-width: 320px;
+    height: 100%;
+    max-height: 180px;
+
+}
+
+.search{
+
 }
 
 article,
@@ -4616,6 +4645,8 @@ tbody.collapse.show {
 .card-img-top {
   border-top-right-radius: calc(0.25rem - 1px);
   border-top-left-radius: calc(0.25rem - 1px);
+  max-height: 50%;
+  max-width: 50%;
 }
 
 .card-img-bottom {
@@ -5830,18 +5861,25 @@ button.close {
 
 .carousel {
   position: relative;
+  width: 100%;
 }
 
 .carousel-inner {
   position: relative;
   width: 100%;
   overflow: hidden;
+  height: auto;
+
 }
 
 .carousel-item {
   position: relative;
   display: none;
+}
+
+.carousel-img {
   width: 100%;
+  height: 350px;
 }
 
 @media (-webkit-transform-3d) {
@@ -7604,7 +7642,7 @@ a.bg-inverse:focus, a.bg-inverse:hover {
 }
 
 .my-4 {
-  margin-top: 1.5rem !important;
+  margin-top: 0rem !important;
   margin-bottom: 1.5rem !important;
 }
 
@@ -9316,5 +9354,10 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   .hidden-print {
     display: none !important;
   }
+}
+
+.home-movie-img {
+    width: 100%;
+    height: 304px;
 }
 /*# sourceMappingURL=bootstrap.css.map */
