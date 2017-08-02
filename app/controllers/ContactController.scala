@@ -1,5 +1,6 @@
 package controllers
 
+import models.ContactUs
 import play.api._
 import play.api.mvc._
 
@@ -9,5 +10,13 @@ class ContactController extends Controller {
     Ok(views.html.index("hello"))
   }
 
-  def formHandler = TODO
+
+  def formHandler = Action{ implicit request: Request[AnyContent] =>
+    val formResult = ContactUs.contactForm.bindFromRequest
+    formResult.fold({
+      error => BadRequest(error.errors.toString())
+    },{
+      contactUS => Ok("Success")
+    })
+  }
 }

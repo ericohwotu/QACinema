@@ -39,19 +39,19 @@ class ApplicationSpec extends Specification {
     "send error on no name submitted" in new WithApplication() {
       val result = route(FakeRequest(POST, "/contactus?message=hello&email=me@you.com")).get
       status(result) must equalTo(BAD_REQUEST)
-      contentAsString(result) must contain("Name is required")
+      contentAsString(result) must contain("name")
     }
 
     "send error on no email submitted" in new WithApplication() {
       val result = route(FakeRequest(POST, "/contactus?name=eric%20Ohwotu&message=hello")).get
       status(result) must equalTo(BAD_REQUEST)
-      contentAsString(result) must contain("email is required")
+      contentAsString(result) must contain("email")
     }
 
     "send error on no message submitted" in new WithApplication() {
       val result = route(FakeRequest(POST, "/contactus?name=eric%20Ohwotu&email=me@you.com")).get
       status(result) must equalTo(BAD_REQUEST)
-      contentAsString(result) must contain("message is required")
+      contentAsString(result) must contain("message")
     }
 
     "send 200 on success" in new WithApplication() {
