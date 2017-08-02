@@ -13,7 +13,28 @@ html {
 }
 
 body {
+  padding-top: 54px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
   margin: 0;
+}
+
+.tinymovie{
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-bottom:50px;
+  width: 33%;
+  max-height: 350px;
+  float: left;
+  overflow:hidden;
+}
+
+.tinytext{
+  overflow:hidden;
+}
+
+.search{
+
 }
 
 article,
@@ -670,6 +691,14 @@ mark,
 .img-fluid {
   max-width: 100%;
   height: auto;
+}
+
+.img-responsive {
+  width: 100%;
+  max-width: 320px;
+  height: 100%;
+  max-height: 180px;
+
 }
 
 .img-thumbnail {
@@ -6167,6 +6196,8 @@ a.bg-inverse:focus, a.bg-inverse:hover {
   border-bottom-left-radius: 0.25rem;
 }
 
+
+
 .rounded-left {
   border-bottom-left-radius: 0.25rem;
   border-top-left-radius: 0.25rem;
@@ -6174,6 +6205,13 @@ a.bg-inverse:focus, a.bg-inverse:hover {
 
 .rounded-circle {
   border-radius: 50%;
+}
+
+.pageNos{
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
 .rounded-0 {
