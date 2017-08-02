@@ -14,13 +14,14 @@ import scala.concurrent.duration.Duration
  * For more information, consult the wiki.
  */
 @RunWith(classOf[JUnitRunner])
-class ApplicationSpec extends Specification {
+class ContactUsTest extends Specification {
 
   "Contact Controller" should {
 
     "send 404 on a bad request" in new WithApplication{
-      val result = route(FakeRequest(GET, "/boum")).get
-      status(result) must equalTo(NOT_FOUND)
+      val result = route(FakeApplication(),FakeRequest(GET, "/boum"))
+      //val result = route(FakeRequest(GET, "/boum")).get
+      status(result.get) must equalTo(NOT_FOUND)
     }
 
     "render the index page" in new WithApplication{
@@ -28,34 +29,35 @@ class ApplicationSpec extends Specification {
 
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "text/html")
-      contentAsString(home) must contain ("hello")
+      contentAsString(home) must contain ("<form action=\"/contactus\" method=\"POST\" >")
     }
 
     "send error on empty form submission" in new WithApplication() {
-      val result = route(FakeRequest(POST, "/contactus")).get
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus")).get
       status(result) must equalTo(BAD_REQUEST)
     }
 
     "send error on no name submitted" in new WithApplication() {
-      val result = route(FakeRequest(POST, "/contactus?message=hello&email=me@you.com")).get
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?message=hello&email=me@you.com")).get
       status(result) must equalTo(BAD_REQUEST)
       contentAsString(result) must contain("name")
     }
 
     "send error on no email submitted" in new WithApplication() {
-      val result = route(FakeRequest(POST, "/contactus?name=eric%20Ohwotu&message=hello")).get
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&message=hello")).get
       status(result) must equalTo(BAD_REQUEST)
+
       contentAsString(result) must contain("email")
     }
 
     "send error on no message submitted" in new WithApplication() {
-      val result = route(FakeRequest(POST, "/contactus?name=eric%20Ohwotu&email=me@you.com")).get
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&email=me@you.com")).get
       status(result) must equalTo(BAD_REQUEST)
       contentAsString(result) must contain("message")
     }
 
     "send 200 on success" in new WithApplication() {
-      val result = route(FakeRequest(POST, "/contactus?name=eric%20Ohwotu&message=love%20me%20or&email=me@you.com")).get
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&message=love%20me%20or&email=me@you.com")).get
       status(result) must equalTo(OK)
     }
   }

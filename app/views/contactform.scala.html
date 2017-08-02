@@ -1,0 +1,13 @@
+@(form: Form[ContactUs])(implicit messages: Messages)
+<!DOCTYPE html>
+<html>
+    <body style="width:100%;">
+        @helper.form(action = routes.ContactController.formHandler()) {
+            @helper.inputText(form("Name"), 'style->"width:80%")
+            @helper.inputText(form("Email"), 'style->"width:80%")
+            @helper.textarea(form("Message"), 'style->"width:80%; height:300px; resize: none")
+            @helper.inputText(form("Number"), 'style->"width:80%")
+            <button>Submit</button>
+        }
+    </body>
+</html>
