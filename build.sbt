@@ -8,7 +8,7 @@ resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
       
 scalaVersion := "2.11.11"
 
-libraryDependencies ++= Seq( jdbc , cache , ws , specs2 % Test )
+libraryDependencies ++= Seq( jdbc , cache , ws , specs2 % Test)
 
 libraryDependencies += "com.braintreepayments.gateway" % "braintree-java" % "2.72.1"
 
