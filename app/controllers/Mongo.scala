@@ -15,9 +15,10 @@ import collection._
 import reactivemongo.bson.BSONDocument
 
 trait Counter {
-  def getID(lastID: Int): Int ={
-    val newID = lastID + 1
-    newID
+  var id = 0
+  def getID(): Int ={
+    id += 1
+    id
   }
 }
 
