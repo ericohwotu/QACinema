@@ -13,6 +13,8 @@ GET     /listings                   controllers.Application.listings
 GET     /movie/$id<[0-9a-z]+>       controllers.Application.movie(id : String)
 
 GET     /certifications             controllers.Application.certifications
+GET     /contactUs                  controllers.Application.contactUs
+GET     /findUs                     controllers.Application.findUs
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

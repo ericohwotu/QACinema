@@ -18,7 +18,7 @@ import scala.util.{Failure, Success, Try}
 
 class Application @Inject()(val reactiveMongoApi : ReactiveMongoApi) extends Controller with MongoController with ReactiveMongoComponents  {
 
-  def index = Action {
+  def index() = Action {
     Ok(views.html.index())
   }
 
@@ -63,7 +63,16 @@ class Application @Inject()(val reactiveMongoApi : ReactiveMongoApi) extends Con
     }
   }
 
-  def certifications = Action {
+  def certifications() = Action {
     Ok(views.html.certifications())
   }
+
+  def contactUs() = Action {
+    Ok(views.html.contactUs())
+  }
+
+  def findUs() = Action {
+    Ok(views.html.findUs())
+  }
+
 }
