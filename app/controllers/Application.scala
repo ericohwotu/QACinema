@@ -21,7 +21,8 @@ class Application extends Controller {
     Ok(views.html.about())
   }
 
-  val something = (some: Int) =>{
-    10
+  def certifications = Action {
+    Ok(views.html.certifications())
   }
+
 }
