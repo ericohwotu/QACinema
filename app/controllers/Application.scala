@@ -12,7 +12,6 @@ import reactivemongo.play.json._
 import reactivemongo.api.Cursor
 import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.collection.JSONCollection
-import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.Future
 
@@ -54,5 +53,9 @@ class Application @Inject()(val reactiveMongoApi : ReactiveMongoApi) extends Con
     futureIDList.map {
       movieIDs => movieIDs.headOption.fold(BadRequest("no movies"))(res => Ok(views.html.movie(res)))
     }
+  }
+
+  def certifications = Action {
+    Ok(views.html.certifications())
   }
 }
