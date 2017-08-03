@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  padding-top: 76px;
+  padding-top: 76px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
   margin: 0;
   background: black !important;
 }
@@ -32,6 +32,7 @@ body {
 
 .tinytext{
   overflow:hidden;
+  color: white;
 }
 
 .img-responsive {
@@ -75,7 +76,6 @@ body {
 
 .gianttext {
   width:30%;
-  padding-left: 100px;
 }
 
 
