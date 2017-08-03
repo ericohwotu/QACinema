@@ -11,7 +11,7 @@ import play.api.mvc._
 class ContactController @Inject()(implicit val messagesApi: MessagesApi, mailerClient: MailerClient)
   extends Controller with I18nSupport{
 
-  def index = Action {
+  def contactUs = Action {
     Ok(views.html.contactform(ContactUs.contactForm))
   }
 
