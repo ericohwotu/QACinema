@@ -34,7 +34,7 @@ class Application @Inject()(val reactiveMongoApi : ReactiveMongoApi) extends Con
     }
   }
 
-  def movie = Action {
+  def movie(id : String) = Action {
     Ok(views.html.movie())
   }
 }

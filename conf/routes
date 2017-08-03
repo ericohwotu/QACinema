@@ -10,7 +10,7 @@ POST    /payment/make               controllers.PaymentController.makePayment
 
 GET     /listings                   controllers.Application.listings
 
-GET     /movie                      controllers.Application.movie
+GET     /movie/$id<[0-9a-z]+>       controllers.Application.movie(id : String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
