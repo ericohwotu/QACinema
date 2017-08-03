@@ -5,10 +5,6 @@
 # Home page
 GET     /                           controllers.Application.index()
 
-# Movie routes
-GET     /movie/$id<[0-9]+>          controllers.APIController.movieByID(id: Int)
-GET     /movie/                     controllers.APIController.movies()
-
 GET     /payment/token              controllers.PaymentController.getClientToken
 POST    /payment/make               controllers.PaymentController.makePayment
 
