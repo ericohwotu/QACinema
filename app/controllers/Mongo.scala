@@ -45,7 +45,7 @@ class Mongo @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
   def getTrending = {
     val response = Http("https://api.themoviedb.org/3/movie/now_playing?api_key=f675a5619b10739ad98190b5599f50d9&language=en-US&page=1")
     val currentMovies = Json.parse(response.asString.body)
-    (currentMovies \"results").get.validate[List[MovieDB]].get
+    (currentMovies \"results").get.validate[List[trendingMovieList]].get
   }
 
 }

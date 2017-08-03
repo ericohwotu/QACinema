@@ -13,16 +13,11 @@ case class Movie(
                  video: Option[String] = None
                )
 
-case class MovieDB(title: String)
-
-case class CinemaLocations(
-                          longitude: String,
-                          latitude: String
-                          )
+case class trendingMovieList(title: String)
 
 object JsonFormats {
   import play.api.libs.json.Json
   implicit val OGmovieFormat = Json.format[Movie]
-  implicit val movieFormat = Json.format[MovieDB]
+  implicit val movieFormat = Json.format[trendingMovieList]
 }
 
