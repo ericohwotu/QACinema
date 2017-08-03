@@ -15,7 +15,7 @@ html {
 body {
   padding-top: 54px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
   margin: 0;
-  background: #ffd9ba !important;
+  background: black !important;
 }
 
 .tinymovie{
@@ -49,22 +49,35 @@ body {
 .giantmovie {
   position: relative;
   width: 100%;
-  background-color: black;
   height: 700px;
-  text-decoration-color: white;
+  background-repeat: no-repeat;
+  background-position: 60% 0%;
+  background-size: 100%;
+}
+
+.giantgradient{
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(to right,rgba(255,0,0,0),black);
+}
+
+.gradientheight {
+  height: 100%; /*PLEASE THINK OF A DIFFERENT SOLUTION FOR THIS*/
 }
 
 .giantimg {
   width:60%;
-  height: 100%;
-  min-height: 400px;
-  max-height: 700px;
+  height: 500px;
+  background-repeat: no-repeat;
+  background-position: 60% 0%;
   float: left;
 }
 
 .gianttext {
-  padding:15px
+  width:30%;
+  padding-left: 100px;
 }
+
 
 article,
 aside,
