@@ -28,8 +28,7 @@ class ContactController @Inject()(implicit val messagesApi: MessagesApi, mailerC
   }
 
   def sendEmail(from: String, msg: String): Unit ={
-    val email = Email("Contact","james.mountain@qa.com",Seq("","eric.ohwotu@qa.com","adam.clark@qa.com",
-      "james.mountain@qa.com","Daniel.Ufuoma@qa.com","Ladon.Jackson@qa.com","alex.Rimmer@qa.com","lewis.hay@qa.com"),Some(msg))
+    val email = Email("Contact","qacinemainfo@gmail.com",Seq("example@qa.com"),Some(msg))
     mailerClient.send(email)
   }
 }
