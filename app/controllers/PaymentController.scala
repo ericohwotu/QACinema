@@ -11,20 +11,20 @@ import play.api.mvc._
 class PaymentController extends Controller {
   val braintreeGateway : BraintreeGateway = new BraintreeGateway("access_token$sandbox$2ywzyb5rtfnk6m6h$10bfae954e82add885cac2188735ccda")
 
-  def getClientToken(amount : Option[Double]) : Action[AnyContent] = Action {
-    amount match {
-      case Some(am) =>
+  def getClientToken(amountOption : Option[Double]) : Action[AnyContent] = Action {
+    amountOption match {
+      case Some(amount) =>
         val clientTokenRequest : ClientTokenRequest = new ClientTokenRequest()
-        Ok(views.html.payment(braintreeGateway.clientToken().generate(clientTokenRequest), am.toString))
+        Ok(views.html.payment(braintreeGateway.clientToken().generate(clientTokenRequest), amount.toString))
       case None => BadRequest("No amount provided.")
     }
   }
 
   def makeTransactionRequest(nonce : String, amount : String) : Result = {
-    val trReq : TransactionRequest = new TransactionRequest()
-    trReq.amount(BigDecimal(amount).bigDecimal).merchantAccountId("GBP").paymentMethodNonce(nonce)
+    val transactionRequest : TransactionRequest = new TransactionRequest()
+    transactionRequest.amount(BigDecimal(amount).bigDecimal).merchantAccountId("GBP").paymentMethodNonce(nonce)
 
-    val result: braintreegateway.Result[Transaction] = braintreeGateway.transaction().sale(trReq);
+    val result: braintreegateway.Result[Transaction] = braintreeGateway.transaction().sale(transactionRequest)
     if (result.isSuccess) {
       Ok(s"Transaction Success! Booking made!")
     } else {
