@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  padding-top: 54px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+  padding-top: 76px;
   margin: 0;
   background: black !important;
 }
@@ -4507,7 +4507,7 @@ tbody.collapse.show {
 
 .card-title {
   margin-bottom: 0.75rem;
-  color: #1d059b;
+  color: #2d7df0;
 }
 
 .card-subtitle {
@@ -4517,7 +4517,7 @@ tbody.collapse.show {
 
 .card-text {
   margin-bottom: 0;
-  color: #0a49b2
+  color: white;
 }
 
 .card-link:hover {
@@ -9436,5 +9436,10 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 .cert-img {
   width: 220px;
   height: 200px;
+}
+
+.google-maps {
+  width: 350px;
+  height: 350px;
 }
 /*# sourceMappingURL=bootstrap.css.map */

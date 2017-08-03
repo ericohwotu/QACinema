@@ -25,4 +25,12 @@ class Application extends Controller {
     Ok(views.html.certifications())
   }
 
+  def contactUs = Action {
+    Ok(views.html.contactUs())
+  }
+
+  def findUs = Action {
+    Ok(views.html.findUs())
+  }
+
 }
