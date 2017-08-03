@@ -45,6 +45,26 @@ body {
 
 }
 
+.giantmovie {
+  position: relative;
+  width: 100%;
+  background-color: black;
+  height: 700px;
+  text-decoration-color: white;
+}
+
+.giantimg {
+  width:60%;
+  height: 100%;
+  min-height: 400px;
+  max-height: 700px;
+  float: left;
+}
+
+.gianttext {
+  padding:15px
+}
+
 article,
 aside,
 footer,
