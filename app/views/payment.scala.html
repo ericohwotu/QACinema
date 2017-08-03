@@ -38,9 +38,7 @@
                                 "amount" : '@amount'
                             },
                             success: function(res) {
-                                let xhttp = new XMLHttpRequest();
-                                xhttp.open("POST", "http://192.168.1.75:9000/bookings/confirm", true);
-                                xhttp.send();
+                                window.location.href = "http://192.168.1.75:9000/bookings/confirm";
                             }
                         })
                     });

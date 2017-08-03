@@ -1,5 +1,6 @@
-@main("Homepage") {
+@(movie : Movie)
 
+@main("Homepage") {
 
   <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
 
@@ -8,7 +9,7 @@
     <div class="row">
       <div class="col-lg-12">
         <br>
-        <h1 class="page-header">Movie Name<br>
+        <h1 class="page-header">@movie.Title<br>
         </h1>
       </div>
     </div>
@@ -22,7 +23,7 @@
     <div class="gianttext">
       <div class="giantdesc">
         <h4 class="card-title">Description:</h4>
-        <p class="card-text">Ea temporibus delicatissimi mei, ne t ex, vide postea option in sed. At qui summo imperdiet, ubique accumsan persequeris eam ut, mea ex erat alienum definiebas. Eam ferri altera persequeris te, vocent vidisse pro ei.</p>
+        <p class="card-text">@movie.Plot</p>
       </div>
       <div><h4 class="card-title">Rating: </h4></div>
     </div>
