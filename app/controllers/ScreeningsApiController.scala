@@ -5,6 +5,7 @@ import javax.inject.Inject
 import models.Seat
 import play.api.libs.json.Json
 import play.api.mvc._
+import util.SeatGenerator
 
 class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbController) extends Controller {
 

@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 import akka.actor.ActorSystem
+import controllers.ScreeningsDbController
 import models.Seat
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
