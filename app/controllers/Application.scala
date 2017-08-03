@@ -14,6 +14,7 @@ import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.Future
+import scala.util.{Failure, Success, Try}
 
 class Application @Inject()(val reactiveMongoApi : ReactiveMongoApi) extends Controller with MongoController with ReactiveMongoComponents  {
 
@@ -46,12 +47,19 @@ class Application @Inject()(val reactiveMongoApi : ReactiveMongoApi) extends Con
     })
   }
 
-  def movie(id : String): Action[AnyContent] = Action.async { implicit request =>
-    val futureIDCursor: Future[Cursor[Movie]] = collection.map {_.find(Json.obj("_id" -> BSONObjectID(id))).cursor[Movie]()}
+  def getMovieAction(id : BSONObjectID) : Future[Result] = {
+    val futureIDCursor: Future[Cursor[Movie]] = collection.map {_.find(Json.obj("_id" -> id)).cursor[Movie]()}
     val futureIDList : Future[List[Movie]] = futureIDCursor.flatMap(_.collect[List]())
 
     futureIDList.map {
       movieIDs => movieIDs.headOption.fold(BadRequest("no movies"))(res => Ok(views.html.movie(res)))
+    }
+  }
+
+  def movie(id : String): Action[AnyContent] = Action.async { implicit request =>
+    BSONObjectID.parse(id) match {
+      case Success(res) => getMovieAction(res)
+      case Failure(err) => Future {BadRequest("Invalid ID")}
     }
   }
 
