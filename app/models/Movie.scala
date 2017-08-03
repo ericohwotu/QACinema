@@ -15,30 +15,16 @@ case class Movie(
                  video: Option[String] = None
                )
 
-case class trendingMovieList(title: String)
 
-case class Bookings(
-                   seats: List[Seat],
-                   price: Double
-                   )
 
-case class Seat(
-               id: Long,
-               author: String,
-               booked: Boolean,
-               expiry: Long,
-               kind: String
-               )
 
-case class CinemaLocation(
-                         latitude: String,
-                         longitude: String
-                         )
 
-object CinemaLocation{ implicit val locations :OFormat[CinemaLocation] = Json.format[CinemaLocation]}
-object Seat{implicit val seats :OFormat[Seat] = Json.format[Seat]}
+
+
+
+
 object Movie{implicit val movieFormat :OFormat[Movie] = Json.format[Movie] }
-object Bookings{implicit val bookings :OFormat[Bookings] = Json.format[Bookings]}
-object trendingMovieList{implicit val movieList :OFormat[trendingMovieList] = Json.format[trendingMovieList]}
+
+
 
 
