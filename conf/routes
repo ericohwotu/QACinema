@@ -18,4 +18,5 @@ GET     /certifications             controllers.Application.certifications
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 #MongoDB
-GET     /addMovies                  controllers.Mongo.createAPI()
+GET     /addMovies                  controllers.Mongo.createMoviesFromAPI()
+GET     /addCinemas                 controllers.Mongo.addLocations()
