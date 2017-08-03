@@ -15,8 +15,12 @@ case class Movie(
 
 case class trendingMovieList(title: String)
 
-object JsonFormats {
+object Movie {
   import play.api.libs.json.Json
   implicit val OGmovieFormat = Json.format[Movie]
+}
+
+object JsonFormats {
+  import play.api.libs.json.Json
   implicit val movieFormat = Json.format[trendingMovieList]
 }

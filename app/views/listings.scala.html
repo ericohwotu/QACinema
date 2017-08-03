@@ -32,8 +32,8 @@
       @for(movie <- moviegroup) {
         <div class="tinymovie">
           <a href="#">
-            <img class="img-responsive" src="https://keithandthemovies.files.wordpress.com/2012/09/looper-poster.jpg" alt="http://placehold.it/350x150">
-            <div class="tinytext">@movie.id</div>
+            <img class="img-responsive" src="@movie.Poster" alt="http://placehold.it/350x150">
+            <div class="tinytext">@movie.Title</div>
           </a>
         </div>
       }

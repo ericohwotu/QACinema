@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import models.{JsonFormats, Movie}
+import models.Movie
 import play.api.libs.json.Json
 import play.api.mvc._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
