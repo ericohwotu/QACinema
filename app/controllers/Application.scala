@@ -9,4 +9,8 @@ class Application extends Controller {
     Ok(views.html.index())
   }
 
+  def certifications = Action {
+    Ok(views.html.certifications())
+  }
+
 }
