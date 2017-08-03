@@ -1,49 +1,28 @@
 package models
+
 case class Movie(
-                 id: Int,
-                 name: String,
-                 certification: String,
-                 genre: List[String],
-                 synopsis: String,
-                 shortDescription: String,
-                 image: String,
-                 video: String,
-                 runTime: Int,
-                 directors: List[String],
-                 actors: List[String],
-                 releaseDate: String
+                 Title: String,
+                 Rated: String,
+                 Released: String,
+                 Runtime: String,
+                 Genre: String,
+                 Director: String,
+                 Actors: String,
+                 Plot: String,
+                 Poster: String,
+                 video: Option[String] = None
                )
 
-case class MovieDB(
-                  title: String,
-                  backdrop_path: String,
-                  overview: String,
-                  poster_path: String,
-                  release_date: String,
-                  genre_ids: List[Int],
-                  vote_average: Double
-                  )
+case class MovieDB(title: String)
 
-case class MovieDB2(
-                    title: String,
-                    backdrop_path: String,
-                    overview: String,
-                    poster_path: String,
-                    release_date: String,
-                    genre_ids: List[String],
-                    vote_average: Double
-                  )
-
-case class genreConverter(
-                         id: Int,
-                         name: String
-                         )
+case class CinemaLocations(
+                          longitude: String,
+                          latitude: String
+                          )
 
 object JsonFormats {
   import play.api.libs.json.Json
+  implicit val OGmovieFormat = Json.format[Movie]
   implicit val movieFormat = Json.format[MovieDB]
-  implicit val movieFormat2 = Json.format[MovieDB2]
-  implicit val genreFormat = Json.format[genreConverter]
-
 }
 
