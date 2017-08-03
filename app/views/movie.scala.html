@@ -1,21 +1,20 @@
 @(movie : Movie)
 
-@main("Homepage") {
+@main("Movie") {
 
   <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
-
     <!-- ADD SEARCH WHEN IMPLEMENTED -->
   <hr>
   <div class="giantmovie container-fluid" style="background-image: url(@movie.Poster);">
     <div class="row gradientheight">
       <div class="giantgradient container-fluid" align="right">
-
-        <div class="card-footer">
-          <h1 class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</h1>
-        </div>
         <div class="card-block gianttext" >
             <h4 class="card-title"><a href="#">@movie.Title</a></h4>
             <p class="card-text">@movie.Plot</p>
+        </div>
+
+        <div class="card-footer">
+          <h1 class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</h1>
         </div>
       </div>
     </div>

@@ -1,11 +1,9 @@
-@import play.api.libs.json.JsObject
 @(movies : List[List[(Movie, String)]])
-
-@main("Homepage") {
-
+@main("Listings") {
 
   <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
 
+  <hr>
     <!-- ADD SEARCH WHEN IMPLEMENTED -->
   <div class="container">
     <div class="row">
@@ -22,7 +20,7 @@
 
   </div>
       <!-- /.container -->
-
+  <hr>
     <!-- Page Content -->
   <div class="container">
 
@@ -30,7 +28,6 @@
 
     @for(moviegroup <- movies) {
       <div class="row">
-
       @for(movie <- moviegroup) {
         <div class="tinymovie">
           <a href='movie/@movie._2'>
