@@ -1,9 +1,7 @@
 package controllers
 
 import com.braintreegateway
-import play.api._
-import com.braintreegateway.{BraintreeGateway, Transaction, TransactionRequest}
-import play.api.libs.json.JsLookupResult
+import com.braintreegateway.{BraintreeGateway, ClientTokenRequest, Transaction, TransactionRequest}
 import play.api.mvc.{Action, AnyContent}
 import play.api.mvc._
 
@@ -12,15 +10,19 @@ import play.api.mvc._
   */
 class PaymentController extends Controller {
   val braintreeGateway : BraintreeGateway = new BraintreeGateway("access_token$sandbox$2ywzyb5rtfnk6m6h$10bfae954e82add885cac2188735ccda")
-  val amount = BigDecimal(10.00)
 
-  def getClientToken : Action[AnyContent] = Action {
-    Ok(views.html.payment(braintreeGateway.clientToken().generate(), amount.toString()))
+  def getClientToken(amount : Option[Double]) : Action[AnyContent] = Action {
+    amount match {
+      case Some(am) =>
+        val clientTokenRequest : ClientTokenRequest = new ClientTokenRequest()
+        Ok(views.html.payment(braintreeGateway.clientToken().generate(clientTokenRequest), am.toString))
+      case None => BadRequest("No amount provided.")
+    }
   }
 
-  def makeTransactionRequest(nonce : String) : Result = {
+  def makeTransactionRequest(nonce : String, amount : String) : Result = {
     val trReq : TransactionRequest = new TransactionRequest()
-    trReq.amount(amount.bigDecimal).merchantAccountId("GBP").paymentMethodNonce(nonce)
+    trReq.amount(BigDecimal(amount).bigDecimal).merchantAccountId("GBP").paymentMethodNonce(nonce)
 
     val result: braintreegateway.Result[Transaction] = braintreeGateway.transaction().sale(trReq);
     if (result.isSuccess) {
@@ -31,8 +33,10 @@ class PaymentController extends Controller {
   }
 
   def makePayment : Action[AnyContent] = Action { implicit request =>
-    val paramval: String = request.body.asFormUrlEncoded.get("nonce").head
-    if (paramval.nonEmpty) makeTransactionRequest(paramval)  else Ok("No nonce!")
+    val nonceval: String = request.body.asFormUrlEncoded.get("nonce").head
+    val amountval : String = request.body.asFormUrlEncoded.get("amount").head
+
+    if (nonceval.nonEmpty && amountval.nonEmpty) makeTransactionRequest(nonceval, amountval)  else Ok("No nonce or no amount provided!")
   }
 
 }

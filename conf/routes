@@ -5,7 +5,7 @@
 # Home page
 GET     /                           controllers.Application.index()
 
-GET     /payment/token              controllers.PaymentController.getClientToken
+GET     /payment/token              controllers.PaymentController.getClientToken(amount : Option[Double] ?= None)
 POST    /payment/make               controllers.PaymentController.makePayment
 
 GET     /listings                   controllers.Application.listings
