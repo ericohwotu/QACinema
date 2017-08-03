@@ -40,24 +40,27 @@ class ContactUsTest extends Specification {
     "send error on no name submitted" in new WithApplication() {
       val result = route(FakeApplication(),FakeRequest(POST, "/contactus?message=hello&email=me@you.com")).get
       status(result) must equalTo(BAD_REQUEST)
-      contentAsString(result) must contain("name")
+      contentAsString(result) must contain("Name")
     }
 
     "send error on no email submitted" in new WithApplication() {
       val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&message=hello")).get
       status(result) must equalTo(BAD_REQUEST)
 
-      contentAsString(result) must contain("email")
+      contentAsString(result) must contain("Email")
     }
 
     "send error on no message submitted" in new WithApplication() {
       val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&email=me@you.com")).get
       status(result) must equalTo(BAD_REQUEST)
-      contentAsString(result) must contain("message")
+      contentAsString(result) must contain("Message")
     }
 
     "send 200 on success" in new WithApplication() {
-      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&message=love%20me%20or&email=me@you.com")).get
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?Name=eric%20Ohwotu&Message=love%" +
+        "20me%20or&Email=me@you.com&Subject=height-you")).get
+
+      println(contentAsString(result))
       status(result) must equalTo(OK)
     }
   }

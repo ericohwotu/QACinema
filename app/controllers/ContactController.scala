@@ -22,13 +22,17 @@ class ContactController @Inject()(implicit val messagesApi: MessagesApi, mailerC
       error => BadRequest(views.html.contactform(error))
     },{
       contactUS =>
-        sendEmail(contactUS.email, contactUS.message)
+        sendEmail(contactUS)
         Ok("Success")
     })
   }
 
-  def sendEmail(from: String, msg: String): Unit ={
-    val email = Email("Contact","qacinemainfo@gmail.com",Seq("example@qa.com"),Some(msg))
+  def sendEmail(contactUs: ContactUs): Unit ={
+    val content = s"Raised by: ${contactUs.name}\n" +
+      s"Email: ${contactUs.email} \nNumber: ${contactUs.number} \n\n" +
+      s"Message: ${contactUs.message}"
+
+    val email = Email(contactUs.subject,"qacinemainfo@gmail.com",Seq("qacinemainfo@gmail.com","daniel.ufuoma@qa.com"),Some(content))
     mailerClient.send(email)
   }
 }
