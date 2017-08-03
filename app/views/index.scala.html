@@ -1,163 +1,104 @@
 @main("Homepage") {
-<!DOCTYPE html>
-  <html lang="en">
+    <!-- Page Content -->
+  <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <div class="carousel-item active">
+        <img class="carousel-img"
+        src="http://geeksmtg.tcgplayerpro.com/media/1013/w-2017-mobile-displaybanners-mtg-amon-jackal.jpg"
+        alt="First slide">
+      </div>
+      <div class="carousel-item">
+        <img class="carousel-img"
+        src="http://www.hdwallpapery.com/static/images/dual-monitor-wallpapers-hd_dJyDicr.jpg" alt="Second slide">
+      </div>
+      <div class="carousel-item">
+        <img class="carousel-img" src="https://www.fuyufs.com/files/2017/05/3gepz59.png" alt="Third slide">
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
 
-    <head>
+  <div class="container">
 
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <div class="row">
 
-      <title>Shop Homepage - Start Bootstrap Template</title>
-
-    </head>
-
-    <body>
-        <!-- Page Content -->
-      <div class="container">
+      <div class="col-lg-12">
 
         <div class="row">
 
-          <div class="col-lg-3">
-
-            <h1 class="my-4">Shop Name</h1>
-            <div class="list-group">
-              <a href="#" class="list-group-item">Category 1</a>
-              <a href="#" class="list-group-item">Category 2</a>
-              <a href="#" class="list-group-item">Category 3</a>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card h-100">
+              <img class="home-movie-img" src="@routes.Assets.at("images/theDarkTower.jpg")"
+              alt="The Dark Tower"></a>
             </div>
-
           </div>
-            <!-- /.col-lg-3 -->
-
-          <div class="col-lg-9">
-
-            <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
-              <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-              </ol>
-              <div class="carousel-inner" role="listbox">
-                <div class="carousel-item active">
-                  <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="First slide">
-                </div>
-                <div class="carousel-item">
-                  <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                  <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
-                </div>
-              </div>
-              <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-              </a>
-              <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-              </a>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card-block">
+              <h4 class="card-title">The Dark Tower</h4>
+              <p class="card-text">The last Gunslinger, Roland Deschain, has been locked in an eternal battle with
+                Walter O'Dim, also known as the Man in Black, determined to prevent him from toppling the Dark Tower,
+                which holds the universe together. With the fate of the worlds at stake, good and evil will collide in
+                the ultimate battle as only Roland can defend the Tower from the Man in Black</p>
             </div>
-
-            <div class="row">
-
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                  <a href="#"><img class="card-img-top img-fluid" src="http://placehold.it/700x400" alt=""></a>
-                  <div class="card-block">
-                    <h4 class="card-title"><a href="#">Item One</a></h4>
-                    <h5>$24.99</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                  </div>
-                  <div class="card-footer">
-                    <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                  <a href="#"><img class="card-img-top img-fluid" src="http://placehold.it/700x400" alt=""></a>
-                  <div class="card-block">
-                    <h4 class="card-title"><a href="#">Item Two</a></h4>
-                    <h5>$24.99</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem ipsum dolor sit amet.</p>
-                  </div>
-                  <div class="card-footer">
-                    <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                  <a href="#"><img class="card-img-top img-fluid" src="http://placehold.it/700x400" alt=""></a>
-                  <div class="card-block">
-                    <h4 class="card-title"><a href="#">Item Three</a></h4>
-                    <h5>$24.99</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                  </div>
-                  <div class="card-footer">
-                    <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                  <a href="#"><img class="card-img-top img-fluid" src="http://placehold.it/700x400" alt=""></a>
-                  <div class="card-block">
-                    <h4 class="card-title"><a href="#">Item Four</a></h4>
-                    <h5>$24.99</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                  </div>
-                  <div class="card-footer">
-                    <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                  <a href="#"><img class="card-img-top img-fluid" src="http://placehold.it/700x400" alt=""></a>
-                  <div class="card-block">
-                    <h4 class="card-title"><a href="#">Item Five</a></h4>
-                    <h5>$24.99</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem ipsum dolor sit amet.</p>
-                  </div>
-                  <div class="card-footer">
-                    <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                  <a href="#"><img class="card-img-top img-fluid" src="http://placehold.it/700x400" alt=""></a>
-                  <div class="card-block">
-                    <h4 class="card-title"><a href="#">Item Six</a></h4>
-                    <h5>$24.99</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                  </div>
-                  <div class="card-footer">
-                    <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                  </div>
-                </div>
-              </div>
-
+            <div class="card-footer">
+              <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
             </div>
-              <!-- /.row -->
-
           </div>
-            <!-- /.col-lg-9 -->
+
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card h-100">
+              <img class="home-movie-img" src="@routes.Assets.at("images/dunkirk.jpg")" alt="Dunkirk"></a>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card-block">
+              <h4 class="card-title">Dunkirk</h4>
+              <p class="card-text">Allied soldiers from Belgium, the British Empire and France are surrounded by the
+                German army and evacuated during a fierce battle in World War II.</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card h-100">
+              <img class="home-movie-img" src="@routes.Assets.at("images/spiderman.jpg")" alt="Spider-Man"></a>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card-block">
+              <h4 class="card-title">Spider-Man: Homecoming</h4>
+              <p class="card-text">Peter Parker, with the help of his mentor Tony Stark, tries to balance his life as
+                an ordinary high school student in New York City while fighting crime as his superhero alter ego
+                Spider-Man when a new threat emerges.</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+            </div>
+          </div>
 
         </div>
           <!-- /.row -->
 
       </div>
-        <!-- /.container -->
+        <!-- /.col-lg-9 -->
 
-    </body>
+    </div>
+      <!-- /.row -->
 
-  </html>
-
+  </div>
+    <!-- /.container -->
 }
