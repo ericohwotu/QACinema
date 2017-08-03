@@ -1,10 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+@main("About us") {
 
-</body>
-</html>
+
+  <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h1 class="page-header">Movie Listings<br>
+          <small>All movies that are currently showing</small>
+        </h1>
+      </div>
+
+      <div class="search">
+
+      </div>
+    </div>
+
+  </div>
+
+    <!-- ADD SEARCH WHEN IMPLEMENTED -->
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-12">
+
+        <div class="row">
+
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card h-100">
+              <img class="home-movie-img" src="@routes.Assets.at("images/theDarkTower.jpg")"
+              alt="The Dark Tower"></a>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card-block">
+              <h4 class="card-title"><a href="#">The Dark Tower</a></h4>
+              <p class="card-text">The last Gunslinger, Roland Deschain, has been locked in an eternal battle with
+                Walter O'Dim, also known as the Man in Black, determined to prevent him from toppling the Dark Tower,
+                which holds the universe together. With the fate of the worlds at stake, good and evil will collide in
+                the ultimate battle as only Roland can defend the Tower from the Man in Black</p>
+            </div>
+          </div>
+
+
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card-block">
+              <h4 class="card-title"><a href="#">Dunkirk</a></h4>
+              <p class="card-text">Allied soldiers from Belgium, the British Empire and France are surrounded by the
+                German army and evacuated during a fierce battle in World War II.</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card h-100">
+              <img class="home-movie-img" src="@routes.Assets.at("images/dunkirk.jpg")" alt=""></a>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+  </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+  <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+  <script src="js/bootstrap.min.js"></script>
+}

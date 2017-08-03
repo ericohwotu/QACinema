@@ -16,4 +16,12 @@ class Application extends Controller {
   def movie = Action {
     Ok(views.html.movie())
   }
+
+  def about = Action {
+    Ok(views.html.about())
+  }
+
+  val something = (some: Int) =>{
+    10
+  }
 }
