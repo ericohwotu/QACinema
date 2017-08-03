@@ -1,0 +1,82 @@
+@(title: String)(content : Html)
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>@title</title>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+    <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarExample" aria-controls="navbarExample" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="container">
+        <a class="navbar-brand" href="#">QA Cinemas</a>
+        <div class="collapse navbar-collapse" id="navbarExample">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Listings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Find Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </head>
+  <body>
+    @content
+  </body>
+  <footer>
+    <!-- Footer -->
+    <div class="py-5 bg-inverse-2">
+    <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <b><p class="m-0 text-center text-white">QA Cinemas</p></b>
+            <p class="m-0 text-center text-white">---</p>
+            <a class="footer-link" href="/"><p class="m-0 text-center text-white">Home</p></a>
+            <p class="m-0 text-center text-white">Listings</p>
+            <p class="m-0 text-center text-white">Certifications</p>
+          </div>
+          <div class="col-md-3">
+            <b><p class="m-0 text-center text-white">Location</p></b>
+            <p class="m-0 text-center text-white">---</p>
+            <p class="m-0 text-center text-white">How To Find Us</p>
+            <p class="m-0 text-center text-white">Nearby Places Of Interest</p>
+          </div>
+          <div class="col-md-3">
+            <b><p class="m-0 text-center text-white">External Links</p></b>
+            <p class="m-0 text-center text-white">---</p>
+            <a class="footer-link" href="http://www.imdb.com"><p class="m-0 text-center text-white">IMDB</p></a>
+            <a class="footer-link" href="http://www.rottentomatoes.com">
+              <p class="m-0 text-center text-white">Rotten Tomatoes</p></a>
+          </div>
+          <div class="col-md-3">
+            <b><p class="m-0 text-center text-white">Get In Touch</p></b>
+            <p class="m-0 text-center text-white">---</p>
+            <p class="m-0 text-center text-white">Contact Us</p>
+            <p class="m-0 text-center text-white">Twitter</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="py-6 bg-inverse">
+      <p class="m-0 text-center text-white">Copyright &copy; QA Cinemas 2017</p>
+    </div>
+  </footer>
+
+    <!-- Bootstrap core JavaScript -->
+  <script src="@routes.Assets.at("javascripts/jquery.js")"></script>
+  <script src="@routes.Assets.at("javascripts/tether.js")"></script>
+  <script src="@routes.Assets.at("javascripts/bootstrap.js")"></script>
+</html>

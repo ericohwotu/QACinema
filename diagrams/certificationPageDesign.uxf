@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>63</y>
+      <w>1044</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>
+MENU BAR
+
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>252</x>
+      <y>252</y>
+      <w>252</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>
+
+
+
+CERTIFICATION IMAGE
+layer=2
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>432</x>
+      <y>153</y>
+      <w>477</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>Movie certifications
+fontsize=25
+halign=center
+style=wordwrap
+fg=blue
+layer=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>252</x>
+      <y>423</y>
+      <w>252</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>
+
+
+
+CERTIFICATION IMAGE
+layer=2
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>747</y>
+      <w>1044</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>COPYRIGHT
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>144</x>
+      <y>747</y>
+      <w>153</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>SOCIAL MEDIA LINKS</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>441</x>
+      <y>684</y>
+      <w>504</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>LINKS            -            LINKS            -            LINKS            -            LINKS
+style=wordwrap
+fg=blue
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>657</y>
+      <w>1044</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>117</y>
+      <w>1044</w>
+      <h>513</h>
+    </coordinates>
+    <panel_attributes>bg=orange
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>657</y>
+      <w>1044</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>99</x>
+      <y>630</y>
+      <w>1116</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>450</x>
+      <y>189</y>
+      <w>477</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Information about the different types of movie certifications.
+fontsize=18
+style=wordwrap
+fg=blue
+layer=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>549</x>
+      <y>261</y>
+      <w>477</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- 
+style=wordwrap
+fg=blue
+layer=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>252</x>
+      <y>594</y>
+      <w>252</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>
+
+
+
+CERTIFICATION IMAGE
+layer=2
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>549</x>
+      <y>612</y>
+      <w>477</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- 
+style=wordwrap
+fg=blue
+layer=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>549</x>
+      <y>441</y>
+      <w>477</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- Certification information -- 
+style=wordwrap
+fg=blue
+layer=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
