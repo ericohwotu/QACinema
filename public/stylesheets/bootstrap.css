@@ -30,6 +30,10 @@ body {
   overflow:hidden;
 }
 
+.page-header {
+  color: white;
+}
+
 .tinytext{
   overflow:hidden;
   color: white;
