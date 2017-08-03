@@ -4,7 +4,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.libs.json.Json
 
-case class ContactUs(subject: String, name: String, message: String, email: String, number: String = "")
+case class ContactUs(sub: String, name: String, message: String, email: String, number: String = "")
 
 object ContactUs{
   implicit val contactUsFormat = Json.format[ContactUs]
@@ -15,7 +15,7 @@ object ContactUs{
       "Name" -> nonEmptyText,
       "Message" -> nonEmptyText,
       "Email" -> nonEmptyText,
-      "Number" -> default(text,"judfjdn")
+      "Number" -> default(text,"none")
   )(ContactUs.apply _)(ContactUs.unapply _))
 
 }

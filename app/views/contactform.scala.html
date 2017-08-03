@@ -1,14 +1,21 @@
 @(form: Form[ContactUs])(implicit messages: Messages)
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Contact us</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+    </head>
     <body style="width:100%;">
-        @helper.form(action = routes.ContactController.formHandler()) {
-            @helper.inputText(form("Name"), 'style->"width:80%")
-            @helper.inputText(form("Email"), 'style->"width:80%")
-            @helper.inputText(form("Subject"), 'style->"width:80%")
-            @helper.textarea(form("Message"), 'style->"width:80%; height:300px; resize: none")
-            @helper.inputText(form("Number"), 'style->"width:80%")
-            <button>Submit</button>
+
+        <h1>Contact Us</h1>
+
+        @helper.form(action = routes.ContactController.formHandler(), 'class->"inline-form") {
+            @helper.inputText(form("Name"), 'class->"form-control control-group", 'style->"width:80%")
+            @helper.inputText(form("Email"), 'class->"form-control control-group",'style->"width:80%")
+            @helper.inputText(form("Subject"), 'class->"form-control control-group", 'style->"width:80%")
+            @helper.textarea(form("Message"), 'class->"form-control control-group", 'style->"width:80%; height:300px; resize: none")
+            @helper.inputText(form("Number"), 'class->"form-control control-group", 'style->"width:80%")
+            <button class="btn">Submit</button>
         }
     </body>
 </html>
