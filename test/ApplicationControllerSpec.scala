@@ -14,63 +14,84 @@ class ApplicationControllerSpec extends PlaySpecification {
   "QA Cinemas Application" should {
 
     "render the index page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/")).get
-
-      status(home) must equalTo(OK)
-      contentType(home) must beSome.which(_ == "text/html")
+      route(FakeApplication(), FakeRequest(GET, "/")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+        case _ => failure
+      }
     }
 
     "render the about page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/about")).get
-
-      status(home) must equalTo(OK)
-      contentType(home) must beSome.which(_ == "text/html")
+      route(FakeApplication(), FakeRequest(GET, "/about")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+        case _ => failure
+      }
     }
 
     "render the contact page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/contactUs")).get
-
-      status(home) must equalTo(OK)
-      contentType(home) must beSome.which(_ == "text/html")
+      route(FakeApplication(), FakeRequest(GET, "/contactUs")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+        case _ => failure
+      }
     }
 
     "render the find page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/findUs")).get
-
-      status(home) must equalTo(OK)
-      contentType(home) must beSome.which(_ == "text/html")
+      route(FakeApplication(), FakeRequest(GET, "/findUs")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+        case _ => failure
+      }
     }
 
     "render the certifications page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/certifications")).get
-
-      status(home) must equalTo(OK)
-      contentType(home) must beSome.which(_ == "text/html")
+      route(FakeApplication(), FakeRequest(GET, "/certifications")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+        case _ => failure
+      }
     }
 
-    val listingsRoute = route(FakeApplication(), FakeRequest(GET, "/listings")).get
+    val listingsRoute = route(FakeApplication(), FakeRequest(GET, "/listings"))
     "should be able to retrieve the movies collection and render listings" in new WithApplication {
-      status(listingsRoute) must equalTo(OK)
-      contentType(listingsRoute) must beSome.which(_ == "text/html")
+      listingsRoute match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+        case _ => failure
+      }
     }
 
     "should be able to link to a route which contains a movie page" in new WithApplication {
-      contentAsString(listingsRoute) must contain("<a href='movie/")
+      listingsRoute match {
+        case Some(route) => contentAsString(route) must contain("<a href='movie/")
+        case _ => failure
+      }
     }
 
     "providing an invalid ID should return a bad request" in new WithApplication {
-      val movieRoute = route(FakeApplication(), FakeRequest(GET, "/movie/badid")).get
-
-      status(movieRoute) must equalTo(BAD_REQUEST)
-      contentAsString(movieRoute) must contain("Invalid ID")
+      route(FakeApplication(), FakeRequest(GET, "/movie/badid")) match {
+        case Some(route) =>
+          status(route) must equalTo(BAD_REQUEST)
+          contentAsString(route) must contain("Invalid ID")
+        case _ => failure
+      }
     }
 
     "providing a valid but incorrect ID should return a bad request" in new WithApplication {
       //Non malformed ID
-      val movieRoute = route(FakeApplication(), FakeRequest(GET, "/movie/deadbeefdeadbeefdeadbeef")).get
-
-      status(movieRoute) must equalTo(BAD_REQUEST)
-      contentAsString(movieRoute) must contain("Movie ID does not exist.")
+      val movieRoute = route(FakeApplication(), FakeRequest(GET, "/movie/deadbeefdeadbeefdeadbeef")) match {
+        case Some(route) =>
+          status(route) must equalTo(BAD_REQUEST)
+          contentAsString(route) must contain("Movie ID does not exist.")
+        case _ => failure
+      }
     }
   }
 }

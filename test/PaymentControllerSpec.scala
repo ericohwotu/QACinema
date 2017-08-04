@@ -15,26 +15,29 @@ import scala.concurrent.duration.Duration
 class PaymentControllerSpec extends PlaySpecification {
 
   "The Payments Page" should {
-    implicit val app = FakeApplication()
-
-    "should return bad request when no amount is provided" in {
-      val home = route(app, FakeRequest(GET, "/payment/token")).get
-
-      status(home) must equalTo(BAD_REQUEST)
+    "should return bad request when no amount is provided" in new WithApplication() {
+      route(FakeApplication(), FakeRequest(GET, "/payment/token")) match {
+        case Some(route) => status(route) must equalTo(BAD_REQUEST)
+        case _ => failure
+      }
     }
 
-    "should a payment page when provided an amount" in {
-      val home = route(app, FakeRequest(GET, "/payment/token?amount=50")).get
-
-      status(home) must equalTo(OK)
-      contentType(home) must beSome.which(_ == "text/html")
+    "should a payment page when provided an amount" in new WithApplication() {
+      route(FakeApplication(), FakeRequest(GET, "/payment/token?amount=50")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+        case _ => failure
+      }
     }
 
     "trying to make a payment with no nonce or amount should be a bad request" in new WithApplication() {
       val body : List[(String, String)] = List()
 
-      val Some(result) = route(FakeRequest(POST, "/payment/make").withFormUrlEncodedBody(body:_*))
-      status(result) must equalTo(BAD_REQUEST)
+      route(FakeApplication(), FakeRequest(POST, "/payment/make").withFormUrlEncodedBody(body:_*)) match {
+        case Some(route) => status(route) must equalTo(BAD_REQUEST)
+        case _ => failure
+      }
     }
 
     "trying to make a payment with a fake nonce/amount should not let the transaction happen" in new WithApplication() {
@@ -43,9 +46,12 @@ class PaymentControllerSpec extends PlaySpecification {
         ("amount", "50.00")
       )
 
-      val Some(result) = route(FakeRequest(POST, "/payment/make").withFormUrlEncodedBody(body:_*))
-      status(result) must equalTo(OK)
-      contentAsString(result) must contain("Transaction failure: ")
+      route(FakeApplication(), FakeRequest(POST, "/payment/make").withFormUrlEncodedBody(body:_*)) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentAsString(route) must contain("Transaction failure: ")
+        case _ => failure
+      }
     }
   }
 }
