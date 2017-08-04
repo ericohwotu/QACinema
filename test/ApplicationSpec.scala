@@ -25,6 +25,7 @@ class ApplicationSpec extends Specification {
       status(directionsPage) must equalTo(OK)
       contentType(directionsPage) must beSome.which(_ == "text/html")
       contentAsString(directionsPage) must contain ("<div id=\"map\"></div>")
+      contentAsString(directionsPage) must contain ("<div id=\"cinemaMode\"></div>")
     }
   }
 }

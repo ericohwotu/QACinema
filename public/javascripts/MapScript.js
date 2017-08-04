@@ -27,7 +27,7 @@ function initialize() {
 
     //Assign the map to a panel to display on
     directionsDisplay.setMap(map);
-    directionsDisplay.setPanel(document.getElementById("right-panel"));
+    directionsDisplay.setPanel(document.getElementById("rightPanel"));
 
     getLocation();
 
