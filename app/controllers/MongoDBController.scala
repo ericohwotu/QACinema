@@ -85,4 +85,15 @@ class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extend
     }
   }
 
+  def readByName(): Action[AnyContent] = Action.async {
+    val name = "Kidnap"
+    val cursor: Future[Cursor[Movie]] = movieDBTable.map {
+      _.find(Json.obj("Title" -> name))
+        .cursor[Movie]
+    }
+    val futureUsersList: Future[List[Movie]] = cursor.flatMap(_.collect[List]())
+    futureUsersList.map { persons => Ok(persons.headOption.get.Title)
+    }
+  }
+
 }
