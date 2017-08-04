@@ -8,8 +8,3 @@ import play.api.libs.json.{Json, OFormat}
 case class Place(name: String, latitude: String, longitude: String)
 
 object Place { implicit val placeFormat :OFormat[Place] = Json.format[Place] }
-/*
-
-object JsonFormats {
-  implicit val placeFormat :OFormat[Place] = Json.format[Place]
-}*/

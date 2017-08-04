@@ -29,14 +29,4 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
       Ok(views.html.mapdisplay(cinemas))
     }
   }
-
-  /*def cinemaList() : List[Place] = {
-    //TODO: Connect this function to the database and return the cinema coordinates in the correct format
-    List(
-      new Place(53.474140, -2.286074, "QACinema - Anchorage"),
-      new Place(53.472101, -2.300690, "QACinema - The Heart"),
-      new Place(53.487390, -2.242282, "QA Cinema - Piccadilly "),
-      new Place(53.413086, -2.254408, "QA Cinema - Golf Club")
-    )
-  }*/
 }
