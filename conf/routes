@@ -11,3 +11,4 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 #MongoDB
 GET     /addMovies                  controllers.Mongo.createMoviesFromAPI()
 GET     /addCinemas                 controllers.Mongo.addLocations()
+GET     /getMovie                   controllers.Mongo.readByName()
