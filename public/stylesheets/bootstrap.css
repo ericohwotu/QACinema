@@ -44,6 +44,8 @@ body {
 .img-responsive {
   width: 100%;
   height: 100%;
+  border: 1px solid white;
+  border-radius: 0.25rem;
 }
 
 .search{
@@ -5929,7 +5931,6 @@ button.close {
   width: 100%;
   overflow: hidden;
   height: auto;
-
 }
 
 .carousel-item {
@@ -5940,6 +5941,8 @@ button.close {
 .carousel-img {
   width: 100%;
   height: 350px;
+  background-image : linear-gradient(to bottom, rgba(255,255,255, 0), rgba(255,255,255, 1) 90%);
+
 }
 
 @media (-webkit-transform-3d) {
