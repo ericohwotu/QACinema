@@ -12,16 +12,8 @@ case class Movie(
                  Actors: String,
                  Plot: String,
                  Poster: String,
-                 video: Option[String] = None
+                 var video: Option[String] = None
                )
-
-
-
-
-
-
-
-
 
 object Movie{implicit val movieFormat :OFormat[Movie] = Json.format[Movie] }
 
