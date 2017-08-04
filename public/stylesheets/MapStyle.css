@@ -1,0 +1,24 @@
+#map {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 0;
+}
+
+#mapContainer {
+    width:80%;
+    height:80%;
+}
+
+#mapColumn {
+    height:500px;
+}
+
+#pathColumn {
+    height:500px;
+    overflow:scroll;
+}
+
+#searchBar {
+    width:100%;
+}

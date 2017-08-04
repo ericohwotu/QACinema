@@ -2,6 +2,10 @@ package controllers
 
 import javax.inject.Inject
 
+import models.Place
+import scala.concurrent.Future
+import play.api.mvc.{Action, AnyContent, Controller}
+import collection._ 
 import models.Movie
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -12,16 +16,15 @@ import reactivemongo.play.json._
 import reactivemongo.api.Cursor
 import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.collection.JSONCollection
-
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
-class Application @Inject()(val reactiveMongoApi : ReactiveMongoApi) extends Controller with MongoController with ReactiveMongoComponents  {
+class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Controller with MongoController with ReactiveMongoComponents {
 
   def index = Action {
     Ok(views.html.index())
   }
-
+  def locationCollection: Future[JSONCollection] = database.map(_.collection[JSONCollection]("locations"))
   def collection: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
   def futureMovies: Future[List[Movie]] = {
     val futureCursor: Future[Cursor[Movie]] = collection.map {_.find(Json.obj()).cursor[Movie]()}
@@ -79,4 +82,15 @@ class Application @Inject()(val reactiveMongoApi : ReactiveMongoApi) extends Con
     Ok(views.html.findUs())
   }
 
+
+  def mapPage: Action[AnyContent] = Action.async { implicit request =>
+    val cursor: Future[Cursor[Place]] = locationCollection.map {
+      _.find(Json.obj()).cursor[Place]
+    }
+    val futureCinemaList: Future[List[Place]] = cursor.flatMap(_.collect[List]())
+    futureCinemaList.map { cinemas =>
+      Ok(views.html.mapdisplay(cinemas))
+    }
+  }
 }
+
