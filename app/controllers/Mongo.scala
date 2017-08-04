@@ -25,10 +25,10 @@ class Mongo @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
 
   def addLocations(): Action[AnyContent] = Action {
     val locations = ArrayBuffer(
-      CinemaLocation("53.4695009","-2.292369"),
-      CinemaLocation("53.4741912","-2.2871522"),
-      CinemaLocation("53.4449796","-2.2205691"),
-      CinemaLocation("53.4261648","-2.5255555")
+      CinemaLocation("QACinema", "53.4695009","-2.292369"),
+      CinemaLocation("QA DockCinema", "53.4741912","-2.2871522"),
+      CinemaLocation("QA Theatre","53.4449796","-2.2205691"),
+      CinemaLocation("QA FilmCentre","53.4261648","-2.5255555")
     )
 
     locations.foreach{loc =>
@@ -45,7 +45,13 @@ class Mongo @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
       val newMovie = Json.parse(trendingNamesReq.asString.body).validate[Movie]
 
       newMovie match {
-        case s: JsSuccess[Movie] =>movieDBTable.flatMap(_.insert(s.get))
+        case s: JsSuccess[Movie] =>
+          val video = Http("https://api.themoviedb.org/3/movie/"+movie.id+"/videos?api_key=f675a5619b10739ad98190b5599f50d9&language=en-US")
+          val currentTrailer = Json.parse(video.asString.body)
+          val trailerList = (currentTrailer \"results").get.validate[List[Trailer]].get
+          s.get.video = Some(trailerList.head.key)
+          movieDBTable.flatMap(_.insert(s.get))
+
         case e: JsError => println("Errors: " + JsError.toJson(e).toString())
       }
     }

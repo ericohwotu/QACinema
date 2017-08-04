@@ -3,17 +3,17 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 case class Movie(
-                  Title: String,
-                  Rated: String,
-                  Released: String,
-                  Runtime: String,
-                  Genre: String,
-                  Director: String,
-                  Actors: String,
-                  Plot: String,
-                  Poster: String,
-                  video: Option[String] = None
-                )
+                 Title: String,
+                 Rated: String,
+                 Released: String,
+                 Runtime: String,
+                 Genre: String,
+                 Director: String,
+                 Actors: String,
+                 Plot: String,
+                 Poster: String,
+                 var video: Option[String] = None
+               )
 
 case class trendingMovieList(title: String)
 
