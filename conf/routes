@@ -10,8 +10,6 @@ GET     /                           controllers.Application.index()
 GET     /payment/token              controllers.PaymentController.getClientToken(amount : Option[Double] ?= None)
 POST    /payment/make               controllers.PaymentController.makePayment
 
-GET     /listings                   controllers.Application.listings
-
 GET     /movie/$id<[0-9a-z]+>       controllers.Application.movie(id : String)
 
 GET     /                           controllers.Application.index
@@ -20,7 +18,7 @@ GET     /contactus                  controllers.ContactController.contactUs
 GET     /findus                     controllers.Application.findUs
 GET     /listings                   controllers.Application.listings
 GET     /about                      controllers.Application.about
-GET     /nearby                     controllers.Default.TODO
+GET     /nearby                     controllers.Application.nearby
 
 
 # bookings page

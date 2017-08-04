@@ -5,7 +5,7 @@ import javax.inject.Inject
 import models.Place
 import scala.concurrent.Future
 import play.api.mvc.{Action, AnyContent, Controller}
-import collection._ 
+import collection._
 import models.Movie
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -21,7 +21,7 @@ import scala.util.{Failure, Success, Try}
 
 class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Controller with MongoController with ReactiveMongoComponents {
 
-  def index = Action {
+  def index: Action[AnyContent] = Action {
     Ok(views.html.index())
   }
   def locationCollection: Future[JSONCollection] = database.map(_.collection[JSONCollection]("locations"))
@@ -66,20 +66,27 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
     }
   }
 
-  def about = Action {
+  def about: Action[AnyContent] = Action {
     Ok(views.html.about())
   }
 
-  def certifications = Action {
+  def certifications: Action[AnyContent] = Action {
     Ok(views.html.certifications())
   }
 
+//  def contactUs: Action[AnyContent] = Action {
+//    Ok(views.html.contactUs())
+//  }
 //  def contactUs = Action {
 //    Ok(views.html.contactUs())
 //  }
 
-  def findUs = Action {
+  def findUs: Action[AnyContent] = Action {
     Ok(views.html.findUs())
+  }
+
+  def nearby: Action[AnyContent] = Action {
+    Ok(views.html.nearby())
   }
 
 
@@ -93,4 +100,3 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
     }
   }
 }
-
