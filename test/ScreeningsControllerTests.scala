@@ -38,10 +38,10 @@ class ScreeningsControllerTests extends Specification {
     }
 
     "return a json api key" in new WithApplication() {
-      val getApiKey = route(FakeApplication(), FakeRequest(GET, "/key/getkey"))
+      val getApiKey = route(FakeApplication(), FakeRequest(GET, "/key/getkey")).get
 
       status(getApiKey) must equalTo(OK)
-
+      contentAsJson(getApiKey).toString() must contain("blank")
     }
   }
 }
