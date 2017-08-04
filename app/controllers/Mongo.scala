@@ -2,6 +2,8 @@ package controllers
 
 import javax.inject.Inject
 
+import akka.util.LineNumbers.Result
+
 import scala.concurrent.Future
 import play.api.mvc.{Action, AnyContent, Controller}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -11,7 +13,7 @@ import models._
 import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
 import reactivemongo.play.json._
 import collection._
-import reactivemongo.bson.BSONDocument
+import reactivemongo.bson.{BSONDocument, BSONObjectID}
 
 import scala.collection.mutable.ArrayBuffer
 import scalaj.http._
@@ -39,6 +41,7 @@ class Mongo @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
 
 
   def createMoviesFromAPI(): Action[AnyContent] = Action {
+    movieDBTable.flatMap(_.drop(false))
     getTrending.foreach { movie =>
       val improvedFormat = movie.title.replaceAll("\\s", "+")
       val trendingNamesReq = Http("http://www.omdbapi.com/?t=" + improvedFormat + "&r=json&plot=full&apikey=313dd87a")
@@ -69,6 +72,17 @@ class Mongo @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
     val response = Http("https://api.themoviedb.org/3/movie/now_playing?api_key=f675a5619b10739ad98190b5599f50d9&language=en-US&page=1")
     val currentMovies = Json.parse(response.asString.body)
     (currentMovies \"results").get.validate[List[trendingMovieList]].get
+  }
+
+  def readByName(): Action[AnyContent] = Action.async {
+    val name = "Kidnap"
+    val cursor: Future[Cursor[Movie]] = movieDBTable.map {
+      _.find(Json.obj("Title" -> name))
+        .cursor[Movie]
+    }
+    val futureUsersList: Future[List[Movie]] = cursor.flatMap(_.collect[List]())
+    futureUsersList.map { persons => Ok(persons.headOption.get.Title)
+    }
   }
 
 }
