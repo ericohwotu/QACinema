@@ -3,21 +3,35 @@
  * Copyright 2011-2017 The Bootstrap Authors
  * Copyright 2011-2017 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+#152333
  */
 /*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
+
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  height: 100%;
 }
+
 
 body {
   padding-top: 76px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
   margin: 0;
   /*background: #4b5257 !important;*/
   background-image: linear-gradient(to top right,#4b5257,black);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100%;
 }
+
+footer {
+  position: relative;
+}
+
+
 
 .tinymovie{
   position: relative;
@@ -46,40 +60,71 @@ body {
   height: 100%;
 }
 
-.search{
+.giantgradient {
+  padding: 50px;
+  background-image: linear-gradient(to right,rgba(255,0,0,0),black);
+}
+
+
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto 0px; /* the bottom margin is the negative value of the footer's height */
 
 }
 
 .giantmovie {
   position: relative;
+  min-width: 500px;
   width: 100%;
-  height: 700px;
-  background-repeat: no-repeat;
-  background-position: 60% 0%;
+  height: 100%;
   background-size: 100%;
+  z-index: 0;
 }
 
-.giantgradient{
-  height: 100%;
-  width: 100%;
-  background-image: linear-gradient(to right,rgba(255,0,0,0),black);
-}
 
 .gradientheight {
   height: 100%; /*PLEASE THINK OF A DIFFERENT SOLUTION FOR THIS*/
 }
 
-.giantimg {
-  width:60%;
-  height: 500px;
+
+.trailer {
   background-repeat: no-repeat;
   background-position: 60% 0%;
   float: left;
 }
 
-.gianttext {
-  width:30%;
+@media screen and (min-width: 500px) {
+  .trailer {
+    width:400px;
+    height: 250px;
+  }
 }
+
+@media screen and (min-width: 1000px) {
+  .trailer {
+    width:800px;
+    height: 500px;
+  }
+}
+
+@media screen and (min-width: 1500px) {
+  .trailer {
+    width:1200px;
+    height: 750px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 article,
