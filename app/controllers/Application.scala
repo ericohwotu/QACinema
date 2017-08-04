@@ -1,23 +1,16 @@
 package controllers
 
 import javax.inject.Inject
-
-import javax.inject.Inject
-
-import play.api.libs.json.Json
-import play.api.mvc._
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
-import play.api.libs.json._
-import reactivemongo.play.json._
-import reactivemongo.api.Cursor
-import reactivemongo.bson.BSONObjectID
-import reactivemongo.play.json.collection.JSONCollection
-
+import models.Place
 import scala.concurrent.Future
-import scala.util.{Failure, Success, Try}
-
-class Place(val xCoord: Double, val yCoord: Double, val name: String)
+import play.api.mvc.{Action, AnyContent, Controller}
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.libs.json._
+import reactivemongo.api.Cursor
+//import models.JsonFormats._
+import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
+import reactivemongo.play.json._
+import collection._
 
 class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Controller with MongoController with ReactiveMongoComponents {
 
@@ -27,12 +20,17 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
     Ok(views.html.index("Your new application is ready."))
   }
 
-  def mapPage = Action {
-    val list = cinemaList()
-    Ok(views.html.mapdisplay(list))
+  def mapPage: Action[AnyContent] = Action.async { implicit request =>
+    val cursor: Future[Cursor[Place]] = collection.map {
+      _.find(Json.obj()).cursor[Place]
+    }
+    val futureCinemaList: Future[List[Place]] = cursor.flatMap(_.collect[List]())
+    futureCinemaList.map { cinemas =>
+      Ok(views.html.mapdisplay(cinemas))
+    }
   }
 
-  def cinemaList() : List[Place] = {
+  /*def cinemaList() : List[Place] = {
     //TODO: Connect this function to the database and return the cinema coordinates in the correct format
     List(
       new Place(53.474140, -2.286074, "QACinema - Anchorage"),
@@ -40,5 +38,5 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
       new Place(53.487390, -2.242282, "QA Cinema - Piccadilly "),
       new Place(53.413086, -2.254408, "QA Cinema - Golf Club")
     )
-  }
+  }*/
 }
