@@ -95,13 +95,8 @@ footer {
   background-repeat: no-repeat;
   background-position: 60% 0%;
   float: left;
-}
-
-@media screen and (min-width: 500px) {
-  .trailer {
-    width:400px;
-    height: 250px;
-  }
+  width:400px;
+  min-width: 250px;
 }
 
 @media screen and (min-width: 1000px) {
