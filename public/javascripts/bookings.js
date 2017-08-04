@@ -26,7 +26,7 @@ function getDays(){
 
     console.log(dates);
 
-    return dates
+    return dates;
 }
 
 function getTimes(){
@@ -35,21 +35,24 @@ function getTimes(){
     let times = new Array(7);
     let start = 0;
 
-    if (days.length==6)
+    if (days.length===6) {
         start = 1;
+    }
 
     for (let i = start; i<7; i++){
         times[i] = new Array(8);
         for (let j=0; j<24; j += 3){
-            if(i == 0 && j < timeNow)
+            if(i === 0 && j < timeNow) {
                 times[i][j] = 0;
-            else
+            } else {
                 times[i][j] = j + ":00";
+            }
         }
     }
 
-    if(!times[0])
+    if(!times[0]) {
         times.shift();
+    }
 
     console.log(times);
 
@@ -62,14 +65,14 @@ window.onload = function(){
 }
 
 function popDates(){
-    let daysOptions = document.getElementById("days")
+    let daysOptions = document.getElementById("days");
     for(let i = 0; i< days.length; i++){
         let opt = document.createElement("option");
         opt.value = i;
         opt.innerHTML = days[i];
         daysOptions.appendChild(opt);
     }
-    popTimes(0)
+    popTimes(0);
 }
 
 function popTimes(day){
@@ -81,7 +84,7 @@ function popTimes(day){
     timesOptions.classList.remove("disabled");
 
     for(let i = 0; i< hours[day].length; i+=3){
-        if(hours[day][i] != 0 || hours[day][i]){
+        if(hours[day][i] !== 0 || hours[day][i]){
             let opt = document.createElement("option");
             opt.value = i;
             opt.innerHTML = hours[day][i];
@@ -128,11 +131,19 @@ function getTotal(){
     document.getElementById("total-field").value = total * multiplier
     console.log("getToral called");
 
-    if (isVipLimitReached()) disableVip();
-    else enableVip();
+    if (isVipLimitReached()) {
+        disableVip();
+    }
+    else {
+        enableVip();
+    }
 
-    if (isStandardLimitReached()) disableStandard();
-    else enableStandard();
+    if (isStandardLimitReached()) {
+        disableStandard();
+    }
+    else {
+        enableStandard();
+    }
 
     isSeatLimitReached();
 
@@ -155,5 +166,5 @@ function submitBookings(){
 
     alert("Booking has been made, you will now be redirected to the payment");
     console.log(getTotal());
-    window.location.href = "/bookings/topayment?amount=" + getTotal()
+    window.location.href = "/bookings/topayment?amount=" + getTotal();
 }

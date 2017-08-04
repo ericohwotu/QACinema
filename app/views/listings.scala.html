@@ -1,66 +1,60 @@
-@(movies : List[List[(Movie, String)]])
+@(movies: List[List[(Movie, String)]])
 @main("Listings") {
 
-  <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
 
-  <hr>
-    <!-- ADD SEARCH WHEN IMPLEMENTED -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h1 class="page-header">Movie Listings<br>
-          <small>All movies that are currently showing</small>
-        </h1>
-      </div>
+    <hr>
+        <!-- ADD SEARCH WHEN IMPLEMENTED -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Movie Listings<br>
+                    <small>All movies that are currently showing</small>
+                </h1>
+            </div>
 
-      <div class="search">
+            <div class="search">
 
-      </div>
+            </div>
+        </div>
+
     </div>
-
-  </div>
-      <!-- /.container -->
+        <!-- /.container -->
     <hr style="border-color: white">
-    <!-- Page Content -->
-  <div class="container">
+        <!-- Page Content -->
+    <div class="container">
 
-      <!-- Page Heading -->
+            <!-- Page Heading -->
 
-    @for(moviegroup <- movies) {
-      <div class="row">
-      @for(movie <- moviegroup) {
-        <div class="tinymovie">
-          <a href='movie/@movie._2'>
-            <img class="img-responsive" src="@movie._1.Poster" alt="http://placehold.it/350x150">
-            <div class="tinytext">@movie._1.Title</div>
-          </a>
-        </div>
-      }
-      </div>
-    }
+        @for(moviegroup <- movies) {
+            <div class="row">
+            @for(movie <- moviegroup) {
+                <div class="tinymovie">
+                    <a href='movie/@movie._2'>
+                        <img class="img-responsive" src="@movie._1.Poster" alt="http://placehold.it/350x150">
+                        <div class="tinytext">@movie._1.Title</div>
+                    </a>
+                </div>
+            }
+            </div>
+            <br>
+            }
 
-    <hr>
+            <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                </div>
+            </div>
+                <!-- /.row -->
+        </footer>
 
+    </div>
+        <!-- /.container -->
 
-      <!-- /.row -->
+        <!-- jQuery -->
+    <script src="js/jquery.js"></script>
 
-    <hr>
-
-      <!-- Footer -->
-    <footer>
-      <div class="row">
-        <div class="col-lg-12">
-        </div>
-      </div>
-        <!-- /.row -->
-    </footer>
-
-  </div>
-    <!-- /.container -->
-
-    <!-- jQuery -->
-  <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-  <script src="js/bootstrap.min.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 }

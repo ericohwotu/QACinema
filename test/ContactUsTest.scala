@@ -26,11 +26,11 @@ class ContactUsTest extends Specification {
     }
 
     "render the index page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/contactus")).get
+      val home = route(FakeRequest(GET, "/contactUs")).get
 
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "text/html")
-      contentAsString(home) must contain ("<form action=\"/contactus\" method=\"POST\" >")
+      contentAsString(home) must contain ("<title>Contact Us</title>")
     }
 
     "send error on empty form submission" in new WithApplication() {
@@ -41,25 +41,25 @@ class ContactUsTest extends Specification {
     "send error on no name submitted" in new WithApplication() {
       val result = route(FakeApplication(),FakeRequest(POST, "/contactus?message=hello&email=me@you.com")).get
       status(result) must equalTo(BAD_REQUEST)
-      contentAsString(result) must contain("name")
+      contentAsString(result) must contain("Name")
     }
 
     "send error on no email submitted" in new WithApplication() {
       val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&message=hello")).get
       status(result) must equalTo(BAD_REQUEST)
 
-      contentAsString(result) must contain("email")
+      contentAsString(result) must contain("Email")
     }
 
     "send error on no message submitted" in new WithApplication() {
       val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&email=me@you.com")).get
       status(result) must equalTo(BAD_REQUEST)
-      contentAsString(result) must contain("message")
+      contentAsString(result) must contain("Message")
     }
 
     "send 200 on success" in new WithApplication() {
       val result = route(FakeApplication(),FakeRequest(POST,
-        "/contactus?name=eric%20Ohwotu&message=love%20me%20or&email=me@you.com&number=09788375643")).get
+        "/contactus?Name=eric%20Ohwotu&Message=love%20me%20or&Email=me@you.com&Number=09788375643&Subject=Love")).get
       status(result) must equalTo(OK)
     }
   }

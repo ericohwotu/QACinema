@@ -22,7 +22,7 @@ class ContactController @Inject()(implicit val messagesApi: MessagesApi, mailerC
     },{
       contactUS =>
         sendEmail(contactUS)
-        Ok("Success")
+        Ok(views.html.contactConfirm())
     })
   }
 

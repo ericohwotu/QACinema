@@ -22,11 +22,17 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
   }
 
   def bookSeat(id: Int, key: Option[String], name: Option[String], date: String, time: String): Action[AnyContent] =
+
     Action { implicit request: Request[AnyContent] =>
+
     val movieName = request.session.get("movieName").getOrElse(name.getOrElse("None"))
+
     jsonApiHelper(key, request) match {
+
       case "Unauthorised" => Unauthorized("Sorry you are not authorised")
+
       case bookingKey =>
+
         mongoDbController.bookSeat(movieName, date, time, Seat(id, bookingKey, false, Seat.getExpiryDate,""))
         Ok(Json.parse(SeatGenerator.bookSeats(id, bookingKey)))
           .withSession(request.session + ("date" -> date) + ("time" -> time))
@@ -34,21 +40,30 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
   }
 
   def submitBooking(key: Option[String], name: Option[String], date: String, time: String): Action[AnyContent] =
+
     Action { request: Request[AnyContent] =>
+
       val movieName = request.session.get("movieName").getOrElse(name.getOrElse("None"))
+
       jsonApiHelper(key, request) match {
+
         case "Unauthorised" => Unauthorized("Sorry you are not authorised")
+
         case bookingKey =>
+
           mongoDbController.submitBooking(bookingKey,movieName,date,time)
-          Redirect("http://www.facebook.com")
+          Redirect(routes.Application.index())
       }
     }
 
   def jsonApiHelper(key: Option[String], request: Request[AnyContent]): String = {
     request.session.get("sessionKey").getOrElse("") match {
+
       case "" => key match {
+
         case None => "Unauthorised"
         case apiKey =>
+
           mongoDbController.isKeyAvailable(apiKey.get) match {
             case true => apiKey.getOrElse("random")
             case false => "Unauthorised"

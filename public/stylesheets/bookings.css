@@ -92,6 +92,10 @@ tr{
     background-color: #777777 !important;
 }
 
+.error{
+    color: red;
+}
+
 .form-inline{
     width: 350px;
     margin-left: auto !important;
@@ -99,9 +103,7 @@ tr{
 }
 
 .form-control{
-    border-radius: 1px !important;
-    background-color: #57D6C7;
-    color: white;
+    border-radius: 3px !important;
 }
 .navbar{
     background-color: rgba(45,45,45,0.8);
@@ -132,18 +134,18 @@ tr{
     cursor: auto !important;
 }
 
-.vip{
+.vip, .key-vip{
     background-color: darkgoldenrod;
     border-style: none;
 }
 
-.standard.dis.available{
+.standard.dis.available, .key-disabled{
     background-color: #FFFFE0;
 }
 
 
 
-.standard{
+.standard, .key-standard{
     background-color: lightgreen;
 }
 
@@ -160,7 +162,7 @@ tr{
     box-shadow: 0 2px 5px #656565;
 }
 
-.booked{
+.booked, .key-selected{
     background-color: #2e5076;
     cursor: pointer;
 }
