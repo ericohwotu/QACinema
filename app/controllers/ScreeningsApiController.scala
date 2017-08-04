@@ -9,7 +9,8 @@ import util.SeatGenerator
 
 class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbController) extends Controller {
 
-  def getAllSeats(key: Option[String], name: Option[String], date: String, time: String) = Action { implicit request: Request[AnyContent] =>
+  def getAllSeats(key: Option[String], name: Option[String], date: String, time: String): Action[AnyContent] = Action {
+    implicit request: Request[AnyContent] =>
     jsonApiHelper(key, request) match {
       case "Unauthorised" => Unauthorized("Sorry you are not authorised")
       case bookingKey =>
@@ -20,7 +21,8 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
     }
   }
 
-  def bookSeat(id: Int, key: Option[String], name: Option[String], date: String, time: String) = Action { implicit request: Request[AnyContent] =>
+  def bookSeat(id: Int, key: Option[String], name: Option[String], date: String, time: String): Action[AnyContent] =
+    Action { implicit request: Request[AnyContent] =>
     val movieName = request.session.get("movieName").getOrElse(name.getOrElse("None"))
     jsonApiHelper(key, request) match {
       case "Unauthorised" => Unauthorized("Sorry you are not authorised")
@@ -48,7 +50,7 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
         case None => "Unauthorised"
         case apiKey =>
           mongoDbController.isKeyAvailable(apiKey.get) match {
-            case true => apiKey.get
+            case true => apiKey.getOrElse("random")
             case false => "Unauthorised"
           }
       }
@@ -60,7 +62,7 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
     request.session.get("movieName").getOrElse("") match {
       case "" => name match {
         case None => "Unauthorised"
-        case movieName => movieName.get
+        case movieName => movieName.getOrElse("Unautorised")
       }
       case movieName => movieName
     }

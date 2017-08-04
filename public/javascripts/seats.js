@@ -8,7 +8,6 @@ window.onload = function () {
     refresh();
 }
 
-
 function selectSeat(seatId) {
     console.log("select seat called");
     let xhttp = new XMLHttpRequest();
@@ -23,82 +22,72 @@ function selectSeat(seatId) {
 }
 
 function isSeatLimitReached(){
-    console.log("is seat reached")
-    let bookedCount = document.getElementsByClassName("booked").length
-    let submitBooking = document.getElementById("submit-booking")
+    let bookedCount = document.getElementsByClassName("booked").length;
+    let submitBooking = document.getElementById("submit-booking");
 
     let total = getStandardTicketCount() + getVipTicketCount();
 
-    console.log("===============================================================")
-    console.log(total)
-    console.log("===============================================================")
 
-    if(bookedCount != total || total == 0)
+    if(bookedCount != total || total == 0) {
         submitBooking.setAttribute("disabled", "true");
-    else
+    } else {
         submitBooking.removeAttribute("disabled");
+    }
 
-    return bookedCount >= total
+    return bookedCount >= total;
 }
 
 function isStandardLimitReached(){
-    console.log("is standard reached called")
 
     let bookedCount = document.getElementsByClassName("standard booked").length;
 
-    isSeatLimitReached()
-    return bookedCount >= getStandardTicketCount()
+    isSeatLimitReached();
+    return bookedCount >= getStandardTicketCount();
 }
 
 function isVipLimitReached(){
-    console.log("is vip reached called");
     let bookedCount = document.getElementsByClassName("vip booked").length;
-    console.log("isVipLi")
-    console.log(bookedCount)
+    console.log("isVipLi");
+    console.log(bookedCount);
 
-    isSeatLimitReached()
-    return bookedCount >= getVipTicketCount()
+    isSeatLimitReached();
+    return bookedCount >= getVipTicketCount();
 }
 
 function getStandardTicketCount(){
-    console.log("get standard tickets count called");
     let sAdult = +document.getElementById("standard-adult").value;
     let sStudent = +document.getElementById("standard-student").value;
     let sChild = +document.getElementById("standard-child").value;
 
-    return sAdult + sStudent + sChild
+    return sAdult + sStudent + sChild;
 }
 
 function getVipTicketCount(){
-    console.log("get vip tickets count called");
     let vAdult = +document.getElementById("vip-adult").value;
     let vStudent = +document.getElementById("vip-student").value;
     let vChild = +document.getElementById("vip-child").value;
 
-    return vAdult + vStudent + vChild
+    return vAdult + vStudent + vChild;
 }
 
 function changeSeatColor(elem, json) {
-    console.log("change seat color called");
     elem.classList.remove("available");
     elem.classList.remove("booked");
 
-    console.log(json)
     if (json.outcome === "failure")
-        elem.classList.add("unavailable")
+        elem.classList.add("unavailable");
     else if (json.outcome === "success" && json.message === "seat booked")
-        elem.classList.add("booked")
+        elem.classList.add("booked");
     else
-        elem.classList.add("available")
+        elem.classList.add("available");
 
-    if(isStandardLimitReached())disableStandard()
+    if(isStandardLimitReached())disableStandard();
     else enableStandard();
-    if(isVipLimitReached())disableVip()
+    if(isVipLimitReached())disableVip();
     else enableVip();
 }
 
 function refresh() {
-    console.log("refressh called")
     //get an ajax call to book the seat
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -114,19 +103,23 @@ function refresh() {
 function getSelectedText(elementId) {
     let elem = document.getElementById(elementId);
 
-    if (elem.selectedIndex == -1)
+    if (elem.selectedIndex == -1) {
         return null;
+    }
 
     return elem.options[elem.selectedIndex].text;
 }
 
 function updateButtons(arr) {
-    console.log("update buttons called")
     for (let i = 0; i < arr.length; i++)
         updateButton(arr[i]);
 
-    if(isStandardLimitReached())disableStandard()
-    if(isVipLimitReached())disableVip()
+    if(isStandardLimitReached()){
+        disableStandard();
+    }
+    if(isVipLimitReached()){
+        disableVip();
+    }
 
 }
 
@@ -141,19 +134,22 @@ function updateButton(json) {
 
 
 
-    if (json.available === "true")
+    if (json.available === "true") {
         elem.classList.add("available");
-    else if (json.available === "false" && json.bookedBy === "true")
+    } else if (json.available === "false" && json.bookedBy === "true") {
         elem.classList.add("booked");
-    else {
+    } else {
         elem.classList.add("unavailable");
         elem.setAttribute("disabled", "true");
     }
 
-    if (json.type == "VIP")setVipButton(elem);
-    if (json.type == "DISABLED")setDisButton(elem);
-
-    if (json.type == "EMPTY"){
+    if (json.type === "VIP"){
+        setVipButton(elem);
+    }
+    if (json.type === "DISABLED"){
+        setDisButton(elem);
+    }
+    if (json.type === "EMPTY"){
         elem.classList.remove("standard");
         elem.classList.add("empty");
         elem.setAttribute("disabled", "true");
@@ -162,16 +158,14 @@ function updateButton(json) {
 
 function setVipButton(seat){
     console.log("set vip button");
-    seat.classList.remove("standard")
-    seat.classList.remove("vip")
-    seat.classList.add("vip")
+    seat.classList.remove("standard");
+    seat.classList.remove("vip");
+    seat.classList.add("vip");
 }
 
 function setDisButton(seat){
-    console.log("set dis button");
-    // seat.classList.remove("standard")
-    seat.classList.remove("dis")
-    seat.classList.add("dis")
+    seat.classList.remove("dis");
+    seat.classList.add("dis");
 }
 
 function enableStandard() {
@@ -188,7 +182,6 @@ function enableStandard() {
 }
 
 function enableVip() {
-    console.log("eableVip called")
     clearInterval(callback);
     callback = setInterval(refresh, 5000);
     let elems = document.getElementsByClassName("vip");
@@ -201,7 +194,6 @@ function enableVip() {
 }
 
 function disableStandard() {
-    console.log("disableStandard called")
     let elems = document.getElementsByClassName("standard");
 
     for (let i = 0; i < elems.length; i++) {
@@ -215,7 +207,6 @@ function disableStandard() {
 }
 
 function disableVip(){
-    console.log("disableVip called")
     let elems = document.getElementsByClassName("vip");
 
     for (let i = 0; i < elems.length; i++) {

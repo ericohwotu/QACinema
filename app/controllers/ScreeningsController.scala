@@ -9,10 +9,9 @@ import javax.inject._
 import akka.actor.ActorSystem
 import play.api.data.format.Formats._
 import play.api.i18n._
-import util.SeatGenerator
+import util.{SeatGenerator, SessionHelper}
 import com.typesafe.config.ConfigFactory
-import util.SessionHelper
-import models.{DateSelector, Screening, Seat}
+import models.{DateSelector, Screening}
 import play.api.data.{Form, Forms}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 

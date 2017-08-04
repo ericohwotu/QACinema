@@ -9,18 +9,20 @@ function getDays(){
 
     for (let i=0; i<7; i++) {
         let date = new Date();
-        date.setDate(date.getDate() + i)
+        date.setDate(date.getDate() + i);
         let today = date.getDate();
         let month = date.getMonth();
         let year = date.getYear();
-        if(date.getDate()=== new Date().getDate() && date.getHours() > 21)
+        if(date.getDate()=== new Date().getDate() && date.getHours() > 21) {
             dates[i];
-        else
+        } else {
             dates[i] = today + " " + months[month].toUpperCase() + " " + (year + 1900);
+        }
     }
 
-    if(!dates[0])
+    if(!dates[0]) {
         dates.shift();
+    }
 
     console.log(dates);
 

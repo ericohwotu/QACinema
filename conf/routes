@@ -24,7 +24,7 @@ GET     /nearby                     controllers.Default.TODO
 
 
 # bookings page
-GET     /bookings                   controllers.ScreeningsController.index(name: String ?= "Sample Booking", multipliers: String ?= "1,1.2,1.4")
+GET     /bookings                   controllers.ScreeningsController.index(id: String ?= "Sample Booking", multipliers: String ?= "1,1.2,1.4")
 GET     /bookings/getseats          controllers.ScreeningsApiController.getAllSeats(key: Option[String] ?= None, name: Option[String] ?= None, date: String, time: String)
 GET     /key/getkey                 controllers.ScreeningsDbController.getKey
 POST    /bookings/bookseat          controllers.ScreeningsApiController.bookSeat(id: Int, key: Option[String] ?= None,name: Option[String] ?= None, date: String, time: String)

@@ -207,7 +207,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
 
   //=============================================== Unbook Seats =============================//
 
-  def unbookRunner = {
+  def unbookRunner: Unit = {
     getMoviesInDb.foreach { movie =>
       dateSlotUpdater(movie)
       movie.dateSlots.zipWithIndex.foreach { case (dateSlot, dateIndex) =>
@@ -235,7 +235,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
     }
   }
 
-  def dateSlotUpdater(movie: Screening) = {
+  def dateSlotUpdater(movie: Screening): Unit = {
     val uniqueList = DateSlot.getDateSlots.filter{ newSlot => movie.dateSlots.forall{
         dateSlot => dateSlot.name != newSlot.name
       }
