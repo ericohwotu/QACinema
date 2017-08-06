@@ -6,7 +6,7 @@ import play.api.libs.json.Json
 import util.{Encryption, SessionHelper}
 
 case class User(name: String, username: String, password: String,
-                 email: String, bookings: List[Bookings] = List(),
+                 email: String, bookings: List[Booking] = List(),
                   favourites: List[Movie] = List(),
                   membership: String="", isAdmin: Boolean = false)
 

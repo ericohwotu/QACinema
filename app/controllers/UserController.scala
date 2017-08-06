@@ -2,8 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import models.User
-import play.api.cache.{CacheApi, Cached}
+import models.{Booking, User}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -22,10 +21,11 @@ import scala.concurrent.{Await, Future}
 
 class UserController @Inject()(
                                 implicit val messagesApi: MessagesApi,
-                                val reactiveMongoApi: ReactiveMongoApi,
-                                val userCache: CacheApi
+                                val reactiveMongoApi: ReactiveMongoApi
                               ) extends Controller with I18nSupport
   with ReactiveMongoComponents with MongoController {
+
+  val byteLength = 16
 
   val registerUser = Form(
     tuple(
@@ -58,7 +58,7 @@ class UserController @Inject()(
 
   def addUserToDb(user: User): Unit = usersCol.flatMap(_.insert(user))
 
-  def getPassword(password: String): String = Encryption.encrypt(Encryption.getKey(password)(16),password)
+  def getPassword(password: String): String = Encryption.encrypt(Encryption.getKey(password)(byteLength),password)
 
   def getUsers(username: String): List[User] = {
 
@@ -77,6 +77,11 @@ class UserController @Inject()(
 
   def validateLogin(username:String, password: String): Boolean = getUserByPassword(username, password).length == 1
 
+  def addBookingToUser(username: String, booking: Booking): Unit = usersCol.map{
+    _.update(Json.obj("username"-> username),Json.obj("$push" ->
+    Json.obj("bookings"-> Json.obj("$each"->List(booking)))))
+  }
+
   def register: Action[AnyContent] = Action {
     Ok(views.html.users.registration(registerUser))
   }
@@ -89,7 +94,7 @@ class UserController @Inject()(
       newUser => User.create(newUser) match {
           case None => BadRequest("Oops something happened")
           case Some(x) => addUserToDb(x)
-            Ok("User Successfully added")
+            Redirect(routes.UserController.login())
         }
     })
   }
@@ -105,19 +110,21 @@ class UserController @Inject()(
         BadRequest(views.html.users.login(error))},{
       case (uName, pwd) =>
         val user = getUserByPassword(uName,pwd).head
-        userCache.set("loggedin", user)
         Redirect(routes.UserController.dashboard())
+          .withSession(request.session + ("loggedin"->uName))
     })
   }
 
-  def dashboard:Action[AnyContent] = Action {
-    userCache.get[User]("loggedin").fold{
-      Unauthorized("sorry you are not logged in")
+  def dashboard: Action[AnyContent] = Action { request: Request[AnyContent] =>
+    request.session.get("loggedin").fold{
+      Redirect(routes.UserController.login())
     }{
-      user => Ok(views.html.users.dashboard(user))
+      username => Ok(views.html.users.dashboard(getUsers(username).headOption.orNull))
     }
   }
 
-
+  def logout(): Action[AnyContent] = Action {
+    Redirect(routes.Application.index()).withNewSession
+  }
 
 }

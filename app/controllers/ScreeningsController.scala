@@ -43,11 +43,12 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
     }
 
     homePage(name,hiddenMultips(vals),request)
-      .withSession("sessionKey" -> SessionHelper.getSessionKey(),"movieName"->name)
+      .withSession(request.session + ("sessionKey" -> SessionHelper.getSessionKey()) + ("movieName"->name))
   }
 
-  def toPayment(amount: String): Action[AnyContent] = Action{
+  def toPayment(amount: String): Action[AnyContent] = Action{request: Request[AnyContent] =>
     Redirect(routes.PaymentController.getClientToken(Some(amount.toDouble)))
+      .withSession(request.session + ("bookingPrice" -> amount))
   }
 
   def toSubmitBooking: Action[AnyContent] = Action{ request: Request[AnyContent] =>

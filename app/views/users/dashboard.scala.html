@@ -13,10 +13,10 @@
                     <!-- profile section -->
                     <div class="col-md-6" id="dashboard-left">
                         <h1 class="card-title">@user.name</h1>
-                        <h3 class="card-text">Username: @user.username</h3>
-                        <h3 class="card-text">Email: @user.email</h3>
-                        <h3 class="card-text">Membership Number: @user.membership</h3>
-
+                        <h6 class="card-text">Username: @user.username</h6>
+                        <h6 class="card-text">Email: @user.email</h6>
+                        <h6 class="card-text">Membership Number: @user.membership</h6>
+                        <a class="btn" href="@routes.UserController.logout()">Logout</a>
                     </div>
                 </div>
             </div>
