@@ -1,12 +1,9 @@
 package controllers
 
-import java.util.concurrent.TimeUnit
 
-import play.api._
 import play.api.mvc._
 import javax.inject._
 
-import akka.actor.ActorSystem
 import play.api.data.format.Formats._
 import play.api.i18n._
 import util.{SeatGenerator, SessionHelper}
@@ -15,22 +12,21 @@ import models.{DateSelector, Screening}
 import play.api.data.{Form, Forms}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import scala.concurrent.duration.Duration
 
 @Singleton
 class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
                                      val mongoDbController: ScreeningsDbController
                                     ) extends Controller with I18nSupport{
 
-  val paymentUrl = ConfigFactory.load().getString("payment.server")
+  val paymentUrl: String = ConfigFactory.load().getString("payment.server")
 
-  val hiddenMultips = (str: String) =>  str.split(",").toList
+  val hiddenMultips: String => List[String] = (str: String) =>  str.split(",").toList
 
   val homePage = (name: String, vals: List[String], request: Request[AnyContent]) =>
     Ok(views.html.bookings.bookings(name, vals)(DateSelector.dsForm, SeatGenerator.getLayout(request.remoteAddress)))
 
 
-  val seatsForm = Form[(Int, Int)](
+  val seatsForm: Form[(Int,Int)] = Form[(Int, Int)](
     Forms.tuple(
       "bookingid" -> Forms.of[Int],
       "seatid" -> Forms.of[Int]
@@ -50,8 +46,7 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
       .withSession("sessionKey" -> SessionHelper.getSessionKey(),"movieName"->name)
   }
 
-  def toPayment(amount: String): Action[AnyContent] = Action{ request: Request[AnyContent] =>
-    println(request.headers)
+  def toPayment(amount: String): Action[AnyContent] = Action{
     Redirect(paymentUrl + amount).withCookies(Cookie("time","time"))
   }
 
@@ -59,7 +54,6 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
     val tDate = request.session.get("date").getOrElse("none")
     val tTime = request.session.get("time").getOrElse("none")
 
-    println(s"$tDate and $tTime")
     Redirect(routes.ScreeningsApiController.submitBooking(date = tDate, time = tTime))
   }
 }

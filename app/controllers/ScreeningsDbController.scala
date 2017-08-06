@@ -61,7 +61,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
 
     Await.result(list, Duration.Inf) match {
       case x if x.isEmpty => false
-      case x => true
+      case _ => true
     }
   }
 
@@ -76,9 +76,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
     Await.result(movies, Duration.Inf)
   }
 
-  def addMovie2Db(movie: Screening) = {
-    moviesCol.flatMap(_.insert(movie))
-  }
+  def addMovie2Db(movie: Screening): Unit = moviesCol.flatMap(_.insert(movie))
 
   def getSeatsBySlots(name: String, date: String, time: String): Option[List[Seat]] = {
 
@@ -109,21 +107,19 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
     val seats = (Json.toJson(jsonResult) \ "dateSlots" \ "timeSlots" \ "seats").validate[List[Seat]]
 
     seats match {
-      case success: JsSuccess[List[Seat]] =>
-        Some(success.value)
-      case error: JsError => println(JsError.toJson(error).toString())
-        None
+      case success: JsSuccess[List[Seat]] => Some(success.value)
+      case _: JsError => None
     }
   }
 
   //==================================== SEAT SELECTION =================================================//
-  def bookSeat(name: String, date: String, time: String, seat: Seat) = {
+  def bookSeat(name: String, date: String, time: String, seat: Seat): Unit = {
 
     val dateIndex = DateSlot.getIndex(date)
     val timeIndex = TimeSlot.getIndex(time)
     val setAuthor = s"dateSlots.$dateIndex.timeSlots.$timeIndex.seats.${seat.id - 1}.author"
     val setExpiry = s"dateSlots.$dateIndex.timeSlots.$timeIndex.seats.${seat.id - 1}.expiry"
-    val seats = getSeatsBySlots(name, date, time).get
+    val seats = getSeatsBySlots(name, date, time).orNull
     val reqSeats = seats.filter(_.id == seat.id)
 
     def bookHelper(author: String) = moviesCol.map {
@@ -144,7 +140,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
   def doesSeatExist(checkSeats: List[Seat], seat: Seat): Boolean = {
     checkSeats match {
       case x if x.isEmpty => false
-      case x if x.head.author == "" || x.head.author == seat.author => true
+      case x if x.headOption.orNull.author == "" || x.headOption.orNull.author == seat.author => true
       case _ => false
     }
   }
@@ -162,10 +158,10 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
         case _ => jsonString.dropRight(1) + "]"
       }
       case _ =>
-        val bookedBy = tempSeats.head.author == key
-        val newStr = "{\"seatid\":" + tempSeats.head.id + "," +
-          "\"available\": \"" + (tempSeats.head.author == "") + "\", " +
-          "\"type\": \"" + tempSeats.head.kind + "\", " +
+        val bookedBy = tempSeats.headOption.orNull.author == key
+        val newStr = "{\"seatid\":" + tempSeats.headOption.orNull.id + "," +
+          "\"available\": \"" + (tempSeats.headOption.orNull.author == "") + "\", " +
+          "\"type\": \"" + tempSeats.headOption.orNull.kind + "\", " +
           "\"bookedBy\": \"" + bookedBy + "\"},"
         getJsonHelper(tempSeats.tail)(jsonString + newStr)
     }
@@ -174,7 +170,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
   }
 
   //============================================= Bookings ===============================================/
-  def submitBooking(key: String, name: String, date: String, time: String) = {
+  def submitBooking(key: String, name: String, date: String, time: String): Unit = {
     val dateIndex = DateSlot.getIndex(date)
     val timeIndex = TimeSlot.getIndex(time)
 
@@ -195,7 +191,6 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
     getSeatsBySlots(name, date, time).fold {} {
       seats =>
         val count = seats.filter(seat => seat.author == key && !seat.booked).length
-        println(s"[info] count is {$count} seat auhor is {$key} while name of movie is {$name}")
         submitHelper(count + 1)
     }
 
@@ -210,7 +205,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
         dateSlot.timeSlots.zipWithIndex.foreach { case (timeSlot, timeIndex) =>
 
           timeSlot.seats.zipWithIndex.filter {
-            case (seat, seatIndex) =>
+            case (seat, _) =>
               seat.expiry > 0 && seat.expiry < DateTime.now(DateTimeZone.UTC).getMillis
           }.foreach { case (seat, seatIndex) =>
             val updateExpiry = s"dateSlots.$dateIndex.timeSlots.$timeIndex.seats.$seatIndex.expiry"

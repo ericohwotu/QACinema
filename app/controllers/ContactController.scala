@@ -3,7 +3,6 @@ package controllers
 import javax.inject.Inject
 
 import models.ContactUs
-import play.api._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.mailer._
 import play.api.mvc._
@@ -11,11 +10,11 @@ import play.api.mvc._
 class ContactController @Inject()(implicit val messagesApi: MessagesApi, mailerClient: MailerClient)
   extends Controller with I18nSupport{
 
-  def contactUs = Action {
+  def contactUs: Action[AnyContent] = Action {
     Ok(views.html.contact.contactform(ContactUs.contactForm))
   }
 
-  def formHandler = Action{ implicit request: Request[AnyContent] =>
+  def formHandler: Action[AnyContent] = Action{ implicit request: Request[AnyContent] =>
     val formResult = ContactUs.contactForm.bindFromRequest
     formResult.fold({
       error => BadRequest(views.html.contact.contactform(error))

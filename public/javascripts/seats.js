@@ -1,18 +1,64 @@
 let host = "";
 let callback;
+let days;
+let hours;
+
+function getDays(){
+
+    let dates = [];
+    let months = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+
+    for (let i=0; i<7; i++) {
+        let date = new Date();
+        date.setDate(date.getDate() + i);
+        let today = date.getDate();
+        let month = date.getMonth();
+        let year = date.getYear();
+        if(date.getDate()=== new Date().getDate() && date.getHours() > 21) {
+        } else {
+            dates[i] = today + " " + months[month].toUpperCase() + " " + (year + 1900);
+        }
+    }
+
+    if(!dates[0]) {dates.shift();}
+    return dates;
+}
+
+function getTimes(){
+    let date = new Date();
+    let timeNow = date.getHours();
+    let times = new Array(7);
+    let start = 0;
+
+    if (days.length===6) {start = 1;}
+
+    for (let i = start; i<7; i++){
+        times[i] = new Array(8);
+        for (let j=0; j<24; j += 3){
+            if(i === 0 && j < timeNow) {
+                times[i][j] = 0;
+            } else {
+                times[i][j] = j + ":00";
+            }
+        }
+    }
+    if(!times[0]) {times.shift();}
+    return times;
+}
 
 
 window.onload = function () {
     host = window.location.hostname;
+    days = getDays();
+    hours = getTimes();
     popDates();
     refresh();
-}
+};
 
 function selectSeat(seatId) {
-    console.log("select seat called");
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             changeSeatColor(document.getElementById("seat-" + seatId), JSON.parse(this.response));
         }
     };
@@ -28,7 +74,7 @@ function isSeatLimitReached(){
     let total = getStandardTicketCount() + getVipTicketCount();
 
 
-    if(bookedCount != total || total == 0) {
+    if(bookedCount !== total || total === 0) {
         submitBooking.setAttribute("disabled", "true");
     } else {
         submitBooking.removeAttribute("disabled");
@@ -47,9 +93,6 @@ function isStandardLimitReached(){
 
 function isVipLimitReached(){
     let bookedCount = document.getElementsByClassName("vip booked").length;
-    console.log("isVipLi");
-    console.log(bookedCount);
-
     isSeatLimitReached();
     return bookedCount >= getVipTicketCount();
 }
@@ -74,24 +117,26 @@ function changeSeatColor(elem, json) {
     elem.classList.remove("available");
     elem.classList.remove("booked");
 
-    if (json.outcome === "failure")
+    if (json.outcome === "failure") {
         elem.classList.add("unavailable");
-    else if (json.outcome === "success" && json.message === "seat booked")
+    } else if (json.outcome === "success" && json.message === "seat booked") {
         elem.classList.add("booked");
-    else
+    }
+    else {
         elem.classList.add("available");
+    }
 
-    if(isStandardLimitReached())disableStandard();
-    else enableStandard();
-    if(isVipLimitReached())disableVip();
-    else enableVip();
+    if(isStandardLimitReached()){disableStandard();}
+    else {enableStandard();}
+    if(isVipLimitReached()){disableVip();}
+    else {enableVip();}
 }
 
 function refresh() {
     //get an ajax call to book the seat
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             updateButtons(JSON.parse(this.response));
         }
     };
@@ -103,7 +148,7 @@ function refresh() {
 function getSelectedText(elementId) {
     let elem = document.getElementById(elementId);
 
-    if (elem.selectedIndex == -1) {
+    if (elem.selectedIndex === -1) {
         return null;
     }
 
@@ -111,8 +156,9 @@ function getSelectedText(elementId) {
 }
 
 function updateButtons(arr) {
-    for (let i = 0; i < arr.length; i++)
+    for (let i = 0; i < arr.length; i++) {
         updateButton(arr[i]);
+    }
 
     if(isStandardLimitReached()){
         disableStandard();
@@ -124,15 +170,12 @@ function updateButtons(arr) {
 }
 
 function updateButton(json) {
-    console.log("update button called");
     let elem = document.getElementById("seat-" + json.seatid);
     elem.classList.remove("standard");
     elem.classList.add("standard");
     elem.classList.remove("available");
     elem.classList.remove("booked");
     elem.classList.remove("unavailable");
-
-
 
     if (json.available === "true") {
         elem.classList.add("available");
@@ -157,7 +200,6 @@ function updateButton(json) {
 }
 
 function setVipButton(seat){
-    console.log("set vip button");
     seat.classList.remove("standard");
     seat.classList.remove("vip");
     seat.classList.add("vip");
@@ -169,7 +211,6 @@ function setDisButton(seat){
 }
 
 function enableStandard() {
-    console.log("enable Standadd called");
     clearInterval(callback);
     callback = setInterval(refresh, 5000);
     let elems = document.getElementsByClassName("standard");
@@ -217,5 +258,95 @@ function disableVip(){
         }
     }
     clearInterval(callback);
+}
+
+// ================================ Booking.js functions ============================== //
+
+function popDates(){
+    let daysOptions = document.getElementById("days");
+    for(let i = 0; i< days.length; i++){
+        let opt = document.createElement("option");
+        opt.value = i;
+        opt.innerHTML = days[i];
+        daysOptions.appendChild(opt);
+    }
+    popTimes(0);
+}
+
+function popTimes(day){
+    let timesOptions = document.getElementById("times");
+    let total = getStandardTicketCount() + getVipTicketCount();
+
+    timesOptions.innerHTML = "";
+    timesOptions.removeAttribute("disabled");
+    timesOptions.classList.remove("disabled");
+
+    for(let i = 0; i< hours[day].length; i+=3){
+        if(hours[day][i] !== 0 || hours[day][i]){
+            let opt = document.createElement("option");
+            opt.value = i;
+            opt.innerHTML = hours[day][i];
+            timesOptions.appendChild(opt);
+        }
+    }
+    //if(total>0)refresh()
+    enableScreens();
+}
+
+function enableScreens(){
+    let screens = document.getElementById("screens");
+    let total = getStandardTicketCount() + getVipTicketCount();
+
+    screens.removeAttribute("disabled");
+    screens.classList.remove("disabled");
+
+    //if(total>0)refresh();
+    enableTable()
+}
+
+function enableTable(){
+    let tallies = document.getElementsByClassName("tally");
+
+    for(let i=0; i<tallies.length; i++){
+        tallies[i].removeAttribute("disabled");
+        tallies[i].classList.remove("disabled");
+    }
+}
+
+function getTotal(){
+    let vAdult = document.getElementById("vip-adult").value * 18;
+    let vStudent = document.getElementById("vip-student").value * 12;
+    let vChild = document.getElementById("vip-child").value * 7;
+
+    let sAdult = document.getElementById("standard-adult").value * 8;
+    let sStudent = document.getElementById("standard-student").value * 6;
+    let sChild = document.getElementById("standard-child").value * 3;
+
+    let multiplier = +document.getElementById("screens").value;
+
+    let total = vAdult + vStudent + vChild + sAdult + sChild + sStudent;
+
+    document.getElementById("total-field").value = total * multiplier;
+
+    if (isVipLimitReached()) {
+        disableVip();
+    }
+    else {
+        enableVip();
+    }
+
+    if (isStandardLimitReached()) {
+        disableStandard();
+    }
+    else {
+        enableStandard();
+    }
+    isSeatLimitReached();
+    return total * multiplier;
+}
+
+function submitBookings(){
+    alert("Booking has been made, you will now be redirected to the payment");
+    window.location.href = "/bookings/topayment?amount=" + getTotal();
 }
 

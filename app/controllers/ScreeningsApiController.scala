@@ -33,7 +33,7 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
 
       case bookingKey =>
 
-        mongoDbController.bookSeat(movieName, date, time, Seat(id, bookingKey, false, Seat.getExpiryDate,""))
+        mongoDbController.bookSeat(movieName, date, time, Seat(id, bookingKey, booked = false, Seat.getExpiryDate,""))
         Ok(Json.parse(SeatGenerator.bookSeats(id, bookingKey)))
           .withSession(request.session + ("date" -> date) + ("time" -> time))
     }
