@@ -56,20 +56,6 @@ function getTimes(){
     return times;
 }
 
-function isStandardLimitReached(){
-
-    let bookedCount = document.getElementsByClassName("standard booked").length;
-
-    isSeatLimitReached();
-    return bookedCount >= getStandardTicketCount();
-}
-
-function isVipLimitReached(){
-    let bookedCount = document.getElementsByClassName("vip booked").length;
-    isSeatLimitReached();
-    return bookedCount >= getVipTicketCount();
-}
-
 function getStandardTicketCount(){
     let sAdult = +document.getElementById("standard-adult").value;
     let sStudent = +document.getElementById("standard-student").value;
@@ -84,6 +70,20 @@ function getVipTicketCount(){
     let vChild = +document.getElementById("vip-child").value;
 
     return vAdult + vStudent + vChild;
+}
+
+function isStandardLimitReached(){
+
+    let bookedCount = document.getElementsByClassName("standard booked").length;
+
+    isSeatLimitReached();
+    return bookedCount >= getStandardTicketCount();
+}
+
+function isVipLimitReached(){
+    let bookedCount = document.getElementsByClassName("vip booked").length;
+    isSeatLimitReached();
+    return bookedCount >= getVipTicketCount();
 }
 
 function enableTable(){
