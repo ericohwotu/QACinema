@@ -1,4 +1,4 @@
-@(title: String)(content : Html)
+@(title: String, account: Html = loggedout())(content : Html)
 
 <!DOCTYPE html>
 
@@ -28,9 +28,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/contactus">Contact Us</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="modal" data-target="#login-overlay">Login</a>
-            </li>
+            @account
           </ul>
         </div>
       </div>

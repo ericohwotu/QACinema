@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 
-import util.SessionHelper;
+import util.SessionHelper
 import models._
 import org.joda.time.{DateTime, DateTimeZone}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -21,15 +21,11 @@ import scala.concurrent.{Await, Future}
 class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
   with ReactiveMongoComponents with MongoController {
 
-  @Deprecated
-  def seatsCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("SeatsCollection"))
-
-  @Deprecated
-  def screensCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("ScreensCollection"))
-
   def moviesCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("MoviesCollectionCustom"))
 
   def apiKeyCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("ApiCollection"))
+
+  def bookingsCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("AnonBookingsCollection"))
 
 
   //===================================API KEY FUNCTIONS===================================================//

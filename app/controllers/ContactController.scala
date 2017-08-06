@@ -12,17 +12,17 @@ class ContactController @Inject()(implicit val messagesApi: MessagesApi, mailerC
   extends Controller with I18nSupport{
 
   def contactUs = Action {
-    Ok(views.html.contactform(ContactUs.contactForm))
+    Ok(views.html.contact.contactform(ContactUs.contactForm))
   }
 
   def formHandler = Action{ implicit request: Request[AnyContent] =>
     val formResult = ContactUs.contactForm.bindFromRequest
     formResult.fold({
-      error => BadRequest(views.html.contactform(error))
+      error => BadRequest(views.html.contact.contactform(error))
     },{
       contactUS =>
         sendEmail(contactUS)
-        Ok(views.html.contactConfirm())
+        Ok(views.html.contact.contactConfirm())
     })
   }
 

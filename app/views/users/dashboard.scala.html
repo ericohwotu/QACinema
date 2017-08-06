@@ -1,0 +1,25 @@
+@(user: User)
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href='@routes.Assets.at("stylesheets/bookings.css")'>
+        <title>Dashboard</title>
+    </head>
+    <body>
+        @main("Dashboard") {
+            <div class="container">
+                <div class="row track-list">
+                    <!-- profile section -->
+                    <div class="col-md-6" id="dashboard-left">
+                        <h1 class="card-title">@user.name</h1>
+                        <h3 class="card-text">Username: @user.username</h3>
+                        <h3 class="card-text">Email: @user.email</h3>
+                        <h3 class="card-text">Membership Number: @user.membership</h3>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </body>
+</html>

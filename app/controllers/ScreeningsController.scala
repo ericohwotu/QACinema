@@ -27,7 +27,7 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
   val hiddenMultips = (str: String) =>  str.split(",").toList
 
   val homePage = (name: String, vals: List[String], request: Request[AnyContent]) =>
-    Ok(views.html.bookings(name, vals)(DateSelector.dsForm, SeatGenerator.getLayout(request.remoteAddress)))
+    Ok(views.html.bookings.bookings(name, vals)(DateSelector.dsForm, SeatGenerator.getLayout(request.remoteAddress)))
 
 
   val seatsForm = Form[(Int, Int)](
@@ -37,7 +37,7 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
     )
   )
 
-  def index(name: String, vals: String) = Action { request: Request[AnyContent] =>
+  def index(name: String, vals: String): Action[AnyContent] = Action { request: Request[AnyContent] =>
     //create movie database
     mongoDbController.isMovieInDb(name) match {
       case true =>
@@ -46,16 +46,16 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
         mongoDbController.addMovie2Db(Screening.generateMovie(name))
     }
 
-    homePage(name,hiddenMultips(vals),request).withSession("sessionKey" -> SessionHelper.getSessionKey(),"movieName"->name)
+    homePage(name,hiddenMultips(vals),request)
+      .withSession("sessionKey" -> SessionHelper.getSessionKey(),"movieName"->name)
   }
 
-  def toPayment(amount: String) = Action{ request: Request[AnyContent] =>
+  def toPayment(amount: String): Action[AnyContent] = Action{ request: Request[AnyContent] =>
     println(request.headers)
     Redirect(paymentUrl + amount).withCookies(Cookie("time","time"))
   }
 
-  def toSubmitBooking() = Action{ request: Request[AnyContent] =>
-
+  def toSubmitBooking: Action[AnyContent] = Action{ request: Request[AnyContent] =>
     val tDate = request.session.get("date").getOrElse("none")
     val tTime = request.session.get("time").getOrElse("none")
 
