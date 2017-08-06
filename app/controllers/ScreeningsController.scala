@@ -47,7 +47,7 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
   }
 
   def toPayment(amount: String): Action[AnyContent] = Action{
-    Redirect(paymentUrl + amount).withCookies(Cookie("time","time"))
+    Redirect(routes.PaymentController.getClientToken(Some(amount.toDouble)))
   }
 
   def toSubmitBooking: Action[AnyContent] = Action{ request: Request[AnyContent] =>

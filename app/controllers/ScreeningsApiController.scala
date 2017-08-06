@@ -64,7 +64,7 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
         case None => "Unauthorised"
         case apiKey =>
 
-          mongoDbController.isKeyAvailable(apiKey.get) match {
+          mongoDbController.isKeyAvailable(apiKey.orNull) match {
             case true => apiKey.getOrElse("random")
             case false => "Unauthorised"
           }

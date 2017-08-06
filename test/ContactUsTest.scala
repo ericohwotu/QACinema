@@ -26,7 +26,7 @@ class ContactUsTest extends Specification {
     }
 
     "render the index page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/contactUs")).get
+      val home = route(FakeRequest(GET, "/contactUs")).orNull
 
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "text/html")
@@ -34,32 +34,33 @@ class ContactUsTest extends Specification {
     }
 
     "send error on empty form submission" in new WithApplication() {
-      val result = route(FakeApplication(),FakeRequest(POST, "/contactus")).get
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus")).orNull
       status(result) must equalTo(BAD_REQUEST)
     }
 
     "send error on no name submitted" in new WithApplication() {
-      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?message=hello&email=me@you.com")).get
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?message=hello&email=me@you.com")).orNull
       status(result) must equalTo(BAD_REQUEST)
       contentAsString(result) must contain("Name")
     }
 
     "send error on no email submitted" in new WithApplication() {
-      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&message=hello")).get
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&message=hello")).orNull
       status(result) must equalTo(BAD_REQUEST)
 
       contentAsString(result) must contain("Email")
     }
 
     "send error on no message submitted" in new WithApplication() {
-      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&email=me@you.com")).get
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&email=me@you.com")).orNull
       status(result) must equalTo(BAD_REQUEST)
       contentAsString(result) must contain("Message")
     }
 
     "send 200 on success" in new WithApplication() {
       val result = route(FakeApplication(),FakeRequest(POST,
-        "/contactus?Name=eric%20Ohwotu&Message=love%20me%20or&Email=me@you.com&Number=09788375643&Subject=Love")).get
+        "/contactus?Name=eric%20Ohwotu&Message=love%20me%" +
+          "20or&Email=me@you.com&Number=09788375643&Subject=Love")).orNull
       status(result) must equalTo(OK)
     }
   }

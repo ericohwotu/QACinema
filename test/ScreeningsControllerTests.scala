@@ -15,13 +15,13 @@ class ScreeningsControllerTests extends Specification {
   "Application" should {
 
     "send 404 on a bad request" in new WithApplication{
-      val result = route(FakeRequest(GET, "/boum")).get
+      val result = route(FakeRequest(GET, "/boum")).orNull
 
       status(result) must equalTo(NOT_FOUND)
     }
 
     "render the index page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/")).get
+      val home = route(FakeRequest(GET, "/")).orNull
 
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "text/html")
@@ -32,13 +32,13 @@ class ScreeningsControllerTests extends Specification {
   "JsonApiController" should {
 
     "give bad request if no key is provided" in new WithApplication() {
-      val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/getseats")).get
+      val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/getseats")).orNull
 
       status(getSeats) must equalTo(UNAUTHORIZED)
     }
 
     "return a json api key" in new WithApplication() {
-      val getApiKey = route(FakeApplication(), FakeRequest(GET, "/key/getkey")).get
+      val getApiKey = route(FakeApplication(), FakeRequest(GET, "/key/getkey")).orNull
 
       status(getApiKey) must equalTo(OK)
       contentAsJson(getApiKey).toString() must contain("blank")
