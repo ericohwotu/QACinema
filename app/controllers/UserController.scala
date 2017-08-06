@@ -26,12 +26,14 @@ class UserController @Inject()(
   with ReactiveMongoComponents with MongoController {
 
   val byteLength = 16
+  val minPwdLen = 6
 
   val registerUser = Form(
     tuple(
       "Name" -> nonEmptyText,
       "Username" -> nonEmptyText,
-      "Password" -> nonEmptyText,
+      "Password" -> nonEmptyText.verifying("Between 6 and 16 characters", pwd=>
+        pwd.length >= minPwdLen && pwd.length <= byteLength ),
       "Confirm Password" -> nonEmptyText,
       "Email" -> nonEmptyText
     ) verifying("Password Must Match",fields => fields match {
@@ -119,7 +121,12 @@ class UserController @Inject()(
     request.session.get("loggedin").fold{
       Redirect(routes.UserController.login())
     }{
-      username => Ok(views.html.users.dashboard(getUsers(username).headOption.orNull))
+      username =>
+        getUsers(username).headOption.fold{
+          Redirect(routes.UserController.login())
+        } {
+          user => Ok(views.html.users.dashboard(user))
+        }
     }
   }
 
