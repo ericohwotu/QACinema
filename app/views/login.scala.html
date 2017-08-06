@@ -1,0 +1,8 @@
+@(form: Form[(String, String)])(implicit messages: Messages)
+@main("login") {
+  @helper.form(action = routes.UserController.loginHandler()) {
+    @helper.inputText(form("Username"))
+    @helper.inputPassword(form("Password"))
+    <button class="button">Login</button>
+  }
+}

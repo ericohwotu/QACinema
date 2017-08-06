@@ -1,0 +1,17 @@
+@(form: Form[(String,String,String,String,String)])(implicit messages: Messages)
+
+@main("Register") {
+  @for(error <- form.errors) {
+    <span class="error">@error.toString()</span>
+  }
+
+  @helper.form(action = routes.UserController.regHandler()) {
+
+    @helper.inputText(form("Name"))
+    @helper.inputText(form("Email"))
+    @helper.inputText(form("Username"))
+    @helper.inputPassword(form("Password"))
+    @helper.inputPassword(form("Confirm Password"))
+    <button type="submit" class="btn">Submit</button>
+  }
+}
