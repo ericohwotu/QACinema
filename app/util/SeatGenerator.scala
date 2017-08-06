@@ -8,47 +8,27 @@ import scala.collection.mutable.ListBuffer
 
 object SeatGenerator {
 
-  type ClientAddress = String
-  type JsonOutcome = String
-  type JsonResults = List[(Long,Boolean,Boolean)]
-
-
   var seatHistory: ListBuffer[Int] = new ListBuffer()
   var sessionKeys: ListBuffer[String] = new ListBuffer()
 
-
   def getLayout(currentAccess: String): String = {
-    //design the web page seats
-    var html = "<br><table class=\"col-sm-12 seatsTable\"><tbody>"
+    val maxCol = 19
+    val maxRow = 10
+    val maxSeats = 201
+    val html = "<br><table class=\"col-sm-12 seatsTable\"><tbody>"
 
-    var currentSeat = 1
-    var btnClass = "available"
-
-    for (i <- 0 until 10) {
-      html+="<tr>" // create new row
-      for (j <- 0 until 20) {
-        var enabled = ""
-        if (seatHistory.contains(currentSeat)) {
-          btnClass = "booked"
-          val index = seatHistory.indexOf(currentSeat)
-          if (!sessionKeys(index).equals(currentAccess)) {
-            enabled = "disabled"
-            btnClass = "unavailable"
-          }
-          else enabled = ""
-        }
-        else btnClass = "available"
-
-        html+=addButton(currentSeat, btnClass, enabled)
-        currentSeat += 1
-      }
-      html += "</tr>"
+    def helper(row: Int, col: Int, cur: Int)(html: String): String = col match{
+      case _ if cur == maxSeats => html + "</tr></tbody></table>"
+      case 0 =>  helper(row - 1, maxCol, cur + 1)(html + addButton(cur) + "</tr>")
+      case `maxCol` => helper(row, col - 1, cur + 1)(html + "<tr>" + addButton(cur))
+      case _ => helper(row, col - 1, cur + 1)(html + addButton(cur))
     }
-    html += "</tbody></table>"
-    html
+
+    val res = helper(maxRow,maxCol,1)(html)
+    res
   }
 
-  private def addButton(seatNo: Int, cls: String, en: String): String = {
+  private def addButton(seatNo: Int): String = {
     "<td><input type=button onclick=selectSeat(" + seatNo + ") " +
       "class=\"fsSubmitButton unavailable\" disabled  id=\"seat-" + seatNo + "\"></td>"
   }
@@ -69,9 +49,9 @@ object SeatGenerator {
 
         val newStr = "{\"seatid\":" + position + "," +
           "\"available\": \"false\", " +
-          "\"bookedBy\": \""+ bookedBy(posForAccess) +"\"},"
+          "\"bookedBy\": \"" + bookedBy(posForAccess) + "\"},"
 
-        getSeatsHelper(position-1)(result+newStr)
+        getSeatsHelper(position - 1)(result + newStr)
     }
 
     getSeatsHelper(200)("[")

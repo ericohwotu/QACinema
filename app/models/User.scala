@@ -36,10 +36,11 @@ object User {
       "Password" -> nonEmptyText
     ))
 
-  def createUser(newUser: (String, String, String, String, String)): Option[User] = newUser match{
+  def create(newUser: (String, String, String, String, String)): Option[User] = newUser match{
     case (name, uName, pwd, cPwd, em) =>
-      val key = Encryption.getKey(pwd)(16)
-      Some(User(name,uName, Encryption.encrypt(key,pwd), em, List(),List(),SessionHelper.getSessionKey(12)))
+      val byteLimit = 16
+      val key = Encryption.getKey(pwd)(byteLimit)
+      Some(User(name,uName, Encryption.encrypt(key,pwd), em, List(),List(),SessionHelper.getSessionKey(byteLimit)))
     case _ => None
   }
 }

@@ -8,7 +8,6 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
-import play.api.mvc.Controller
 import play.api.mvc._
 import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
 import reactivemongo.api.{Cursor, ReadPreference}
@@ -87,7 +86,7 @@ class UserController @Inject()(
     regBind.fold({
       error => BadRequest(views.html.users.registration(error))
     },{
-      newUser => User.createUser(newUser) match {
+      newUser => User.create(newUser) match {
           case None => BadRequest("Oops something happened")
           case Some(x) => addUserToDb(x)
             Ok("User Successfully added")
