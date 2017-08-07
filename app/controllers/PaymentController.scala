@@ -42,10 +42,9 @@ class PaymentController extends Controller {
   def makePayment : Action[AnyContent] = Action { implicit request =>
     val urlencoded: Map[String, Seq[String]] = request.body.asFormUrlEncoded.getOrElse(Map())
     val nonce : Seq[String] = urlencoded.getOrElse("nonce", List[String]())
-    val amount : Seq[String] = urlencoded.getOrElse("amount", List[String]())
 
-    (nonce.headOption, amount.headOption) match {
-      case (Some(no), Some(am)) => makeTransactionRequest(no, request)
+    nonce.headOption match {
+      case Some(no) => makeTransactionRequest(no, request)
       case _ => BadRequest("No nonce or no amount provided!")
     }
   }
