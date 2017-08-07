@@ -29,7 +29,7 @@ class DatabaseTests @Inject()(reactiveMongoApi: ReactiveMongoApi) extends PlaySp
 
   "createFromApi #index" should {
     "should be valid" in new WithApplication(){
-      val results = route(FakeApplication(),FakeRequest(GET,"/getMovie")).get
+      val results = route(FakeApplication(),FakeRequest(GET,"/getMovie/Kidnap")).get
       contentAsString(results) mustBe "Kidnap"
     }
   }
