@@ -15,6 +15,15 @@
           <p class="card-text">@movie.Plot</p>
         </div>
 
+        <div class="card-block gianttext" >
+          <h4 class="card-title">Genre</h4>
+          <p class="card-text">@movie.Genre</p>
+        </div>
+
+        <div class="card-block gianttext" >
+          <h4 class="card-title">Certification</h4>
+          <img id="theCert" class="@movie.Rated" height="70px" width="85px">
+        </div>
 
         <div class="card-block gianttext" >
           <h4 class="card-title">Actors</h4>
@@ -26,10 +35,9 @@
           <p class="card-text">@movie.Director</p>
         </div>
 
-        <div class="card-block gianttext" >
-          <h3 class="card-title"><a href="/bookings?id=@{movie.Title}">Times</a></h3>
-        </div>
-
+        <form action="/bookings?id=@{movie.Title}">
+          <b><input type="submit" value="Book now" id="bookButton"></b>
+        </form>
 
       </div>
     </div>
@@ -54,4 +62,25 @@
 
     <!-- Bootstrap Core JavaScript -->
   <script src="js/bootstrap.min.js"></script>
+
+    <!-- Get movie certification image script -->
+  <script>
+    window.onload = function() {
+      document.getElementById("theCert").src = getCertPath(document.getElementById("theCert").getAttribute("class"))
+    }
+
+    function getCertPath(theRating) {
+      switch(theRating) {
+        case "G": case "U": return "/assets/images/uCert.png";
+        break;
+        case "PG": return "/assets/images/pgCert.png";
+        break;
+        case "PG-13": return "/assets/images/12aCert.png";
+        break;
+        case "R": case "NC-17": return "/assets/images/18Cert.png";
+        break;
+        default: return "brokenImage.png"
+      }
+    }
+  </script>
 }
