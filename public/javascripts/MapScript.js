@@ -5,6 +5,7 @@
 let Center=new google.maps.LatLng(53.474140,-2.286074);
 let directionsDisplay;
 let directionsService = new google.maps.DirectionsService();
+let distanceService = new google.maps.DistanceMatrixService();
 let map;
 let latitude = 0.0;
 let longitude = 0.0;
@@ -35,14 +36,17 @@ function initialize() {
         latitude = e.latLng.lat();
         longitude = e.latLng.lng();
         Route(e.latLng.lat(), e.latLng.lng());
+        Distance(latitude, longitude);
     });
 
     document.getElementById("travelMode").addEventListener("change", function() {
         Route(latitude, longitude);
+        Distance(latitude, longitude);
     });
 
     document.getElementById("cinemaMode").addEventListener("change", function() {
        Route(latitude, longitude);
+       Distance(latitude, longitude);
     });
 
     autocomplete.addListener("place_changed", function() {
@@ -51,8 +55,11 @@ function initialize() {
         latitude = location.lat();
         longitude = location.lng();
         Route(latitude, longitude);
+        Distance(latitude, longitude);
     });
 }
+
+
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -66,6 +73,37 @@ function getPosition(position) {
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
     Route(latitude, longitude);
+    Distance(latitude, longitude);
+}
+
+function Distance(latitude, longitude) {
+    let origin = [new google.maps.LatLng(latitude, longitude)];
+    let destinations = [];
+    let selectedMode = document.getElementById("travelMode").value;
+
+    for(let i = 0; i < document.getElementById("cinemaMode").options.length; i++) {
+        let coords = document.getElementById("cinemaMode").options[i].value.split(":");
+        destinations.push(new google.maps.LatLng(coords[0], coords[1]));
+    }
+
+    distanceService.getDistanceMatrix(
+    {
+        origins: origin,
+        destinations: destinations,
+        travelMode: google.maps.TravelMode[selectedMode],
+    }, DistCallback);
+}
+
+function DistCallback(response, status) {
+    if(status === 'OK') {
+        for(let i = 0; i < response.rows[0].elements.length; i++) {
+            let cinema = document.getElementById("cinemaMode").options[i];
+            if(cinema.text.includes("|")) {
+                cinema.text = cinema.text.substring(0, cinema.text.indexOf("|") -1 )
+            }
+            cinema.text = cinema.text + " | " + response.rows[0].elements[i].distance.text;
+        }
+    }
 }
 
 function Route(latitude, longitude) {
@@ -79,6 +117,7 @@ function Route(latitude, longitude) {
         destination:end,
         travelMode:google.maps.TravelMode[selectedMode]
     };
+
     directionsService.route(request, function(result, status) {
         if (status === google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(result);
