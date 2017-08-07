@@ -15,7 +15,7 @@ class ScreeningsControllerTests extends Specification {
   "ScreeningsController" should {
 
     "render the index page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/bookings")).orNull
+      val home = route(FakeApplication(),FakeRequest(GET, "/bookings")).orNull
 
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "text/html")
