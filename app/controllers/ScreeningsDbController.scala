@@ -79,7 +79,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
   def addMovie2Db(movie: Screening): Unit = moviesCol.flatMap(_.insert(movie))
 
   def getSeatsBySlots(name: String, date: String, time: String): Option[List[Seat]] = {
-
+    println(s"$name = $date = $time")
     val agg = moviesCol.map {
       _.aggregate(Match(Json.obj("name" -> name)),
         List(UnwindField("dateSlots"),
@@ -97,7 +97,8 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
 
         futureResult.firstBatch.isEmpty match {
           case true => None
-          case false => getSeatsHelper(futureResult.firstBatch)
+          case false =>
+            getSeatsHelper(futureResult.firstBatch)
         }
     }
   }
@@ -114,12 +115,11 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
 
   //==================================== SEAT SELECTION =================================================//
   def bookSeat(name: String, date: String, time: String, seat: Seat): Unit = {
-
     val dateIndex = DateSlot.getIndex(date)
     val timeIndex = TimeSlot.getIndex(time)
     val setAuthor = s"dateSlots.$dateIndex.timeSlots.$timeIndex.seats.${seat.id - 1}.author"
     val setExpiry = s"dateSlots.$dateIndex.timeSlots.$timeIndex.seats.${seat.id - 1}.expiry"
-    val seats = getSeatsBySlots(name, date, time).orNull
+    val seats = getSeatsBySlots(name, date, time).getOrElse(List())
     val reqSeats = seats.filter(_.id == seat.id)
 
     def bookHelper(author: String) = moviesCol.map {

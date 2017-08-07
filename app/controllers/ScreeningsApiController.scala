@@ -12,6 +12,7 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
 
   def getAllSeats(key: Option[String], name: Option[String], date: String, time: String): Action[AnyContent] = Action {
     implicit request: Request[AnyContent] =>
+      println(s"$key = $name = $date = $time")
     jsonApiHelper(key, request) match {
       case "Unauthorised" => Unauthorized("Sorry you are not authorised")
       case bookingKey =>
@@ -25,7 +26,6 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
   def bookSeat(id: Int, key: Option[String], name: Option[String], date: String, time: String): Action[AnyContent] =
 
     Action { implicit request: Request[AnyContent] =>
-
     val movieName = request.session.get("movieName").getOrElse(name.getOrElse("None"))
 
     jsonApiHelper(key, request) match {
@@ -65,6 +65,7 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
       case "" => key match {
         case None => "Unauthorised"
         case apiKey =>
+          println(s"key: $apiKey")
           mongoDbController.isKeyAvailable(apiKey.orNull) match {
             case true => apiKey.getOrElse("random")
             case false => "Unauthorised"
