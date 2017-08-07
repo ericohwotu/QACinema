@@ -45,7 +45,7 @@ class PaymentController extends Controller {
 
     nonce.headOption match {
       case Some(no) => makeTransactionRequest(no, request)
-      case _ => BadRequest("No nonce or no amount provided!")
+      case _ => BadRequest("No nonce provided!")
     }
   }
 }
