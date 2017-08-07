@@ -20,7 +20,6 @@ GET     /listings                   controllers.Application.listings
 GET     /about                      controllers.Application.about
 GET     /nearby                     controllers.Application.nearby
 
-
 # bookings page
 GET     /bookings                   controllers.ScreeningsController.index(id: String ?= "Sample Booking", multipliers: String ?= "1,2,3")
 GET     /bookings/getseats          controllers.ScreeningsApiController.getAllSeats(key: Option[String] ?= None, name: Option[String] ?= None, date: String, time: String)

@@ -30,7 +30,8 @@ class ContactController @Inject()(implicit val messagesApi: MessagesApi, mailerC
       s"Email: ${contactUs.email} \nNumber: ${contactUs.number} \n\n" +
       s"Message: ${contactUs.message}"
 
-    val email = Email(contactUs.sub,"qacinemainfo@gmail.com",Seq("qacinemainfo@gmail.com","daniel.ufuoma@qa.com"),Some(content))
+    val email = Email(contactUs.sub,"qacinemainfo@gmail.com",
+      Seq("qacinemainfo@gmail.com","daniel.ufuoma@qa.com"),Some(content))
     mailerClient.send(email)
   }
 }
