@@ -12,11 +12,13 @@ POST    /payment/make               controllers.PaymentController.makePayment
 
 GET     /movie/$id<[0-9a-z]+>       controllers.Application.movie(id : String)
 
-GET     /                           controllers.Application.index
 GET     /certifications             controllers.Application.certifications
 GET     /contactus                  controllers.ContactController.contactUs
 GET     /findus                     controllers.Application.findUs
+
 GET     /listings                   controllers.Application.listings
+GET     /listings/$genre<[a-z]+>     controllers.Application.listingsWithGenre(genre: String)
+
 GET     /about                      controllers.Application.about
 GET     /nearby                     controllers.Application.nearby
 

@@ -26,21 +26,27 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
   }
   def locationCollection: Future[JSONCollection] = database.map(_.collection[JSONCollection]("locations"))
   def collection: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
-  def futureMovies: Future[List[Movie]] = {
+  def futureMovies(genre : Option[String]): Future[List[Movie]] = {
     val futureCursor: Future[Cursor[Movie]] = collection.map {_.find(Json.obj()).cursor[Movie]()}
+    val collectedList: Future[List[Movie]] = futureCursor.flatMap(_.collect[List]())
 
-    futureCursor.flatMap(_.collect[List]())
+    genre.fold(collectedList)(gen => collectedList.flatMap(movieList => Future{
+      movieList.filter(movie => movie.Genre.toLowerCase.contains(gen))
+    }))
   }
 
-  def futureIDs: Future[List[JsObject]] = {
-    val futureIDCurs = collection.map {_.find(Json.obj(), Json.obj("_id" -> 1)).cursor[JsObject]()}
+  def futureIDs(genre : Option[String]): Future[List[JsObject]] = {
+    val futureIDCurs = collection.map {_.find(Json.obj(), Json.obj("_id" -> 1, "Genre" -> 1)).cursor[JsObject]()}
+    val collectedList: Future[List[JsObject]] = futureIDCurs.flatMap(_.collect[List]())
 
-    futureIDCurs.flatMap(_.collect[List]())
+    genre.fold(collectedList)(gen => collectedList.flatMap(jsos => Future{
+      jsos.filter(jso => (jso \ "Genre").as[String].toLowerCase.contains(gen))
+    }))
   }
 
-  def listings: Action[AnyContent] = Action.async { implicit request =>
-    futureIDs.flatMap(jsos => {
-      futureMovies.map {
+  def listingsPage(genre : Option[String]): Action[AnyContent] = Action.async { implicit request =>
+    futureIDs(genre).flatMap(jsos => {
+      futureMovies(genre).map {
         movies => {
           Ok(views.html.listings(movies.zip(jsos.map {
             jso => ((jso \ "_id").as[JsObject] \ "$oid").as[String]
@@ -48,6 +54,14 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
         }
       }
     })
+  }
+
+  def listings() : Action[AnyContent] = {
+    listingsPage(None)
+  }
+
+  def listingsWithGenre(genre: String) : Action[AnyContent] = {
+    listingsPage(Some(genre.toLowerCase))
   }
 
   def getMovieAction(id : BSONObjectID) : Future[Result] = {
@@ -73,13 +87,6 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
   def certifications: Action[AnyContent] = Action {
     Ok(views.html.certifications())
   }
-
-//  def contactUs: Action[AnyContent] = Action {
-//    Ok(views.html.contactUs())
-//  }
-//  def contactUs = Action {
-//    Ok(views.html.contactUs())
-//  }
 
   def findUs: Action[AnyContent] = Action {
     Ok(views.html.findUs())
