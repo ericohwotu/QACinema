@@ -79,7 +79,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
   def addMovie2Db(movie: Screening): Unit = moviesCol.flatMap(_.insert(movie))
 
   def getSeatsBySlots(name: String, date: String, time: String): Option[List[Seat]] = {
-    println(s"$name = $date = $time")
+    println(s"-{$name}- = -${date}- = -${time}-")
     val agg = moviesCol.map {
       _.aggregate(Match(Json.obj("name" -> name)),
         List(UnwindField("dateSlots"),
@@ -94,7 +94,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
     Await.result(agg, Duration.Inf) match {
       case aggregateResult =>
         val futureResult = Await.result(aggregateResult, Duration.Inf)
-
+        println(futureResult)
         futureResult.firstBatch.isEmpty match {
           case true => None
           case false =>
@@ -128,9 +128,9 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
           s"$setExpiry" -> Seat.getExpiryDate)))
     }
 
-    doesSeatExist(reqSeats, seat) match {
+    doesSeatExist(reqSeats, seat) match{
       case false => None
-      case true => toBook(reqSeats.head, seat) match {
+      case true => toBook(reqSeats.head, seat) match{
         case true => bookHelper(seat.author)
         case false => bookHelper("")
       }
