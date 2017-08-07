@@ -61,12 +61,6 @@ class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extend
     Ok("Trending Movies Added!")
   }
 
-  def delete(name: String): Action[AnyContent] = Action.async {
-    val selector = BSONDocument("name" -> name)
-    val futureResult = movieDBTable.flatMap(_.remove(selector))
-    futureResult.map(_ => Ok("Removed items with the name " + name))
-  }
-
 
   def getTrending : List[TrendingMovie] = {
     val response = Http("https://api.themoviedb.org/3/movie/now_playing?api_key=f675a5619b10739ad98190b5599f50d9&language=en-US&page=1")
@@ -85,15 +79,5 @@ class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extend
     }
   }
 
-  def readByName(): Action[AnyContent] = Action.async {
-    val name = "Kidnap"
-    val cursor: Future[Cursor[Movie]] = movieDBTable.map {
-      _.find(Json.obj("Title" -> name))
-        .cursor[Movie]
-    }
-    val futureUsersList: Future[List[Movie]] = cursor.flatMap(_.collect[List]())
-    futureUsersList.map { persons => Ok(persons.headOption.get.Title)
-    }
-  }
 
 }
