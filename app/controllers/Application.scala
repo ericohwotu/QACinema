@@ -88,13 +88,6 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
     Ok(views.html.certifications())
   }
 
-//  def contactUs: Action[AnyContent] = Action {
-//    Ok(views.html.contactUs())
-//  }
-//  def contactUs = Action {
-//    Ok(views.html.contactUs())
-//  }
-
   def findUs: Action[AnyContent] = Action {
     Ok(views.html.findUs())
   }
