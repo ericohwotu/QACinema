@@ -20,7 +20,7 @@ import scala.concurrent.duration.Duration
   * For more information, consult the wiki.
   */
 @RunWith(classOf[JUnitRunner])
-class UserControllerTests @Inject()(val userController: UserController) extends Specification {
+class UserControllerTests extends Specification {
 
 
   "login" should {
@@ -115,15 +115,4 @@ class UserControllerTests @Inject()(val userController: UserController) extends 
     }
   }
 
-  "functions" should {
-
-    "calculate points should return 10 points if 50 is fead in" in {
-      val newPoints = userController.calculatePoints("qacinema",50)
-      newPoints must be > 1015
-    }
-
-    "add booking to user" in {
-      userController.addBookingToUser("test126", Booking("test","test","test","test",List(),50))
-    }
-  }
 }
