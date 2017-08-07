@@ -45,6 +45,13 @@ class ApplicationControllerSpec extends PlaySpecification {
         case Some(route) =>
           status(route) must equalTo(OK)
           contentType(route) must beSome.which(_ == "text/html")
+          contentAsString(route) must contain("<div id=\"map\"")
+          contentAsString(route) must contain("<div id=\"rightPanel\"")
+          contentAsString(route) must contain("<select id=\"cinemaMode\"")
+          contentAsString(route) must contain("<title>Map</title>")
+          contentAsString(route) must contain("input id=\"searchBar\"")
+          contentAsString(route) must contain("<select id=\"travelMode\"")
+          contentAsString(route) must contain("<select id=\"travelMode\"")
         case _ => failure
       }
     }
