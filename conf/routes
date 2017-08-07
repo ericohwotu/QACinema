@@ -7,7 +7,7 @@
 POST    /contactus                  controllers.ContactController.formHandler
 GET     /                           controllers.Application.index()
 
-GET     /payment/token              controllers.PaymentController.getClientToken(amount : Option[Double] ?= None)
+GET     /payment/token              controllers.PaymentController.getClientToken()
 POST    /payment/make               controllers.PaymentController.makePayment
 
 GET     /movie/$id<[0-9a-z]+>       controllers.Application.movie(id : String)
