@@ -79,9 +79,28 @@ class UserController @Inject()(
 
   def validateLogin(username:String, password: String): Boolean = getUserByPassword(username, password).length == 1
 
-  def addBookingToUser(username: String, booking: Booking): Unit = usersCol.map{
-    _.update(Json.obj("username"-> username),Json.obj("$push" ->
-    Json.obj("bookings"-> Json.obj("$each"->List(booking)))))
+  def addBookingToUser(username: String, booking: Booking): Unit = {
+    usersCol.map {
+      _.update(Json.obj("username" -> username), Json.obj("$push" ->
+        Json.obj("bookings" -> Json.obj("$each" -> List(booking)))))
+    }
+
+    updatePoints(username, booking.price)
+  }
+
+  def calculatePoints(username: String, cost: Double): Long = {
+    val baseConverter = 5
+    Math.floor(cost/baseConverter).toLong + getUsers(username).headOption.orNull.points
+  }
+
+  def alterUserPoints(username: String, points: Long): Unit = usersCol.map{
+    _.update(Json.obj("username"-> username),Json.obj(
+      "$set"-> Json.obj("points" -> points)))
+  }
+
+  def updatePoints(username: String, cost: Double): Unit ={
+    val newPoints = calculatePoints(username,cost)
+    alterUserPoints(username,newPoints)
   }
 
   def register: Action[AnyContent] = Action {
