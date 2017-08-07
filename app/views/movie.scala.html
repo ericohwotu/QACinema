@@ -21,6 +21,11 @@
         </div>
 
         <div class="card-block gianttext" >
+          <h4 class="card-title">Certification</h4>
+          <img id="theCert" class="@movie.Rated" height="70px" width="85px">
+        </div>
+
+        <div class="card-block gianttext" >
           <h4 class="card-title">Actors</h4>
           <p class="card-text">@movie.Actors</p>
         </div>
@@ -30,18 +35,9 @@
           <p class="card-text">@movie.Director</p>
         </div>
 
-        <div class="card-block gianttext" >
-          <h4 class="card-title">Certification</h4>
-          <img id="theCert" class="@movie.Rated" height="70px" width="85px">
-        </div>
-
-        <div class="card-block gianttext" >
-          <h3 class="card-title"><a href="/bookings?id=@{movie.Title}">Times</a></h3>
-        </div>
-
-        <div class="card-block gianttext" >
-          <h3 class="card-title">Times</h3>
-        </div>
+        <form action="/bookings?id=@{movie.Title}">
+          <b><input type="submit" value="Book now" id="bookButton"></b>
+        </form>
 
       </div>
     </div>

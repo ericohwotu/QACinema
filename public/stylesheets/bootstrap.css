@@ -698,6 +698,33 @@ h7 {
   0 20px 20px rgba(0, 0, 0, 0.78);
 }
 
+#bookButton {
+  background: #21de6d;
+  background-image: -webkit-linear-gradient(top, #21de6d, #1af01a);
+  background-image: -moz-linear-gradient(top, #21de6d, #1af01a);
+  background-image: -ms-linear-gradient(top, #21de6d, #1af01a);
+  background-image: -o-linear-gradient(top, #21de6d, #1af01a);
+  background-image: linear-gradient(to bottom, #21de6d, #1af01a);
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #1157ff;
+  font-size: 24px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#bookButton:hover {
+  background: #3cfa68;
+  background-image: -webkit-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: -moz-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: -ms-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: -o-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: linear-gradient(to bottom, #3cfa68, #4fd934);
+  text-decoration: none;
+}
+
 .lead {
   font-size: 1.25rem;
   font-weight: 300;
