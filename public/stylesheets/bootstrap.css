@@ -93,16 +93,23 @@ footer {
 .trailer {
   background-repeat: no-repeat;
   background-position: 60% 0%;
-  float: left;
-  width:400px;
-  min-width: 250px;
-  min-width: 250px;
+  min-width: 300px;
+  min-height: 200px;
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 900px) {
+  .trailer {
+    width:600px;
+    height: 400px;
+    float: left;
+  }
+}
+
+@media screen and (min-width: 1200px) {
   .trailer {
     width:800px;
     height: 500px;
+    float: left;
   }
 }
 
@@ -110,6 +117,7 @@ footer {
   .trailer {
     width:1200px;
     height: 750px;
+    float: left;
   }
 }
 
