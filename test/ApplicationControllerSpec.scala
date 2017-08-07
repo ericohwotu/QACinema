@@ -32,7 +32,7 @@ class ApplicationControllerSpec extends PlaySpecification {
     }
 
     "render the contact page" in new WithApplication{
-      route(FakeApplication(), FakeRequest(GET, "/contactUs")) match {
+      route(FakeApplication(), FakeRequest(GET, "/contactus")) match {
         case Some(route) =>
           status(route) must equalTo(OK)
           contentType(route) must beSome.which(_ == "text/html")
@@ -41,7 +41,7 @@ class ApplicationControllerSpec extends PlaySpecification {
     }
 
     "render the find page" in new WithApplication{
-      route(FakeApplication(), FakeRequest(GET, "/findUs")) match {
+      route(FakeApplication(), FakeRequest(GET, "/findus")) match {
         case Some(route) =>
           status(route) must equalTo(OK)
           contentType(route) must beSome.which(_ == "text/html")
