@@ -1,0 +1,42 @@
+@(form: Form[(String, String)])(implicit messages: Messages)
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        @*<link rel="stylesheet" href='@routes.Assets.at("stylesheets/bootstrap.min.css")'>*@
+            <!-- custom scripts and stylesheets -->
+        <link rel="stylesheet" href='@routes.Assets.at("stylesheets/bookings.css")'>
+        <script src='@routes.Assets.at("javascripts/bookings.js")'></script>
+        <title>Login</title>
+    </head>
+
+    <body style="background-color: black">
+    @main("login") {
+        <div class="container">
+            <div class="row track-list">
+                <div class="col-lg-12 card-text">
+
+                    @if(form.hasErrors) {
+                        @for(error <- form.errors) {
+                            <div class="well well-sm error">@error.message</div>
+                        }
+                    }
+
+
+                    @helper.form(action = routes.UserController.loginHandler(), 'class -> "form-inline") {
+
+                    @helper.inputText(form("Username"), 'class -> "form-control")
+
+                    @helper.inputPassword(form("Password"), 'class->"form-control")
+
+                        <button class="btn form-control">Login</button>
+
+
+                }
+                </div>
+            </div>
+        </div>
+    }
+    </body>
+</html>

@@ -13,16 +13,16 @@ class PaymentController extends Controller {
 
   def generateClientToken(): String = braintreeGateway.clientToken().generate(new ClientTokenRequest())
 
-  def getClientToken(amountOption : Option[Double]) : Action[AnyContent] = Action {
-    amountOption match {
-      case Some(amount) => Ok(views.html.payment(generateClientToken(), amount.toString))
+  def getClientToken() : Action[AnyContent] = Action { implicit request =>
+    request.session.get("bookingPrice") match {
+      case Some(amount) => Ok(views.html.payment(generateClientToken(), amount))
       case None => BadRequest("No amount provided.")
     }
   }
 
-  def makeTransactionRequest(nonce : String, amount : String) : Result = {
+  def finalizeRequest(nonce: String, amount: BigDecimal) : Result = {
     val transactionRequest : TransactionRequest = new TransactionRequest()
-    transactionRequest.amount(BigDecimal(amount).bigDecimal).merchantAccountId("GBP").paymentMethodNonce(nonce)
+    transactionRequest.amount(amount.bigDecimal).merchantAccountId("GBP").paymentMethodNonce(nonce)
 
     val result: braintreegateway.Result[Transaction] = braintreeGateway.transaction().sale(transactionRequest)
     if (result.isSuccess) {
@@ -32,14 +32,20 @@ class PaymentController extends Controller {
     }
   }
 
+  def makeTransactionRequest(nonce : String, request : Request[AnyContent]) : Result = {
+    request.session.get("bookingPrice") match {
+      case Some(amount) => finalizeRequest(nonce, BigDecimal(amount.toString))
+      case None => BadRequest("No amount provided.")
+    }
+  }
+
   def makePayment : Action[AnyContent] = Action { implicit request =>
     val urlencoded: Map[String, Seq[String]] = request.body.asFormUrlEncoded.getOrElse(Map())
     val nonce : Seq[String] = urlencoded.getOrElse("nonce", List[String]())
-    val amount : Seq[String] = urlencoded.getOrElse("amount", List[String]())
 
-    (nonce.headOption, amount.headOption) match {
-      case (Some(no), Some(am)) => makeTransactionRequest(no, am)
-      case _ => BadRequest("No nonce or no amount provided!")
+    nonce.headOption match {
+      case Some(no) => makeTransactionRequest(no, request)
+      case _ => BadRequest("No nonce provided!")
     }
   }
 }
