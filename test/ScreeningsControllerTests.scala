@@ -45,7 +45,7 @@ class ScreeningsControllerTests extends Specification {
     "return success on booking" in new WithApplication() {
       val bookSeat = route(FakeApplication(), FakeRequest(POST, "/bookings/bookseat?" +
         "id=6&key=ZPhUEDqmCsWODx9G45xCyWisRNcUlqc5&name=Sample%20Booking&date=7%20AUG%202017&" +
-        "time=09:00")).orNull
+        "time=9:00")).orNull
 
       val outcome = (contentAsJson(bookSeat) \ "outcome").as[String]
 
@@ -64,12 +64,24 @@ class ScreeningsControllerTests extends Specification {
     "return seats if all values provided" in new WithApplication() {
       FakeRequest(GET,"/bookings")
       val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/getseats?" +
-        "key=ZPhUEDqmCsWODx9G45xCyWisRNcUlqc5&name=Sample%20Booking&date=7%20AUG%202017&" +
-        "time=09:00")).orNull
+        "date=6%20AUG%202017&time=9:00").withSession(
+        ("sessionKey","ZPhUEDqmCsWODx9G45xCyWisRNcUlqc5"),
+        ("movieName","Created"))).orNull
 
-      status(getSeats) must equalTo(BAD_REQUEST)
+      status(getSeats) must equalTo(OK)
     }
 
+    "submit bookings should redirect" in new WithApplication() {
+      val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/confirm")).orNull
+      status(getSeats) must equalTo(SEE_OTHER)
+    }
 
+    "submit bookings should redirect" in new WithApplication() {
+      val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/submit?" +
+        "key=ZPhUEDqmCsWODx9G45xCyWisRNcUlqc5&name=Sample%20Booking&date=6%20AUG%202017&" +
+        "time=9:00").withSession(("loggedin","qacinema"),("bookingPrice","25"))).orNull
+
+      status(getSeats) must equalTo(SEE_OTHER)
+    }
   }
 }

@@ -12,10 +12,12 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
 
   def getAllSeats(key: Option[String], name: Option[String], date: String, time: String): Action[AnyContent] = Action {
     implicit request: Request[AnyContent] =>
-      println(s"$key = $name = $date = $time")
+
     jsonApiHelper(key, request) match {
       case "Unauthorised" => Unauthorized("Sorry you are not authorised")
       case bookingKey =>
+        println("*"*50)
+        println(mongoDbController.getSeatsBySlots("Created", date, time))
         mongoDbController.getSeatsBySlots(movieNameHelper(name, request), date, time) match {
           case None => BadRequest("No Seats Available")
           case jsonResult => Ok(Json.parse(mongoDbController.getJsonString(jsonResult.get, bookingKey)))
@@ -45,7 +47,7 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
     Action { request: Request[AnyContent] =>
 
       val movieName = request.session.get("movieName").getOrElse(name.getOrElse("None"))
-      val price = request.session.get("bookingPrice").getOrElse(name.getOrElse("0")).toDouble
+      val price = request.session.get("bookingPrice").getOrElse(name.getOrElse("10.0")).toDouble
 
       jsonApiHelper(key, request) match {
 
