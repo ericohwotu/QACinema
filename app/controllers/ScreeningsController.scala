@@ -47,14 +47,14 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
   }
 
   def toPayment(amount: String): Action[AnyContent] = Action{request: Request[AnyContent] =>
-    Redirect(routes.PaymentController.getClientToken(Some(amount.toDouble)))
+    //TODO: remove Some(0) when payment is pushed
+    Redirect(routes.PaymentController.getClientToken(Some(0)))
       .withSession(request.session + ("bookingPrice" -> amount))
   }
 
   def toSubmitBooking: Action[AnyContent] = Action{ request: Request[AnyContent] =>
     val tDate = request.session.get("date").getOrElse("none")
     val tTime = request.session.get("time").getOrElse("none")
-
     Redirect(routes.ScreeningsApiController.submitBooking(date = tDate, time = tTime))
   }
 }
