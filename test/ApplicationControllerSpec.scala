@@ -75,6 +75,15 @@ class ApplicationControllerSpec extends PlaySpecification {
       }
     }
 
+    "should be able to show movies by genre" in new WithApplication {
+      route(FakeApplication(), FakeRequest(GET, "/listings/action")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+        case _ => failure
+      }
+    }
+
     "providing an invalid ID should return a bad request" in new WithApplication {
       route(FakeApplication(), FakeRequest(GET, "/movie/badid")) match {
         case Some(route) =>
