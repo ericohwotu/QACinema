@@ -47,8 +47,7 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
   }
 
   def toPayment(amount: String): Action[AnyContent] = Action{request: Request[AnyContent] =>
-    //TODO: remove Some(0) when payment is pushed
-    Redirect(routes.PaymentController.getClientToken(Some(0)))
+    Redirect(routes.PaymentController.getClientToken())
       .withSession(request.session + ("bookingPrice" -> amount))
   }
 
