@@ -2,12 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import models.Place
-import scala.concurrent.Future
-import play.api.mvc.{Action, AnyContent, Controller}
-import collection._
-import models.Movie
-import play.api.libs.json.Json
+import models.{Movie, Place}
 import play.api.mvc._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}

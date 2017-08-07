@@ -2,7 +2,6 @@ package controllers
 
 import com.braintreegateway
 import com.braintreegateway.{BraintreeGateway, ClientTokenRequest, Transaction, TransactionRequest}
-import play.api.mvc.{Action, AnyContent}
 import play.api.mvc._
 
 /**
