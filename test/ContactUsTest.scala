@@ -26,7 +26,7 @@ class ContactUsTest extends Specification {
     }
 
     "render the index page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/contactUs")).orNull
+      val home = route(FakeRequest(GET, "/contactus")).orNull
 
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "text/html")
