@@ -11,18 +11,18 @@ import play.api.mvc._
 class PaymentController extends Controller {
   val braintreeGateway : BraintreeGateway = new BraintreeGateway("access_token$sandbox$2ywzyb5rtfnk6m6h$10bfae954e82add885cac2188735ccda")
 
-  def getClientToken(amountOption : Option[Double]) : Action[AnyContent] = Action {
-    amountOption match {
-      case Some(amount) =>
-        val clientTokenRequest : ClientTokenRequest = new ClientTokenRequest()
-        Ok(views.html.payment(braintreeGateway.clientToken().generate(clientTokenRequest), amount.toString))
+  def generateClientToken(): String = braintreeGateway.clientToken().generate(new ClientTokenRequest())
+
+  def getClientToken() : Action[AnyContent] = Action { implicit request =>
+    request.session.get("bookingPrice") match {
+      case Some(amount) => Ok(views.html.payment(generateClientToken(), amount))
       case None => BadRequest("No amount provided.")
     }
   }
 
-  def makeTransactionRequest(nonce : String, amount : String) : Result = {
+  def finalizeRequest(nonce: String, amount: BigDecimal) : Result = {
     val transactionRequest : TransactionRequest = new TransactionRequest()
-    transactionRequest.amount(BigDecimal(amount).bigDecimal).merchantAccountId("GBP").paymentMethodNonce(nonce)
+    transactionRequest.amount(amount.bigDecimal).merchantAccountId("GBP").paymentMethodNonce(nonce)
 
     val result: braintreegateway.Result[Transaction] = braintreeGateway.transaction().sale(transactionRequest)
     if (result.isSuccess) {
@@ -32,11 +32,20 @@ class PaymentController extends Controller {
     }
   }
 
-  def makePayment : Action[AnyContent] = Action { implicit request =>
-    val nonceval: String = request.body.asFormUrlEncoded.get("nonce").head
-    val amountval : String = request.body.asFormUrlEncoded.get("amount").head
-
-    if (nonceval.nonEmpty && amountval.nonEmpty) makeTransactionRequest(nonceval, amountval)  else Ok("No nonce or no amount provided!")
+  def makeTransactionRequest(nonce : String, request : Request[AnyContent]) : Result = {
+    request.session.get("bookingPrice") match {
+      case Some(amount) => finalizeRequest(nonce, BigDecimal(amount.toString))
+      case None => BadRequest("No amount provided.")
+    }
   }
 
+  def makePayment : Action[AnyContent] = Action { implicit request =>
+    val urlencoded: Map[String, Seq[String]] = request.body.asFormUrlEncoded.getOrElse(Map())
+    val nonce : Seq[String] = urlencoded.getOrElse("nonce", List[String]())
+
+    nonce.headOption match {
+      case Some(no) => makeTransactionRequest(no, request)
+      case _ => BadRequest("No nonce provided!")
+    }
+  }
 }

@@ -17,18 +17,14 @@ case class Movie(
 
 case class trendingMovieList(title: String)
 
-case class Bookings(
+case class Booking(
+                    reference: String,
+                    movieName: String,
+                    date: String,
+                    time: String,
                    seats: List[Seat],
                    price: Double
                    )
-
-case class Seat(
-               id: Long,
-               author: String,
-               booked: Boolean,
-               expiry: Long,
-               kind: String
-               )
 
 case class CinemaLocation(
                          latitude: String,
@@ -36,9 +32,8 @@ case class CinemaLocation(
                          )
 
 object CinemaLocation{ implicit val locations :OFormat[CinemaLocation] = Json.format[CinemaLocation]}
-object Seat{implicit val seats :OFormat[Seat] = Json.format[Seat]}
 object Movie{implicit val movieFormat :OFormat[Movie] = Json.format[Movie] }
-object Bookings{implicit val bookings :OFormat[Bookings] = Json.format[Bookings]}
+object Booking{implicit val bookings :OFormat[Booking] = Json.format[Booking]}
 object trendingMovieList{implicit val movieList :OFormat[trendingMovieList] = Json.format[trendingMovieList]}
 
 object JsonFormats {

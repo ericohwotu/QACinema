@@ -1,0 +1,26 @@
+@(bookings: List[Booking])
+<h3 class="card-title">Booking History</h3>
+<div class="underline mid"></div>
+<br>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Reference</th>
+            <th>Movie</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(booking <- bookings) {
+            <tr>
+                <td>@booking.reference</td>
+                <td>@booking.movieName</td>
+                <td>@booking.date</td>
+                <td>@booking.time</td>
+                <td>@booking.price</td>
+            </tr>
+        }
+    </tbody>
+</table>

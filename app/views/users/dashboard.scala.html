@@ -1,0 +1,40 @@
+@(user: User)
+
+@if(user == null){
+    @routes.UserController.login()
+}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href='@routes.Assets.at("stylesheets/bookings.css")'>
+        <link rel="stylesheet" href='@routes.Assets.at("stylesheets/bootstrap.min.css")'>
+        <title>Dashboard</title>
+    </head>
+    <body>
+    @main("Dashboard") {
+        <div class="container">
+
+                <!-- profile section -->
+            <div class="row">
+                <div class="track-list">
+                    <h1 class="card-title"><span class="card-text small">Welcome </span>@user.name</h1>
+                    <h6 class="card-title">Username: <span class="card-text">@user.username</span></h6>
+                    <h6 class="card-title">Email: <span class="card-text">@user.email</span></h6>
+                    <h6 class="card-title">Membership Number: <span class="card-text">@user.membership</span></h6>
+                    <h6 class="card-title">Points Available: <span class="card-text">@user.points</span></h6>
+                    <a class="btn-info btn" href="@routes.UserController.logout()">Logout</a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="fill track-list">
+                @bookingstable(user.bookings)
+                </div>
+            </div>
+
+
+        </div>
+    }
+    </body>
+</html>
