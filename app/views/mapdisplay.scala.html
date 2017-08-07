@@ -8,12 +8,14 @@
     <title>Directions</title>
     <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/MapStyle.css")">
     <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bookings.css")">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPb8yqimOk1bUNFeF7vxXM_npvHcfcWLc&libraries=places"></script>
     <script src="@routes.Assets.at("javascripts/MapScript.js")"></script>
   </head>
   <body>
+    @main("Map"){
     <div id="mapContainer" class="container">
-      <div id="headerRow" class="row">
+      <div id="headerRow" class="row track-list">
         <div class="col-lg-4">
           <div class="input-group">
             <span class="input-group-addon">Starting location:</span>
@@ -42,14 +44,17 @@
           </div>
         </div>
       </div>
-      <div id="mapRow" class="row">
+      <br>
+      <div id="mapRow" class="row track-list">
         <div id="mapColumn" class="col-lg-9">
           <div id = "map"></div>
         </div>
-        <div id="pathColumn" class="col-lg-3">
+        <div id="pathColumn" class="col-lg-3 bg-directions">
           <div id="rightPanel"></div>
         </div>
       </div>
     </div>
+      <br>
+    }
   </body>
 </html>

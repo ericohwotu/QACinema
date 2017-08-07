@@ -35,18 +35,25 @@ footer {
 
 
 .tinymovie{
+  padding-top: 20px;
   position: relative;
   min-height: 1px;
   padding-right: 15px;
   padding-left: 15px;
   padding-bottom:50px;
-  width: 33%;
+  margin: 1%;
+  width: 31%;
   float: left;
   overflow:hidden;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
+
 }
 
+.tinymovie:hover{
+  /*box-shadow: 1px 2px #7a7a7a;*/
+  background-color: rgba(46, 80, 118, 0.7);
+}
 .page-header {
   color: white;
 }
@@ -6331,10 +6338,10 @@ a.bg-danger:focus, a.bg-danger:hover {
 }
 
 .bg-inverse {
-  background-color: #060b9b !important;
+  background-color: #152333 !important;
 }
 .bg-inverse-2 {
-  background-color: #3a7fd8 !important;
+  background-color: rgba(38,67,134,0.2) !important;
 }
 
 a.bg-inverse:focus, a.bg-inverse:hover {

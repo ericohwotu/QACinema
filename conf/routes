@@ -3,20 +3,40 @@
 # ~~~~
 
 # Home page
+#GET     /contactus                  controllers.ContactController.index
+POST    /contactus                  controllers.ContactController.formHandler
 GET     /                           controllers.Application.index()
 
-GET     /payment/token              controllers.PaymentController.getClientToken(amount : Option[Double] ?= None)
+GET     /payment/token              controllers.PaymentController.getClientToken()
 POST    /payment/make               controllers.PaymentController.makePayment
 
 GET     /movie/$id<[0-9a-z]+>       controllers.Application.movie(id : String)
 
 GET     /                           controllers.Application.index
 GET     /certifications             controllers.Application.certifications
-GET     /contactUs                  controllers.Application.contactUs
-GET     /findUs                     controllers.Application.findUs
+GET     /contactus                  controllers.ContactController.contactUs
+GET     /findus                     controllers.Application.findUs
 GET     /listings                   controllers.Application.listings
 GET     /about                      controllers.Application.about
 GET     /nearby                     controllers.Application.nearby
+
+
+# bookings page
+GET     /bookings                   controllers.ScreeningsController.index(id: String ?= "Sample Booking", multipliers: String ?= "1,2,3")
+GET     /bookings/getseats          controllers.ScreeningsApiController.getAllSeats(key: Option[String] ?= None, name: Option[String] ?= None, date: String, time: String)
+GET     /key/getkey                 controllers.ScreeningsDbController.getKey
+POST    /bookings/bookseat          controllers.ScreeningsApiController.bookSeat(id: Int, key: Option[String] ?= None,name: Option[String] ?= None, date: String, time: String)
+GET     /bookings/topayment         controllers.ScreeningsController.toPayment(amount: String)
+GET     /bookings/confirm           controllers.ScreeningsController.toSubmitBooking()
+GET     /bookings/submit            controllers.ScreeningsApiController.submitBooking(key: Option[String] ?= None,name: Option[String] ?= None, date: String, time: String)
+
+# User management
+GET     /register              controllers.UserController.register
+POST    /register              controllers.UserController.regHandler
+GET     /login                 controllers.UserController.login
+POST    /login                 controllers.UserController.loginHandler
+GET     /dashboard             controllers.UserController.dashboard
+GET     /logout                controllers.UserController.logout
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

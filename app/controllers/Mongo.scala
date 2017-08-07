@@ -52,16 +52,6 @@ class Mongo @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
     Ok("Trending Movies Added!")
   }
 
-  def createBookings(seatList: List[Seat], bookingPrice: Double): Action[AnyContent] = Action.async {
-       val booking = Bookings(
-          seatList,
-          bookingPrice)
-
-          val futureResult = bookings.flatMap(_.insert(booking))
-       futureResult.map(_ => Ok("Added user " + booking.seats.head.author))
-      }
-
-
   def delete(name: String): Action[AnyContent] = Action.async {
     val selector = BSONDocument("name" -> name)
     val futureResult = movieDBTable.flatMap(_.remove(selector))
