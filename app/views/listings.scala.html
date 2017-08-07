@@ -1,20 +1,33 @@
 @(movies: List[List[(Movie, String)]])
 @main("Listings") {
-
-    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
-
     <hr>
         <!-- ADD SEARCH WHEN IMPLEMENTED -->
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
                 <h1 class="page-header">Movie Listings<br>
                     <small>All movies that are currently showing</small>
                 </h1>
             </div>
 
-            <div class="search">
-
+            <div class="col-lg-6" align="right">
+              <h1 class="page-header"><small>Filter by genre:</small></h1>
+              <select id="genreSelect" width="200px" height="150px">
+                <option value="Action">Action</option>
+                <option value="Animation">Animation</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Crime">Crime</option>
+                <option value="Drama">Drama</option>
+                <option value="Drama">Fantasy</option>
+                <option value="History">History</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+                <option value="Thriller">Thriller</option>
+              </select>
+              <form id="genreFilter" class="float-right" onsubmit="filterGenre();">
+                <button>Go</button>
+              </form>
             </div>
         </div>
 
@@ -30,8 +43,8 @@
             <div class="row">
             @for(movie <- moviegroup) {
                 <div class="tinymovie">
-                    <a href='movie/@movie._2'>
-                        <img class="img-responsive" src="@movie._1.Poster" alt="http://placehold.it/350x150">
+                    <a href='../movie/@movie._2'>
+                        <img class="img-responsive" src="@movie._1.Poster">
                         <div class="tinytext">@movie._1.Title</div>
                     </a>
                 </div>
@@ -52,9 +65,10 @@
     </div>
         <!-- /.container -->
 
-        <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-        <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script>
+      function filterGenre() {
+        document.getElementById("genreFilter").setAttribute("action", "/listings/" +
+                document.getElementById("genreSelect").value.toLowerCase());
+      }
+    </script>
 }

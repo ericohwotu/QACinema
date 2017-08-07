@@ -121,17 +121,6 @@ footer {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
 article,
 aside,
 footer,
@@ -686,6 +675,54 @@ h5, .h5 {
 
 h6, .h6 {
   font-size: 1rem;
+}
+
+h7 {
+  font:normal 60pt "Castellar";
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  color: #2d7df0;
+  text-shadow: 0 1px 0 #100026,
+  0 2px 0 rgba(0, 0, 0, 0.69),
+  0 3px 0 rgba(0, 0, 0, 0.81),
+  0 4px 0 rgba(7, 7, 7, 0.83),
+  0 5px 0 rgba(7, 0, 4, 0.8),
+  0 6px 1px rgba(29, 29, 29, 0.83),
+  0 0 5px rgba(28, 28, 28, 0.81),
+  0 1px 3px rgba(16, 16, 16, 0.86),
+  0 3px 5px rgba(26, 26, 26, 0.84),
+  0 5px 10px rgba(42, 42, 42, 0.84),
+  0 10px 10px rgba(36, 36, 36, 0.89),
+  0 20px 20px rgba(0, 0, 0, 0.78);
+}
+
+#bookButton {
+  background: #21de6d;
+  background-image: -webkit-linear-gradient(top, #21de6d, #1af01a);
+  background-image: -moz-linear-gradient(top, #21de6d, #1af01a);
+  background-image: -ms-linear-gradient(top, #21de6d, #1af01a);
+  background-image: -o-linear-gradient(top, #21de6d, #1af01a);
+  background-image: linear-gradient(to bottom, #21de6d, #1af01a);
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #1157ff;
+  font-size: 24px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#bookButton:hover {
+  background: #3cfa68;
+  background-image: -webkit-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: -moz-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: -ms-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: -o-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: linear-gradient(to bottom, #3cfa68, #4fd934);
+  text-decoration: none;
 }
 
 .lead {
