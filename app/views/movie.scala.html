@@ -33,9 +33,9 @@
           <p class="card-text">@movie.Director</p>
         </div>
 
-        <form action="/bookings?id=@{movie.Title}">
-          <b><input type="submit" value="Book now" id="bookButton"></b>
-        </form>
+        <a href="/bookings?id=@{movie.Title}">
+          <b><button type="submit"  class="bookButton">Book now</button></b>
+        </a>
 
       </div>
     </div>
