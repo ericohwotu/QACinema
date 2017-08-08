@@ -1,5 +1,7 @@
 package controllers
 
+import java.net.URLDecoder
+import java.nio.charset.Charset
 import javax.inject.Inject
 
 import models.{Movie, Place}
@@ -11,6 +13,7 @@ import reactivemongo.play.json._
 import reactivemongo.api.Cursor
 import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.collection.JSONCollection
+
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
@@ -62,7 +65,7 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
   }
 
   def searchByTitle(title: String): Action[AnyContent] = {
-    genericListingPage(Some(title.toLowerCase), titleExtract)
+    genericListingPage(Some(URLDecoder.decode(title.toLowerCase, Charset.forName("utf-8").name())), titleExtract)
   }
 
   def getMovieAction(id: BSONObjectID): Future[Result] = {
