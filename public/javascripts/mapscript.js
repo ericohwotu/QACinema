@@ -153,6 +153,7 @@ function initialize() {
         longitude = e.latLng.lng();
         route(latitude, longitude);
         distance(latitude, longitude);
+        places();
     });
 
     document.getElementById("travelMode").addEventListener("change", function() {
@@ -173,6 +174,7 @@ function initialize() {
         longitude = location.lng();
         route(latitude, longitude);
         distance(latitude, longitude);
+        places();
     });
 
     google.maps.event.addListener(map, 'zoom_changed', function() {
