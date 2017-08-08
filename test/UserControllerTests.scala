@@ -56,7 +56,7 @@ class UserControllerTests extends Specification {
 
     "should return successful if user and password are correct" in new WithApplication() {
       val login = route(FakeApplication(),FakeRequest(POST,"/login").withFormUrlEncodedBody(
-        ("Username","qacinema"),("Password","qacinema123")
+        ("Username","test126"),("Password","password")
       )).orNull
 
       status(login) must equalTo(SEE_OTHER)
