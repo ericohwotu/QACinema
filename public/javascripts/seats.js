@@ -11,7 +11,6 @@ function getClassArray(className) {
 function isElemBooked(elem){return elem.classList.contains("booked");}
 function makeElemDisabled(elem){elem.setAttribute("disabled", "true");}
 function clearElemDisabled(elem){elem.removeAttribute("disabled");}
-function makeElemClassDisabled(elem){elem.classList.add("disabled");}
 function clearElemClassDisabled(elem){elem.classList.remove("disabled");}
 
 function makeElemUnavailable(elem){
@@ -28,7 +27,6 @@ function clearElemVip(elem){elem.classList.remove("vip");}
 function makeElemStandard(elem){elem.classList.add("standard");}
 function clearElemStandard(elem){elem.classList.remove("standard");}
 function makeElemEmpty(elem){elem.classList.add("empty");}
-function clearElemEmpty(elem){elem.classList.remove("empty");}
 function makeElemDisability(elem){elem.classList.add("dis");}
 function clearElemDisability(elem){elem.classList.remove("dis");}
 function clearElemUnavailable(elem){elem.classList.remove("unavailable");}
