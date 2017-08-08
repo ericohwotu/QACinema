@@ -33,12 +33,10 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
     case mov : Movie => mov.Title
   }
 
-  def collectionSearch[A](jsonObj : JsObject)(implicit reads: Reads[A]) : Future[List[A]] = collection.map {
-    _.find(Json.obj(), jsonObj).cursor[A]()
-  }.flatMap(_.collect[List]())
-
   def futureRefinedList[A <: AnyRef](criteria : Option[String], method : (AnyRef) => String, jsonObj : JsObject)(implicit reads: Reads[A]) : Future[List[A]] = {
-    val collectedList : Future[List[A]] = collectionSearch[A](jsonObj)
+    val collectedList : Future[List[A]] = collection.map {
+      _.find(Json.obj(), jsonObj).cursor[A]()
+    }.flatMap(_.collect[List]())
 
     criteria.fold(collectedList)(crit => collectedList.flatMap(movieList => Future {
       movieList.filter(mov => method(mov).toLowerCase.contains(crit))
