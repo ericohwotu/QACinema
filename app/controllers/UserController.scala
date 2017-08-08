@@ -110,7 +110,8 @@ class UserController @Inject()(
   def regHandler: Action[AnyContent] = Action {implicit request: Request[AnyContent] =>
     val regBind = registerUser.bindFromRequest()
     regBind.fold({
-      error => BadRequest(views.html.users.registration(error))
+      error => println(error)
+        BadRequest(views.html.users.registration(error))
     },{
       newUser => User.create(newUser) match {
           case None => BadRequest("Oops something happened")

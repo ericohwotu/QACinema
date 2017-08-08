@@ -83,4 +83,11 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
       case movieName => movieName
     }
   }
+
+  def delete(name: String): Action[AnyContent] = Action{ request: Request[AnyContent] =>
+    request.session.get("isTest").fold{Unauthorized("Sorry Unavailable to you")}
+    { _ => mongoDbController.deleteMovie(name)
+      Ok("Successful")
+    }
+  }
 }
