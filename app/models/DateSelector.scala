@@ -8,17 +8,16 @@ import play.api.data.format.Formats._
 /**
   * Created by Eric on 23/07/2017.
   */
-case class DateSelector(date: String, time: String, screen: String)
+//case class DateSelector(date: String, time: String, screen: String)
 
-object DateSelector{
-
-  val dsForm = Form[DateSelector](
-    mapping(
-      "days" -> Forms.of[String],
-      "time" -> Forms.of[String],
-      "screen" -> Forms.of[String]
-    )(DateSelector.apply _)(DateSelector.unapply _)
-  )
-
-  implicit val dateFormat = Json.format[DateSelector]
-}
+//object DateSelector{
+//  val dsForm = Form[(String,String,String)](
+//    tuple(
+//      "days" -> Forms.of[String],
+//      "time" -> Forms.of[String],
+//      "screen" -> Forms.of[String]
+//    )//(DateSelector.apply _)(DateSelector.unapply _)
+//  )
+//
+//  //implicit val dateFormat = Json.format[DateSelector]
+//}
