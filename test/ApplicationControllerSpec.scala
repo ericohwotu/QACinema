@@ -1,8 +1,6 @@
-import org.specs2.mutable._
 import org.specs2.runner._
 import org.junit.runner._
 import play.api.test._
-import play.api.test.Helpers._
 
 /**
  * Add your spec here.
@@ -32,7 +30,7 @@ class ApplicationControllerSpec extends PlaySpecification {
     }
 
     "render the contact page" in new WithApplication{
-      route(FakeApplication(), FakeRequest(GET, "/contactUs")) match {
+      route(FakeApplication(), FakeRequest(GET, "/contactus")) match {
         case Some(route) =>
           status(route) must equalTo(OK)
           contentType(route) must beSome.which(_ == "text/html")
@@ -41,10 +39,17 @@ class ApplicationControllerSpec extends PlaySpecification {
     }
 
     "render the find page" in new WithApplication{
-      route(FakeApplication(), FakeRequest(GET, "/findUs")) match {
+      route(FakeApplication(), FakeRequest(GET, "/findus")) match {
         case Some(route) =>
           status(route) must equalTo(OK)
           contentType(route) must beSome.which(_ == "text/html")
+          contentAsString(route) must contain("<div id=\"map\"")
+          contentAsString(route) must contain("<div id=\"rightPanel\"")
+          contentAsString(route) must contain("<select id=\"cinemaMode\"")
+          contentAsString(route) must contain("<title>Map</title>")
+          contentAsString(route) must contain("input id=\"searchBar\"")
+          contentAsString(route) must contain("<select id=\"travelMode\"")
+          contentAsString(route) must contain("<select id=\"travelMode\"")
         case _ => failure
       }
     }
@@ -71,6 +76,24 @@ class ApplicationControllerSpec extends PlaySpecification {
     "should be able to link to a route which contains a movie page" in new WithApplication {
       listingsRoute match {
         case Some(route) => contentAsString(route) must contain("<a href='movie/")
+        case _ => failure
+      }
+    }
+
+    "should be able to show movies by genre" in new WithApplication {
+      route(FakeApplication(), FakeRequest(GET, "/listings/action")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+        case _ => failure
+      }
+    }
+
+    "should be able to search for movies via their title" in new WithApplication {
+      route(FakeApplication(), FakeRequest(GET, "/search/spider")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
         case _ => failure
       }
     }

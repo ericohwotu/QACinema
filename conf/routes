@@ -5,18 +5,19 @@
 # Home page
 GET     /                           controllers.Application.index()
 
-GET     /payment/token              controllers.PaymentController.getClientToken()
+GET     /payment                    controllers.PaymentController.initiateClientToken
 POST    /payment/make               controllers.PaymentController.makePayment
 
 GET     /movie/$id<[0-9a-z]+>       controllers.Application.movie(id : String)
 
 GET     /certifications             controllers.Application.certifications
-GET     /contactUs                  controllers.ContactController.contactUs
-POST    /contactUs                  controllers.ContactController.formHandler
-GET     /findUs                     controllers.Application.findUs
+GET     /contactus                  controllers.ContactController.contactUs
+POST    /contactus                  controllers.ContactController.formHandler
+GET     /findus                     controllers.Application.findUs
 
 GET     /listings                   controllers.Application.listings
-GET     /listings/$genre<[a-z]+>    controllers.Application.listingsWithGenre(genre: String)
+GET     /listings/$genre<[a-z-]+>       controllers.Application.listingsWithGenre(genre: String)
+GET     /search/$title<[a-zA-Z0-9-]+>    controllers.Application.searchByTitle(title: String)
 
 GET     /about                      controllers.Application.about
 GET     /nearby                     controllers.Application.nearby
