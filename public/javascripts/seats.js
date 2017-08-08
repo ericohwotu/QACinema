@@ -77,7 +77,7 @@ function getDays(){
     return dates;
 }
 
-function getSubTimes(timeNow){
+function getSubTimes(i, timeNow){
     let sub = [];
     for (let j=0; j<24; j += 3){
         if(i === 0 && j < timeNow) {
@@ -98,7 +98,7 @@ function getTimes(){
     if (days.length===6) {start = 1;}
 
     for (let i = start; i<7; i++){
-        let sub = getSubTimes(timeNow);
+        let sub = getSubTimes(i, timeNow);
         times.push(sub);
     }
     return times;
