@@ -71,8 +71,9 @@ footer {
 }
 
 .giantgradient {
-  padding: 50px;
+  padding: 15px;
   background-image: linear-gradient(to right,rgba(255,0,0,0),black);
+  width: 100%;
 }
 
 
@@ -105,6 +106,7 @@ footer {
   float: left;
   width:400px;
   min-width: 250px;
+  padding: 10px;
 }
 
 @media screen and (min-width: 1000px) {
@@ -698,7 +700,7 @@ h7 {
   0 20px 20px rgba(0, 0, 0, 0.78);
 }
 
-#bookButton {
+.bookButton {
   background: #21de6d;
   background-image: -webkit-linear-gradient(top, #21de6d, #1af01a);
   background-image: -moz-linear-gradient(top, #21de6d, #1af01a);
@@ -713,9 +715,38 @@ h7 {
   font-size: 24px;
   padding: 10px 20px 10px 20px;
   text-decoration: none;
+  height: auto;
 }
 
-#bookButton:hover {
+.bookButton:hover {
+  background: #3cfa68;
+  background-image: -webkit-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: -moz-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: -ms-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: -o-linear-gradient(top, #3cfa68, #4fd934);
+  background-image: linear-gradient(to bottom, #3cfa68, #4fd934);
+  text-decoration: none;
+}
+
+.goButton {
+  background: #21de6d;
+  background-image: -webkit-linear-gradient(top, #21de6d, #1af01a);
+  background-image: -moz-linear-gradient(top, #21de6d, #1af01a);
+  background-image: -ms-linear-gradient(top, #21de6d, #1af01a);
+  background-image: -o-linear-gradient(top, #21de6d, #1af01a);
+  background-image: linear-gradient(to bottom, #21de6d, #1af01a);
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #1157ff;
+  font-size: 18px;
+  text-decoration: none;
+  height: 35px;
+  width: 45px;
+}
+
+.goButton:hover {
   background: #3cfa68;
   background-image: -webkit-linear-gradient(top, #3cfa68, #4fd934);
   background-image: -moz-linear-gradient(top, #3cfa68, #4fd934);
@@ -9596,12 +9627,14 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 
 .cert-img {
   width: 220px;
-  height: 200px;
+  height: 190px;
 }
 
-.google-maps {
-  width: 350px;
-  height: 350px;
+#socialMediaLinks {
+  width: 265px;
+  height: 40px;
+  text-align: center;
 }
+
 /*# sourceMappingURL=bootstrap.css.map */
 
