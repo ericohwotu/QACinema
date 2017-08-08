@@ -8,7 +8,7 @@ import play.api.data.format.Formats._
 import play.api.i18n._
 import util.{SeatGenerator, SessionHelper}
 import com.typesafe.config.ConfigFactory
-import models.{DateSelector, Screening}
+import models.Screening
 import play.api.data.{Form, Forms}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
@@ -23,7 +23,7 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
   val hiddenMultips: String => List[String] = (str: String) =>  str.split(",").toList
 
   val homePage = (name: String, vals: List[String], request: Request[AnyContent]) =>
-    Ok(views.html.bookings.bookings(name, vals)(DateSelector.dsForm, SeatGenerator.getLayout(request.remoteAddress)))
+    Ok(views.html.bookings.bookings(name, vals)(SeatGenerator.getLayout(request.remoteAddress)))
 
 
   val seatsForm: Form[(Int,Int)] = Form[(Int, Int)](

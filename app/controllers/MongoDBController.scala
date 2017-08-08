@@ -21,7 +21,6 @@ class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extend
 
   def movieDBTable: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
   def cinemaLocationsTable: Future[JSONCollection] = database.map(_.collection[JSONCollection]("locations"))
-  def bookings: Future[JSONCollection] = database.map(_.collection[JSONCollection]("bookings"))
 
   def addLocations(): Action[AnyContent] = Action {
     cinemaLocationsTable.flatMap(_.drop(false))
