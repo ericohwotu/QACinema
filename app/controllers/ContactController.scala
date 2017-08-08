@@ -11,13 +11,13 @@ class ContactController @Inject()(implicit val messagesApi: MessagesApi, mailerC
   extends Controller with I18nSupport{
 
   def contactUs: Action[AnyContent] = Action {
-    Ok(views.html.contact.contactform(ContactUs.contactForm))
+    Ok(views.html.contact.contactUs(ContactUs.contactForm))
   }
 
   def formHandler: Action[AnyContent] = Action{ implicit request: Request[AnyContent] =>
     val formResult = ContactUs.contactForm.bindFromRequest
     formResult.fold({
-      error => BadRequest(views.html.contact.contactform(error))
+      error => BadRequest(views.html.contact.contactUs(error))
     },{
       contactUS =>
         sendEmail(contactUS)

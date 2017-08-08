@@ -2,7 +2,6 @@ package controllers
 
 import com.braintreegateway
 import com.braintreegateway.{BraintreeGateway, ClientTokenRequest, Transaction, TransactionRequest}
-import play.api.mvc.{Action, AnyContent}
 import play.api.mvc._
 
 /**
@@ -13,7 +12,7 @@ class PaymentController extends Controller {
 
   def generateClientToken(): String = braintreeGateway.clientToken().generate(new ClientTokenRequest())
 
-  def getClientToken() : Action[AnyContent] = Action { implicit request =>
+  def initiateClientToken() : Action[AnyContent] = Action { implicit request =>
     request.session.get("bookingPrice") match {
       case Some(amount) => Ok(views.html.payment(generateClientToken(), amount))
       case None => BadRequest("No amount provided.")

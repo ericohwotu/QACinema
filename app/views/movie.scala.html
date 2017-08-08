@@ -1,20 +1,28 @@
 @(movie : Movie)
 
 @main("Movie") {
-
-  <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
     <!-- ADD SEARCH WHEN IMPLEMENTED -->
   <hr>
   <div class="giantmovie container-fluid" style="background-image: url(@movie.Poster);">
     <div class="row gradientheight">
-      <div class="giantgradient container-fluid" align="right">
-        <iframe  class="trailer container-fluid" src="https://www.youtube.com/embed/@{movie.video}?autoplay=1&loop=1&playlist=W0LHTWG-UmQ" frameborder="0">
+      <div class="giantgradient" align="right">
+        <iframe  class="trailer" src="https://www.youtube.com/embed/@{movie.video}?autoplay=1"
+          frameborder="0">
         </iframe>
         <div class="card-block gianttext" >
           <h4 class="card-title">@movie.Title</h4>
           <p class="card-text">@movie.Plot</p>
         </div>
 
+        <div class="card-block gianttext" >
+          <h4 class="card-title">Genre</h4>
+          <p class="card-text">@movie.Genre</p>
+        </div>
+
+        <div class="card-block gianttext" >
+          <h4 class="card-title">Certification</h4>
+          <img id="theCert" class="@movie.Rated" height="70px" width="85px">
+        </div>
 
         <div class="card-block gianttext" >
           <h4 class="card-title">Actors</h4>
@@ -26,10 +34,9 @@
           <p class="card-text">@movie.Director</p>
         </div>
 
-        <div class="card-block gianttext" >
-          <h3 class="card-title"><a href="/bookings?id=@{movie.Title}">Times</a></h3>
-        </div>
-
+        <form action="/bookings?id=@{movie.Title}">
+          <b><input type="submit" value="Book now" class="bookButton"></b>
+        </form>
 
       </div>
     </div>
@@ -49,9 +56,24 @@
   </div>
     <!-- /.container -->
 
-    <!-- jQuery -->
-  <script src="js/jquery.js"></script>
+    <!-- Get movie certification image script -->
+  <script>
+    window.onload = function() {
+      document.getElementById("theCert").src = getCertPath(document.getElementById("theCert").getAttribute("class"))
+    }
 
-    <!-- Bootstrap Core JavaScript -->
-  <script src="js/bootstrap.min.js"></script>
+    function getCertPath(theRating) {
+      switch(theRating) {
+        case "G": case "U": return "/assets/images/uCert.png";
+        break;
+        case "PG": return "/assets/images/pgCert.png";
+        break;
+        case "PG-13": return "/assets/images/12aCert.png";
+        break;
+        case "R": case "NC-17": return "/assets/images/18Cert.png";
+        break;
+        default: return "brokenImage.png"
+      }
+    }
+  </script>
 }
