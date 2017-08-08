@@ -2,8 +2,6 @@ package controllers
 
 import javax.inject.Inject
 
-import akka.util.LineNumbers.Result
-
 import scala.concurrent.Future
 import play.api.mvc.{Action, AnyContent, Controller}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext

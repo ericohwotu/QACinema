@@ -46,7 +46,6 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 #MongoDB
 GET     /addmovies                  controllers.MongoDBController.createMoviesFromAPI()
 GET     /addcinemas                 controllers.MongoDBController.addLocations()
-#GET     /getmovie/:name             controllers.MongoDBController.readByName(name: String)
 
 #Admin Page
 GET     /getallmovies               controllers.Admin.getAllMovies()
