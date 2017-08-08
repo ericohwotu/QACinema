@@ -112,7 +112,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
   }
 
   //==================================== SEAT SELECTION =================================================//
-  def bookSeat(name: String, date: String, time: String, seat: Seat): Unit = {
+  def bookSeat(name: String, date: String, time: String, seat: Seat): String = {
     val dateIndex = DateSlot.getIndex(date)
     val timeIndex = TimeSlot.getIndex(time)
     val setAuthor = s"dateSlots.$dateIndex.timeSlots.$timeIndex.seats.${seat.id - 1}.author"
@@ -120,20 +120,40 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
     val seats = getSeatsBySlots(name, date, time).getOrElse(List())
     val reqSeats = seats.filter(_.id == seat.id)
 
-    def bookHelper(author: String) = moviesCol.map {
+    def bookHelper(author: String) = Await.result(Await.result(moviesCol.map {
       _.update(Json.obj("name" -> name),
         Json.obj("$set" -> Json.obj(s"$setAuthor" -> author,
           s"$setExpiry" -> Seat.getExpiryDate)))
-    }
+    },Duration.Inf),Duration.Inf)
 
     doesSeatExist(reqSeats, seat) match{
-      case false => None
+      case false => "{\"outcome\": \"failure\",\"message\": \"Seat already booked by someone else\"}"
       case true => toBook(reqSeats.head, seat) match{
         case true => bookHelper(seat.author)
+          "{\"outcome\": \"success\",\"message\": \"seat booked\"}"
         case false => bookHelper("")
+          "{\"outcome\": \"success\",\"message\": \"seat unbooked\"}"
       }
     }
   }
+
+//  def getSeatString(name: String, date: String, time: String, id: Long)(author: String): String = {
+//    getSeatsBySlots(name, date, time).fold {
+//      "{\"outcome\":\"Error\",\"message\":\"couldn't retrieve seats\"}"
+//    }{
+//      seats => getSeatJson(seats.filter(_.id == id).headOption, author)
+//    }
+//  }
+
+//  def getSeatJson(seat: Option[Seat], author: String): String = seat.fold{
+//    "{\"outcome\":\"error\",\"message\":\"seat was null\"}"
+//  }{
+//    reqSeat => reqSeat.author match {
+//      case `author` =>
+//      case "" =>
+//      case "" => "{\"outcome\": \"success\",\"message\": \"seat unbooked\"}"
+//    }
+//  }
 
   def doesSeatExist(checkSeats: List[Seat], seat: Seat): Boolean = {
     checkSeats match {
@@ -220,7 +240,8 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
                 _.update(Json.obj("name" -> movie.name),
                   Json.obj("$set" -> Json.obj(updateExpiry -> 0)), multi = true)
               }
-              case false => moviesCol.map {
+              case false =>
+                moviesCol.map {
                 _.update(Json.obj("name" -> movie.name),
                   Json.obj("$set" -> Json.obj(updateExpiry -> 0, updateAuthor -> "")), multi = true)
               }
