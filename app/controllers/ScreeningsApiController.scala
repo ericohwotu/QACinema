@@ -18,7 +18,8 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
       case bookingKey =>
         mongoDbController.getSeatsBySlots(movieNameHelper(name, request), date, time) match {
           case None => BadRequest("No Seats Available")
-          case jsonResult => Ok(Json.parse(mongoDbController.getJsonString(jsonResult.get, bookingKey)))
+          case Some(jsonResult) =>
+            Ok(Json.parse(mongoDbController.getJsonString(jsonResult, bookingKey)))
         }
     }
   }
@@ -35,8 +36,10 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
 
       case bookingKey =>
 
-        mongoDbController.bookSeat(movieName, date, time, Seat(id, bookingKey, booked = false, Seat.getExpiryDate,""))
-        Ok(Json.parse(SeatGenerator.bookSeats(id, bookingKey)))
+        val result = mongoDbController.bookSeat(movieName, date, time,
+          Seat(id, bookingKey, booked = false, Seat.getExpiryDate,""))
+
+        Ok(Json.parse(result))
           .withSession(request.session + ("date" -> date) + ("time" -> time))
     }
   }
