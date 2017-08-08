@@ -19,15 +19,24 @@ class ScreeningsControllerTests extends Specification {
   val movieName = "Sample Booking"
   val apiKey = "8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU"
   val seatId = 5
+  val testMovie = "Test Movie"
 
   "ScreeningsController" should {
 
     "render the index page" in new WithApplication{
       val home = route(FakeApplication(),FakeRequest(GET, "/bookings")).orNull
-
+      Await.result(home, Duration.Inf)
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "text/html")
       contentAsString(home) must contain ("Sample Booking")
+    }
+
+    "render the should create a new movie if movie is fed" in new WithApplication{
+      val home = route(FakeApplication(),FakeRequest(GET, "/bookings?id=" + testMovie)).orNull
+      Await.result(home, Duration.Inf)
+      status(home) must equalTo(OK)
+      contentType(home) must beSome.which(_ == "text/html")
+      contentAsString(home) must contain (testMovie)
     }
 
     "send to payment screen" in new WithApplication() {
@@ -67,7 +76,7 @@ class ScreeningsControllerTests extends Specification {
       val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/submit?" +
         "key=8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU&name=Sample%20Booking&date=6%20AUG%202017&" +
         "time=9:00").withSession(("loggedin","qacinema"),("bookingPrice","25"))).orNull
-
+      Await.result(getSeats, Duration.Inf)
       status(getSeats) must equalTo(SEE_OTHER)
     }
   }
@@ -95,8 +104,20 @@ class ScreeningsControllerTests extends Specification {
     "return ok when unbook runner is started" in new WithApplication() {
       val unbookRunner = route(FakeApplication(), FakeRequest(GET, "/key/unbook")
         .withSession(("isTest","true"))).orNull
-      println(Await.result(unbookRunner,Duration.Inf).header)
+      Await.result(unbookRunner,Duration.Inf)
       status(unbookRunner) must equalTo(OK)
+    }
+
+    "delete movie should return ok" in new WithApplication() {
+      val deleteMovie =  route(FakeApplication(), FakeRequest(GET, "/bookings/delete?name=" + testMovie)).orNull
+      status(deleteMovie) must equalTo(UNAUTHORIZED)
+    }
+
+    "delete movie should return ok if isTest" in new WithApplication() {
+      val deleteMovie =  route(FakeApplication(), FakeRequest(GET, "/bookings/delete?name=" + testMovie)
+        .withSession(("isTest","true"))).orNull
+
+      status(deleteMovie) must equalTo(OK)
     }
   }
 }
