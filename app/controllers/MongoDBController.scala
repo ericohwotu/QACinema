@@ -18,7 +18,7 @@ import reactivemongo.bson.{BSONDocument, BSONObjectID}
 import scala.collection.mutable.ArrayBuffer
 import scalaj.http._
 
-class Mongo @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
+class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
   with MongoController with ReactiveMongoComponents{
 
   def movieDBTable: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
@@ -26,6 +26,7 @@ class Mongo @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
   def bookings: Future[JSONCollection] = database.map(_.collection[JSONCollection]("bookings"))
 
   def addLocations(): Action[AnyContent] = Action {
+    cinemaLocationsTable.flatMap(_.drop(false))
     val locations = ArrayBuffer(
       CinemaLocation("QACinema", "53.4695009","-2.292369"),
       CinemaLocation("QA DockCinema", "53.4741912","-2.2871522"),
@@ -36,7 +37,7 @@ class Mongo @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
     locations.foreach{loc =>
     val futureResult = cinemaLocationsTable.flatMap(_.insert(loc))
     futureResult.map(_ => Ok("Added location"))}
-    Ok("something happened")
+    Ok("success")
   }
 
 
