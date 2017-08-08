@@ -16,8 +16,6 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
     jsonApiHelper(key, request) match {
       case "Unauthorised" => Unauthorized("Sorry you are not authorised")
       case bookingKey =>
-        println("*"*50)
-        println(mongoDbController.getSeatsBySlots("Created", date, time))
         mongoDbController.getSeatsBySlots(movieNameHelper(name, request), date, time) match {
           case None => BadRequest("No Seats Available")
           case jsonResult => Ok(Json.parse(mongoDbController.getJsonString(jsonResult.get, bookingKey)))
@@ -67,7 +65,6 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
       case "" => key match {
         case None => "Unauthorised"
         case apiKey =>
-          println(s"key: $apiKey")
           mongoDbController.isKeyAvailable(apiKey.orNull) match {
             case true => apiKey.getOrElse("random")
             case false => "Unauthorised"

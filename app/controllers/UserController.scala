@@ -153,4 +153,15 @@ class UserController @Inject()(
     Redirect(routes.Application.index()).withNewSession
   }
 
+  def delete(username: String): Action[AnyContent] = Action { request: Request[AnyContent] =>
+    request.session.get("isTest").fold{ Unauthorized("Sorry Functionality not available to you")}{
+      value => deleteUser(username)
+        Redirect(routes.UserController.logout())
+    }
+  }
+
+  def deleteUser(username: String): Unit = usersCol.map {
+    _.findAndRemove(Json.obj("username"->username))
+  }
+
 }

@@ -22,6 +22,34 @@ import scala.concurrent.duration.Duration
 @RunWith(classOf[JUnitRunner])
 class UserControllerTests extends Specification {
 
+  val validUsername = "usertest"
+  val validPassword = "usertest"
+
+  "register" should {
+
+    "register should render the page" in new WithApplication() {
+      val register = route(FakeApplication(),FakeRequest(GET,"/register")).orNull
+
+      status(register) must equalTo(OK)
+    }
+
+    "should return an error if no detail is provided" in new WithApplication() {
+      val register = route(FakeApplication(),FakeRequest(POST,"/register").withFormUrlEncodedBody(
+        ("Name",""),("Email",""),("Username",""),("Password",""),("Confirm Password","")
+      )).orNull
+
+      status(register) must equalTo(BAD_REQUEST)
+    }
+
+    "should redirect if all is good" in new WithApplication() {
+      val register = route(FakeApplication(),FakeRequest(POST,"/register").withFormUrlEncodedBody(
+        ("Name","Test"),("Email","Test@Main.com"),
+        ("Username",validUsername),("Password",validPassword),("Confirm Password",validPassword)
+      )).orNull
+
+      status(register) must equalTo(SEE_OTHER)
+    }
+  }
 
   "login" should {
 
@@ -48,7 +76,7 @@ class UserControllerTests extends Specification {
 
     "should return errors if user doesnt exist" in new WithApplication() {
       val login = route(FakeApplication(),FakeRequest(POST,"/login").withFormUrlEncodedBody(
-        ("Username","testuser"),("Password","testpassword")
+        ("Username","zXkdehs"),("Password","testpassword")
       )).orNull
 
       status(login) must equalTo(BAD_REQUEST)
@@ -56,55 +84,17 @@ class UserControllerTests extends Specification {
 
     "should return successful if user and password are correct" in new WithApplication() {
       val login = route(FakeApplication(),FakeRequest(POST,"/login").withFormUrlEncodedBody(
-        ("Username","test126"),("Password","password")
+        ("Username",validUsername),("Password",validPassword)
       )).orNull
 
       status(login) must equalTo(SEE_OTHER)
-    }
-  }
-
-  "logout" should {
-
-    "remove loggedin form session" in new WithApplication() {
-      val login = route(FakeApplication(), FakeRequest(GET, "/logout")).orNull
-
-      status(login) must equalTo(SEE_OTHER)
-    }
-  }
-
-  "register" should {
-
-    "register should render the page" in new WithApplication() {
-      val register = route(FakeApplication(),FakeRequest(GET,"/register")).orNull
-
-      status(register) must equalTo(OK)
-    }
-
-    "should return an error if no detail is provided" in new WithApplication() {
-      val register = route(FakeApplication(),FakeRequest(POST,"/register").withFormUrlEncodedBody(
-        ("Name",""),("Email",""),("Username",""),("Password",""),("Confirm Password","")
-      )).orNull
-
-      status(register) must equalTo(BAD_REQUEST)
-    }
-
-    "should redirect if all is good" in new WithApplication() {
-      val register = route(FakeApplication(),FakeRequest(POST,"/register").withFormUrlEncodedBody(
-        ("Name","Test"),("Email","Test@Main.com"),
-        ("Username","test126"),("Password","password"),("Confirm Password","password")
-      )).orNull
-
-      status(register) must equalTo(SEE_OTHER)
     }
   }
 
   "Dashboard" should {
     "render the page if user is logged in" in new WithApplication() {
-     FakeRequest(POST,"/login").withFormUrlEncodedBody(
-        ("Username","qacinema"),("Password","qacinema123")
-     )
-
-      val dashboard = route(FakeApplication(),FakeRequest(GET,"/dashboard")).orNull
+      val dashboard = route(FakeApplication(),FakeRequest(GET,"/dashboard")
+        .withSession(("loggedin",validUsername))).orNull
       status(dashboard) must equalTo(OK)
     }
 
@@ -112,6 +102,23 @@ class UserControllerTests extends Specification {
       FakeRequest(GET,"/logout")
       val dashboard = route(FakeApplication(),FakeRequest(GET,"/dashboard")).orNull
       status(dashboard) must equalTo(SEE_OTHER)
+    }
+  }
+
+  "logout" should {
+    "remove loggedin form session" in new WithApplication() {
+      val login = route(FakeApplication(), FakeRequest(GET, "/logout")).orNull
+
+      status(login) must equalTo(SEE_OTHER)
+    }
+  }
+
+  "delete" should {
+    "delete the user from the data base and redirect" in new WithApplication(){
+      val logout = route(FakeApplication(), FakeRequest("GET","/delete?username=" + validUsername)
+        .withSession(("isTest","true"))).orNull
+
+      status(logout) must equalTo(SEE_OTHER)
     }
   }
 
