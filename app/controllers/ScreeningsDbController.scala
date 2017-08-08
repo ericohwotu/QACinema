@@ -25,8 +25,6 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
 
   def apiKeyCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("ApiCollection"))
 
-  def bookingsCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("AnonBookingsCollection"))
-
 
   //===================================API KEY FUNCTIONS===================================================//
   def getKey: Action[AnyContent] = Action {

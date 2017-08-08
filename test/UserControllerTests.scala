@@ -25,6 +25,8 @@ class UserControllerTests extends Specification {
   val validUsername = "usertest"
   val validPassword = "usertest"
 
+  val invalidUsername = "qacinema"
+
 
 
   "register" should {
@@ -43,13 +45,13 @@ class UserControllerTests extends Specification {
       status(register) must equalTo(BAD_REQUEST)
     }
 
-    "delete" should {
-      "delete the user from the data base and redirect" in new WithApplication(){
-        val logout = route(FakeApplication(), FakeRequest("GET","/delete?username=" + validUsername)
-          .withSession(("isTest","true"))).orNull
+    "should error if user exists" in new WithApplication() {
+      val register = route(FakeApplication(),FakeRequest(POST,"/register").withFormUrlEncodedBody(
+        ("Name","Test"),("Email","Test@Main.com"),
+        ("Username",invalidUsername),("Password",validPassword),("Confirm Password",validPassword)
+      )).orNull
 
-        status(logout) must equalTo(SEE_OTHER)
-      }
+      status(register) must equalTo(BAD_REQUEST)
     }
 
     "should redirect if all is good" in new WithApplication() {

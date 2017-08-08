@@ -49,7 +49,7 @@ class ApplicationControllerSpec extends PlaySpecification {
           contentAsString(route) must contain("<div id=\"map\"")
           contentAsString(route) must contain("<div id=\"rightPanel\"")
           contentAsString(route) must contain("<select id=\"cinemaMode\"")
-          contentAsString(route) must contain("<title>Map</title>")
+          contentAsString(route) must contain("<title>Find Us</title>")
           contentAsString(route) must contain("input id=\"searchBar\"")
           contentAsString(route) must contain("<select id=\"travelMode\"")
           contentAsString(route) must contain("<select id=\"travelMode\"")
@@ -78,7 +78,7 @@ class ApplicationControllerSpec extends PlaySpecification {
 
     "should be able to link to a route which contains a movie page" in new WithApplication {
       listingsRoute match {
-        case Some(route) => contentAsString(route) must contain("<a href='movie/")
+        case Some(route) => contentAsString(route) must contain("<a href='../movie/")
         case _ => failure
       }
     }
