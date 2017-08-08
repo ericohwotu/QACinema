@@ -67,6 +67,7 @@ function getDays(){
         let month = date.getMonth();
         let year = date.getYear();
         if(date.getDate()=== new Date().getDate() && date.getHours() > 21) {
+            continue;
         } else {
             dates.push(today + " " + months[month].toUpperCase() + " " + (year + 1900));
         }
@@ -88,6 +89,7 @@ function getTimes(){
         let sub = [];
         for (let j=0; j<24; j += 3){
             if(i === 0 && j < timeNow) {
+                continue;
             } else {
                 sub.push(j + ":00");
             }
