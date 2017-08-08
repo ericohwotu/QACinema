@@ -58,6 +58,8 @@ class UserController @Inject()(
 
   def usersCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("UserCollection"))
 
+  def bookingsCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("AnonBookingsCollection"))
+
   def addUserToDb(user: User): Unit = usersCol.flatMap(_.insert(user))
 
   def getPassword(password: String): String = Encryption.encrypt(Encryption.getKey(password)(byteLength),password)
@@ -78,6 +80,15 @@ class UserController @Inject()(
     .filter(_.password == getPassword(password))
 
   def validateLogin(username:String, password: String): Boolean = getUserByPassword(username, password).length == 1
+
+
+  def addBooking(username: Option[String], booking: Booking): Unit = username.fold{
+    addBookingToDb(booking)
+  }{
+    uName => addBookingToUser(uName, booking)
+  }
+
+  def addBookingToDb(booking: Booking): Unit = bookingsCol.flatMap(_.insert(booking))
 
   def addBookingToUser(username: String, booking: Booking): Unit = {
     usersCol.map {
@@ -110,8 +121,7 @@ class UserController @Inject()(
   def regHandler: Action[AnyContent] = Action {implicit request: Request[AnyContent] =>
     val regBind = registerUser.bindFromRequest()
     regBind.fold({
-      error => println(error)
-        BadRequest(views.html.users.registration(error))
+      error => BadRequest(views.html.users.registration(error))
     },{
       newUser => User.create(newUser) match {
           case None => BadRequest("Oops something happened")
@@ -161,8 +171,8 @@ class UserController @Inject()(
     }
   }
 
-  def deleteUser(username: String): Unit = usersCol.map {
-    _.findAndRemove(Json.obj("username"->username))
-  }
+  def deleteUser(username: String): Unit = Await.result(usersCol.map {
+    _.findAndRemove(Json.obj("username"->username))}, Duration.Inf)
+
 
 }

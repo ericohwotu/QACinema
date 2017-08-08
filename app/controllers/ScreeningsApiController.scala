@@ -26,7 +26,8 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
   def bookSeat(id: Int, key: Option[String], name: Option[String], date: String, time: String): Action[AnyContent] =
 
     Action { implicit request: Request[AnyContent] =>
-    val movieName = request.session.get("movieName").getOrElse(name.getOrElse("None"))
+    val movieName = request.session.get("movieName")
+      .getOrElse(name.getOrElse("None"))
 
     jsonApiHelper(key, request) match {
 
@@ -45,7 +46,8 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
     Action { request: Request[AnyContent] =>
 
       val movieName = request.session.get("movieName").getOrElse(name.getOrElse("None"))
-      val price = request.session.get("bookingPrice").getOrElse(name.getOrElse("10.0")).toDouble
+      val price = request.session.get("bookingPrice")
+        .getOrElse("10.0").toDouble
 
       jsonApiHelper(key, request) match {
 
@@ -53,7 +55,7 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
 
         case bookingKey =>
           val booking = Booking(bookingKey,movieName,date,time,List(),price)
-          userController.addBookingToUser(request.session.get("loggedin").orNull, booking)
+          userController.addBooking(request.session.get("loggedin"), booking)
           mongoDbController.submitBooking(bookingKey,movieName,date,time)
           Redirect(routes.Application.index())
       }
@@ -61,7 +63,6 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
 
   def jsonApiHelper(key: Option[String], request: Request[AnyContent]): String = {
     request.session.get("sessionKey").getOrElse("") match {
-
       case "" => key match {
         case None => "Unauthorised"
         case apiKey =>
@@ -75,18 +76,21 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
   }
 
   def movieNameHelper(name: Option[String], request: Request[AnyContent]): String = {
-    request.session.get("movieName").getOrElse("") match {
+    request.session.get("movieName")
+      .getOrElse("") match {
       case "" => name match {
         case None => "Unauthorised"
-        case movieName => movieName.getOrElse("Unautorised")
+        case movieName => movieName
+          .getOrElse("Unauthorised")
       }
       case movieName => movieName
     }
   }
 
   def delete(name: String): Action[AnyContent] = Action{ request: Request[AnyContent] =>
-    request.session.get("isTest").fold{Unauthorized("Sorry Unavailable to you")}
-    { _ => mongoDbController.deleteMovie(name)
+    request.session.get("isTest").fold{
+      Unauthorized("Sorry Unavailable to you")
+    } { _ => mongoDbController.deleteMovie(name)
       Ok("Successful")
     }
   }
