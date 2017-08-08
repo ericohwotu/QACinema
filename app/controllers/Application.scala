@@ -33,46 +33,21 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
     case mov : Movie => mov.Title
   }
 
-  def collectionSearch[A](jsonObj : JsObject)(implicit reads: Reads[A]) : Future[List[A]] = {
-    val futureCursor: Future[Cursor[A]] = collection.map {
-      _.find(Json.obj(), jsonObj).cursor[A]()
-    }
-    futureCursor.flatMap(_.collect[List]())
-  }
+  def collectionSearch[A](jsonObj : JsObject)(implicit reads: Reads[A]) : Future[List[A]] = collection.map {
+    _.find(Json.obj(), jsonObj).cursor[A]()
+  }.flatMap(_.collect[List]())
 
-  def futureMovies(criteria: Option[String], method : (AnyRef) => String): Future[List[Movie]] = {
-    val collectedList : Future[List[Movie]] = collectionSearch[Movie](Json.obj())
+  def futureRefinedList[A <: AnyRef](criteria : Option[String], method : (AnyRef) => String, jsonObj : JsObject)(implicit reads: Reads[A]) : Future[List[A]] = {
+    val collectedList : Future[List[A]] = collectionSearch[A](jsonObj)
 
     criteria.fold(collectedList)(crit => collectedList.flatMap(movieList => Future {
       movieList.filter(mov => method(mov).toLowerCase.contains(crit))
     }))
   }
 
-  def futureIDs(criteria: Option[String], method : (AnyRef) => String): Future[List[JsObject]] = {
-    val collectedList : Future[List[JsObject]] = collectionSearch[JsObject](
-      Json.obj("_id" -> 1, "Genre" -> 1, "Title" -> 1)
-    )
-
-    criteria.fold(collectedList)(crit => collectedList.flatMap(jsos => Future {
-      jsos.filter(jso => method(jso).toLowerCase.contains(crit))
-    }))
-  }
-
-  def listingsPage(genre: Option[String]): Action[AnyContent] = Action.async { implicit request =>
-    futureIDs(genre, genreExtract).flatMap(jsos => {
-      futureMovies(genre, genreExtract).map {
-        movies => {
-          Ok(views.html.listings(movies.zip(jsos.map {
-            jso => ((jso \ "_id").as[JsObject] \ "$oid").as[String]
-          }).grouped(3).toList))
-        }
-      }
-    })
-  }
-
-  def searchPage(title: Option[String]): Action[AnyContent] = Action.async { implicit request =>
-    futureIDs(title, titleExtract).flatMap(jsos => {
-      futureMovies(title, titleExtract).map {
+  def genericListingPage(criteria: Option[String], method : (AnyRef) => String): Action[AnyContent] = Action.async { implicit request =>
+    futureRefinedList[JsObject](criteria, method, Json.obj("_id" -> 1, "Genre" -> 1, "Title" -> 1)).flatMap(jsos => {
+      futureRefinedList[Movie](criteria, method, Json.obj()).map {
         movies => {
           Ok(views.html.listings(movies.zip(jsos.map {
             jso => ((jso \ "_id").as[JsObject] \ "$oid").as[String]
@@ -83,15 +58,15 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
   }
 
   def listings(): Action[AnyContent] = {
-    listingsPage(None)
+    genericListingPage(None, x => x.toString)
   }
 
   def listingsWithGenre(genre: String): Action[AnyContent] = {
-    listingsPage(Some(genre.toLowerCase))
+    genericListingPage(Some(genre.toLowerCase), genreExtract)
   }
 
   def searchByTitle(title: String): Action[AnyContent] = {
-    searchPage(Some(title.toLowerCase))
+    genericListingPage(Some(title.toLowerCase), titleExtract)
   }
 
   def getMovieAction(id: BSONObjectID): Future[Result] = {
