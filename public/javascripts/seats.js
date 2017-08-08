@@ -77,6 +77,18 @@ function getDays(){
     return dates;
 }
 
+function getSubTimes(timeNow){
+    let sub = [];
+    for (let j=0; j<24; j += 3){
+        if(i === 0 && j < timeNow) {
+            continue;
+        } else {
+            sub.push(j + ":00");
+        }
+    }
+    return sub;
+}
+
 function getTimes(){
     let date = new Date();
     let timeNow = date.getHours();
@@ -86,15 +98,8 @@ function getTimes(){
     if (days.length===6) {start = 1;}
 
     for (let i = start; i<7; i++){
-        let sub = [];
-        for (let j=0; j<24; j += 3){
-            if(i === 0 && j < timeNow) {
-                continue;
-            } else {
-                sub.push(j + ":00");
-            }
-        }
-        times.push(sub)
+        let sub = getSubTimes(timeNow);
+        times.push(sub);
     }
     return times;
 }
@@ -177,6 +182,63 @@ function popDates(){
         daysOptions.appendChild(opt);
     }
     popTimes(0);
+}
+
+function updateButton(json) {
+    let elem = document.getElementById("seat-" + json.seatid);
+    clearElemStandard(elem);
+    makeElemStandard(elem);
+    elem.classList.remove("available");
+    clearElemUnavailable(elem);
+    clearElemBooked(elem);
+
+    if (json.available === "true") {
+        makeElemAvailable(elem);
+    } else if (json.available === "false" && json.bookedBy === "true") {
+        makeElemBooked(elem);
+    } else {
+        makeElemUnavailable(elem);
+        makeElemDisabled(elem);
+    }
+
+    if (json.type === "VIP"){
+        setVipButton(elem);
+    }
+    if (json.type === "DISABLED"){
+        setDisButton(elem);
+    }
+    if (json.type === "EMPTY"){
+        clearElemStandard(elem);
+        makeElemEmpty(elem);
+        makeElemDisabled(elem);
+    }
+}
+
+function disableStandard() {
+    let elems = getClassArray("standard");
+    disableHelper(elems);
+    clearInterval(callback);
+}
+
+function disableVip(){
+    let elems = getClassArray("vip");
+
+    disableHelper(elems);
+    clearInterval(callback);
+}
+
+function updateButtons(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        updateButton(arr[i]);
+    }
+
+    if(isStandardLimitReached()){
+        disableStandard();
+    }
+    if(isVipLimitReached()){
+        disableVip();
+    }
+
 }
 
 function refresh() {
@@ -276,18 +338,7 @@ function disableHelper(elems){
     });
 }
 
-function disableStandard() {
-    let elems = getClassArray("standard");
-    disableHelper(elems);
-    clearInterval(callback);
-}
 
-function disableVip(){
-    let elems = getClassArray("vip");
-
-    disableHelper(elems);
-    clearInterval(callback);
-}
 
 function setVipButton(seat){
     clearElemStandard(seat);
@@ -300,49 +351,7 @@ function setDisButton(seat){
     makeElemDisability(seat);
 }
 
-function updateButton(json) {
-    let elem = document.getElementById("seat-" + json.seatid);
-    clearElemStandard(elem);
-    makeElemStandard(elem);
-    elem.classList.remove("available");
-    clearElemUnavailable(elem);
-    clearElemBooked(elem);
 
-    if (json.available === "true") {
-        makeElemAvailable(elem);
-    } else if (json.available === "false" && json.bookedBy === "true") {
-        makeElemBooked(elem);
-    } else {
-        makeElemUnavailable(elem);
-        makeElemDisabled(elem);
-    }
-
-    if (json.type === "VIP"){
-        setVipButton(elem);
-    }
-    if (json.type === "DISABLED"){
-        setDisButton(elem);
-    }
-    if (json.type === "EMPTY"){
-        clearElemStandard(elem);
-        makeElemEmpty(elem);
-        makeElemDisabled(elem);
-    }
-}
-
-function updateButtons(arr) {
-    for (let i = 0; i < arr.length; i++) {
-        updateButton(arr[i]);
-    }
-
-    if(isStandardLimitReached()){
-        disableStandard();
-    }
-    if(isVipLimitReached()){
-        disableVip();
-    }
-
-}
 
 
 
