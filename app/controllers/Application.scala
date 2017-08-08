@@ -14,8 +14,8 @@ import scala.util.{Failure, Success, Try}
 
 class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi,
                              val movieController: MovieController,
-                             val locationController: LocationController
-                            ) extends Controller with MongoController with ReactiveMongoComponents {
+                             val locationController: LocationController)
+  extends Controller with MongoController with ReactiveMongoComponents {
 
   def index: Action[AnyContent] = Action {
     Ok(views.html.index())
