@@ -1,8 +1,6 @@
-import org.specs2.mutable._
 import org.specs2.runner._
 import org.junit.runner._
 import play.api.test._
-import play.api.test.Helpers._
 
 /**
  * Add your spec here.
@@ -84,6 +82,15 @@ class ApplicationControllerSpec extends PlaySpecification {
 
     "should be able to show movies by genre" in new WithApplication {
       route(FakeApplication(), FakeRequest(GET, "/listings/action")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+        case _ => failure
+      }
+    }
+
+    "should be able to search for movies via their title" in new WithApplication {
+      route(FakeApplication(), FakeRequest(GET, "/search/spider")) match {
         case Some(route) =>
           status(route) must equalTo(OK)
           contentType(route) must beSome.which(_ == "text/html")

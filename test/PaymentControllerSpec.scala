@@ -17,14 +17,14 @@ class PaymentControllerSpec extends PlaySpecification {
 
   "The Payments Page" should {
     "should return bad request when no amount is provided" in new WithApplication() {
-      route(FakeApplication(), FakeRequest(GET, "/payment/token")) match {
+      route(FakeApplication(), FakeRequest(GET, "/payment")) match {
         case Some(route) => status(route) must equalTo(BAD_REQUEST)
         case _ => failure
       }
     }
 
     "should a payment page when provided an amount" in new WithApplication() {
-      route(FakeApplication(), FakeRequest(GET, "/payment/token").withSession("bookingPrice" -> "50.00")) match {
+      route(FakeApplication(), FakeRequest(GET, "/payment").withSession("bookingPrice" -> "50.00")) match {
         case Some(route) =>
           status(route) must equalTo(OK)
           contentType(route) must beSome.which(_ == "text/html")
