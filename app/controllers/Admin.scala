@@ -35,20 +35,6 @@ class Admin @Inject()(val reactiveMongoApi: ReactiveMongoApi, val messagesApi: M
 
   def movieDBTable: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
 
-//  def readByName(name: String): Action[AnyContent] = Action.async {
-//    val cursor: Future[Cursor[Movie]] = movieDBTable.map {
-//      _.find(Json.obj("Title" -> name))
-//        .cursor[Movie]
-//    }
-//    val futureUsersList: Future[List[Movie]] = cursor.flatMap(_.collect[List]())
-//    futureUsersList.map { persons => Ok(persons.headOption.get.Title)
-//    }
-//  }
-
-
-
-
-
   def getAllMovies(): Action[AnyContent] = Action.async{
     val cursor: Future[Cursor[Movie]] = movieDBTable.map {
       _.find(Json.obj())
@@ -101,7 +87,6 @@ class Admin @Inject()(val reactiveMongoApi: ReactiveMongoApi, val messagesApi: M
   def create(newMovie: Movie):  Unit = {
     movieDBTable.flatMap(_.insert(newMovie))
   }
-
 
   def delete(name: String): Action[AnyContent] = Action.async {
     val futureResult = movieDBTable.map(_.findAndRemove(Json.obj("Title" -> name)))
