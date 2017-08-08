@@ -58,6 +58,8 @@ class UserController @Inject()(
 
   def usersCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("UserCollection"))
 
+  def bookingsCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("AnonBookingsCollection"))
+
   def addUserToDb(user: User): Unit = usersCol.flatMap(_.insert(user))
 
   def getPassword(password: String): String = Encryption.encrypt(Encryption.getKey(password)(byteLength),password)
@@ -79,9 +81,37 @@ class UserController @Inject()(
 
   def validateLogin(username:String, password: String): Boolean = getUserByPassword(username, password).length == 1
 
-  def addBookingToUser(username: String, booking: Booking): Unit = usersCol.map{
-    _.update(Json.obj("username"-> username),Json.obj("$push" ->
-    Json.obj("bookings"-> Json.obj("$each"->List(booking)))))
+
+  def addBooking(username: Option[String], booking: Booking): Unit = username.fold{
+    addBookingToDb(booking)
+  }{
+    uName => addBookingToUser(uName, booking)
+  }
+
+  def addBookingToDb(booking: Booking): Unit = bookingsCol.flatMap(_.insert(booking))
+
+  def addBookingToUser(username: String, booking: Booking): Unit = {
+    usersCol.map {
+      _.update(Json.obj("username" -> username), Json.obj("$push" ->
+        Json.obj("bookings" -> Json.obj("$each" -> List(booking)))))
+    }
+
+    updatePoints(username, booking.price)
+  }
+
+  def calculatePoints(username: String, cost: Double): Long = {
+    val baseConverter = 5
+    Math.floor(cost/baseConverter).toLong + getUsers(username).headOption.orNull.points
+  }
+
+  def alterUserPoints(username: String, points: Long): Unit = usersCol.map{
+    _.update(Json.obj("username"-> username),Json.obj(
+      "$set"-> Json.obj("points" -> points)))
+  }
+
+  def updatePoints(username: String, cost: Double): Unit ={
+    val newPoints = calculatePoints(username,cost)
+    alterUserPoints(username,newPoints)
   }
 
   def register: Action[AnyContent] = Action {
@@ -133,5 +163,16 @@ class UserController @Inject()(
   def logout(): Action[AnyContent] = Action {
     Redirect(routes.Application.index()).withNewSession
   }
+
+  def delete(username: String): Action[AnyContent] = Action { request: Request[AnyContent] =>
+    request.session.get("isTest").fold{ Unauthorized("Sorry Functionality not available to you")}{
+      value => deleteUser(username)
+        Redirect(routes.UserController.logout())
+    }
+  }
+
+  def deleteUser(username: String): Unit = Await.result(usersCol.map {
+    _.findAndRemove(Json.obj("username"->username))}, Duration.Inf)
+
 
 }

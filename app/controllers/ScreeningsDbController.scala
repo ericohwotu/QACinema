@@ -25,8 +25,6 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
 
   def apiKeyCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("ApiCollection"))
 
-  def bookingsCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("AnonBookingsCollection"))
-
 
   //===================================API KEY FUNCTIONS===================================================//
   def getKey: Action[AnyContent] = Action {
@@ -78,8 +76,9 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
 
   def addMovie2Db(movie: Screening): Unit = moviesCol.flatMap(_.insert(movie))
 
-  def getSeatsBySlots(name: String, date: String, time: String): Option[List[Seat]] = {
+  def deleteMovie(movieName: String): Unit = moviesCol.map(_.findAndRemove(Json.obj("name" -> movieName)))
 
+  def getSeatsBySlots(name: String, date: String, time: String): Option[List[Seat]] = {
     val agg = moviesCol.map {
       _.aggregate(Match(Json.obj("name" -> name)),
         List(UnwindField("dateSlots"),
@@ -94,10 +93,10 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
     Await.result(agg, Duration.Inf) match {
       case aggregateResult =>
         val futureResult = Await.result(aggregateResult, Duration.Inf)
-
         futureResult.firstBatch.isEmpty match {
           case true => None
-          case false => getSeatsHelper(futureResult.firstBatch)
+          case false =>
+            getSeatsHelper(futureResult.firstBatch)
         }
     }
   }
@@ -114,12 +113,11 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
 
   //==================================== SEAT SELECTION =================================================//
   def bookSeat(name: String, date: String, time: String, seat: Seat): Unit = {
-
     val dateIndex = DateSlot.getIndex(date)
     val timeIndex = TimeSlot.getIndex(time)
     val setAuthor = s"dateSlots.$dateIndex.timeSlots.$timeIndex.seats.${seat.id - 1}.author"
     val setExpiry = s"dateSlots.$dateIndex.timeSlots.$timeIndex.seats.${seat.id - 1}.expiry"
-    val seats = getSeatsBySlots(name, date, time).orNull
+    val seats = getSeatsBySlots(name, date, time).getOrElse(List())
     val reqSeats = seats.filter(_.id == seat.id)
 
     def bookHelper(author: String) = moviesCol.map {
@@ -128,9 +126,9 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
           s"$setExpiry" -> Seat.getExpiryDate)))
     }
 
-    doesSeatExist(reqSeats, seat) match {
+    doesSeatExist(reqSeats, seat) match{
       case false => None
-      case true => toBook(reqSeats.head, seat) match {
+      case true => toBook(reqSeats.head, seat) match{
         case true => bookHelper(seat.author)
         case false => bookHelper("")
       }
@@ -190,13 +188,20 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
 
     getSeatsBySlots(name, date, time).fold {} {
       seats =>
-        val count = seats.filter(seat => seat.author == key && !seat.booked).length
+        val count = seats.count(seat => seat.author == key && !seat.booked)
         submitHelper(count + 1)
     }
 
   }
 
   //=============================================== Unbook Seats =============================//
+
+  def unbook: Action[AnyContent] = Action { request: Request[AnyContent] =>
+    request.session.get("isTest").fold{ Unauthorized("Sorry Functionality not available to you")}{
+      _ => unbookRunner
+        Ok("Started")
+    }
+  }
 
   def unbookRunner: Unit = {
     getMoviesInDb.foreach { movie =>
