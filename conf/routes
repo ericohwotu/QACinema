@@ -20,7 +20,6 @@ GET     /listings/$genre<[a-z-]+>       controllers.Application.listingsWithGenr
 GET     /search/$title<[%a-zA-Z0-9-]+>    controllers.Application.searchByTitle(title: String)
 
 GET     /about                      controllers.Application.about
-GET     /nearby                     controllers.Application.nearby
 
 
 # bookings page

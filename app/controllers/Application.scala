@@ -105,8 +105,4 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
       Ok(views.html.findUs(cinemas))
     }
   }
-
-  def nearby: Action[AnyContent] = Action {
-    Ok(views.html.nearby())
-  }
 }
