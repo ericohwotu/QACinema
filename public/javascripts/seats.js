@@ -25,34 +25,36 @@ function getDays(){
         let month = date.getMonth();
         let year = date.getYear();
         if(date.getDate()=== new Date().getDate() && date.getHours() > 21) {
+            dates.push("blank")
         } else {
-            dates[i] = today + " " + months[month].toUpperCase() + " " + (year + 1900);
+            dates.push(today + " " + months[month].toUpperCase() + " " + (year + 1900));
         }
     }
 
-    if(!dates[0]) {dates.shift();}
+    if(dates[0] === "blank") {dates.shift();}
     return dates;
 }
 
 function getTimes(){
     let date = new Date();
     let timeNow = date.getHours();
-    let times = new Array(7);
+    let times = [];
     let start = 0;
 
     if (days.length===6) {start = 1;}
 
     for (let i = start; i<7; i++){
-        times[i] = new Array(8);
+        let sub = [];
         for (let j=0; j<24; j += 3){
             if(i === 0 && j < timeNow) {
-                times[i][j] = 0;
+                sub.push(0);
             } else {
-                times[i][j] = j + ":00";
+                sub.push(j + ":00");
             }
         }
+        times.push(sub)
     }
-    if(!times[0]) {times.shift();}
+    // if(!times[0]) {times.shift();}
     return times;
 }
 
