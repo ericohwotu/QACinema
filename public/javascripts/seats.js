@@ -3,6 +3,46 @@ let callback;
 let days;
 let hours;
 
+// function for getting class array
+function getClassArray(className) {
+    return Array.prototype.slice.call(document.getElementsByClassName(className));
+}
+// functions to increase security and reduce code duplication
+function isElemBooked(elem){return elem.classList.contains("booked");}
+function makeElemDisabled(elem){elem.setAttribute("disabled", "true");}
+function clearElemDisabled(elem){elem.removeAttribute("disabled");}
+function clearElemClassDisabled(elem){elem.classList.remove("disabled");}
+
+function makeElemUnavailable(elem){
+    elem.classList.remove("available");
+    elem.classList.add("unavailable");
+}
+function makeElemBooked(elem){
+    elem.classList.remove("unavailable");
+    elem.classList.add("booked");
+}
+function clearElemBooked(elem){elem.classList.remove("booked");}
+function makeElemVip(elem){elem.classList.add("vip");}
+function clearElemVip(elem){elem.classList.remove("vip");}
+function makeElemStandard(elem){elem.classList.add("standard");}
+function clearElemStandard(elem){elem.classList.remove("standard");}
+function makeElemEmpty(elem){elem.classList.add("empty");}
+function makeElemDisability(elem){elem.classList.add("dis");}
+function clearElemDisability(elem){elem.classList.remove("dis");}
+function clearElemUnavailable(elem){elem.classList.remove("unavailable");}
+
+function makeElemAvailable(elem){
+    elem.classList.add("available");
+    elem.classList.remove("unavailable");
+}
+
+//multi element functions
+function clearElemsDisabled(elems){
+    elems.forEach(function(elem){
+        clearElemDisabled(elem);
+    });
+}
+
 function getSelectedText(elementId) {
     let elem = document.getElementById(elementId);
 
@@ -25,34 +65,40 @@ function getDays(){
         let month = date.getMonth();
         let year = date.getYear();
         if(date.getDate()=== new Date().getDate() && date.getHours() > 21) {
+            continue;
         } else {
-            dates[i] = today + " " + months[month].toUpperCase() + " " + (year + 1900);
+            dates.push(today + " " + months[month].toUpperCase() + " " + (year + 1900));
         }
     }
 
-    if(!dates[0]) {dates.shift();}
+    if(dates[0] === "blank") {dates.shift();}
     return dates;
+}
+
+function getSubTimes(i, timeNow){
+    let sub = [];
+    for (let j=0; j<24; j += 3){
+        if(i === 0 && j < timeNow) {
+            continue;
+        } else {
+            sub.push(j + ":00");
+        }
+    }
+    return sub;
 }
 
 function getTimes(){
     let date = new Date();
     let timeNow = date.getHours();
-    let times = new Array(7);
+    let times = [];
     let start = 0;
 
     if (days.length===6) {start = 1;}
 
     for (let i = start; i<7; i++){
-        times[i] = new Array(8);
-        for (let j=0; j<24; j += 3){
-            if(i === 0 && j < timeNow) {
-                times[i][j] = 0;
-            } else {
-                times[i][j] = j + ":00";
-            }
-        }
+        let sub = getSubTimes(i, timeNow);
+        times.push(sub);
     }
-    if(!times[0]) {times.shift();}
     return times;
 }
 
@@ -72,6 +118,21 @@ function getVipTicketCount(){
     return vAdult + vStudent + vChild;
 }
 
+function isSeatLimitReached(){
+    let bookedCount = document.getElementsByClassName("booked").length;
+    let submitBooking = document.getElementById("submit-booking");
+
+    let total = getStandardTicketCount() + getVipTicketCount();
+
+    if(bookedCount !== total || total === 0) {
+        makeElemDisabled(submitBooking);
+    } else {
+        clearElemDisabled(submitBooking);
+    }
+
+    return bookedCount >= total;
+}
+
 function isStandardLimitReached(){
 
     let bookedCount = document.getElementsByClassName("standard booked").length;
@@ -87,41 +148,42 @@ function isVipLimitReached(){
 }
 
 function enableTable(){
-    let tallies = document.getElementsByClassName("tally");
+    let tallies = getClassArray("tally");
 
-    for(let i=0; i<tallies.length; i++){
-        tallies[i].removeAttribute("disabled");
-        tallies[i].classList.remove("disabled");
-    }
+    tallies.forEach(function(tally){
+        clearElemDisabled(tally);
+        clearElemClassDisabled(tally);
+    });
 }
 
 function enableScreens(){
     let screens = document.getElementById("screens");
     let total = getStandardTicketCount() + getVipTicketCount();
 
-    screens.removeAttribute("disabled");
-    screens.classList.remove("disabled");
+    clearElemDisabled(screens);
+    clearElemClassDisabled(screens);
 
-    //if(total>0)refresh();
     enableTable();
 }
 function popTimes(day){
     let timesOptions = document.getElementById("times");
     let total = getStandardTicketCount() + getVipTicketCount();
+    let curHours = hours[day];
 
     timesOptions.innerHTML = "";
-    timesOptions.removeAttribute("disabled");
-    timesOptions.classList.remove("disabled");
+    clearElemDisabled(timesOptions);
+    clearElemClassDisabled(timesOptions);
 
-    for(let i = 0; i< hours[day].length; i+=3){
-        if(hours[day][i] !== 0 || hours[day][i]){
+    for(let i = 0; i< curHours.length; i+=1){
+        if(curHours[i] !== 0 || curHours[i]){
             let opt = document.createElement("option");
+            let text = document.createTextNode(curHours[i]);
             opt.value = i;
-            opt.innerHTML = hours[day][i];
+            opt.appendChild(text);
             timesOptions.appendChild(opt);
         }
     }
-    //if(total>0)refresh()
+
     enableScreens();
 }
 
@@ -129,11 +191,93 @@ function popDates(){
     let daysOptions = document.getElementById("days");
     for(let i = 0; i< days.length; i++){
         let opt = document.createElement("option");
+        let text = document.createTextNode(days[i]);
         opt.value = i;
-        opt.innerHTML = days[i];
+        opt.appendChild(text);
         daysOptions.appendChild(opt);
     }
     popTimes(0);
+}
+
+function setVipButton(seat){
+    clearElemStandard(seat);
+    clearElemVip(seat);
+    makeElemVip(seat);
+}
+
+function setDisButton(seat){
+    clearElemDisability(seat);
+    makeElemDisability(seat);
+}
+
+function updateButtonHelper(json, elem){
+    if (json.available === "true") {
+        makeElemAvailable(elem);
+    } else if (json.available === "false" && json.bookedBy === "true") {
+        makeElemBooked(elem);
+    } else {
+        makeElemUnavailable(elem);
+        makeElemDisabled(elem);
+    }
+}
+
+function updateButton(json) {
+    let elem = document.getElementById("seat-" + json.seatid);
+    clearElemStandard(elem);
+    makeElemStandard(elem);
+    elem.classList.remove("available");
+    clearElemUnavailable(elem);
+    clearElemBooked(elem);
+
+    updateButtonHelper(json,elem);
+
+    if (json.type === "VIP"){
+        setVipButton(elem);
+    }
+    if (json.type === "DISABLED"){
+        setDisButton(elem);
+    }
+    if (json.type === "EMPTY"){
+        clearElemStandard(elem);
+        makeElemEmpty(elem);
+        makeElemDisabled(elem);
+    }
+}
+
+function disableHelper(elems){
+    elems.forEach(function(elem){
+        if(!isElemBooked(elem)) {
+            makeElemDisabled(elem);
+            makeElemUnavailable(elem);
+        }
+    });
+}
+
+function disableStandard() {
+    let elems = getClassArray("standard");
+    disableHelper(elems);
+    clearInterval(callback);
+}
+
+function disableVip(){
+    let elems = getClassArray("vip");
+
+    disableHelper(elems);
+    clearInterval(callback);
+}
+
+function updateButtons(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        updateButton(arr[i]);
+    }
+
+    if(isStandardLimitReached()){
+        disableStandard();
+    }
+    if(isVipLimitReached()){
+        disableVip();
+    }
+
 }
 
 function refresh() {
@@ -160,11 +304,9 @@ window.onload = function () {
 function enableStandard() {
     clearInterval(callback);
     callback = setInterval(refresh, 5000);
-    let elems = document.getElementsByClassName("standard");
+    let elems = getClassArray("standard");
 
-    for (let i = 0; i < elems.length; i++) {
-        elems[i].removeAttribute("disabled");
-    }
+    clearElemsDisabled(elems);
 
     refresh();
 }
@@ -172,26 +314,30 @@ function enableStandard() {
 function enableVip() {
     clearInterval(callback);
     callback = setInterval(refresh, 5000);
-    let elems = document.getElementsByClassName("vip");
+    let elems = getClassArray("vip");
 
-    for (let i = 0; i < elems.length; i++) {
-        elems[i].removeAttribute("disabled");
-    }
+    clearElemsDisabled(elems);
 
     refresh();
 }
 
-function changeSeatColor(elem, json) {
-    elem.classList.remove("available");
-    elem.classList.remove("booked");
-
+function changeColorHelper(json, elem){
     if (json.outcome === "failure") {
-        elem.classList.add("unavailable");
+        makeElemUnavailable(elem);
     } else if (json.outcome === "success" && json.message === "seat booked") {
-        elem.classList.add("booked");
+        makeElemBooked(elem);
     } else {
-        elem.classList.add("available");
+        makeElemAvailable(elem);
     }
+
+}
+function changeSeatColor(elem, json) {
+    clearElemBooked(elem);
+    clearElemDisabled(elem);
+    clearElemUnavailable(elem);
+    clearElemStandard(elem);
+
+    changeColorHelper(json, elem);
 
     if(isStandardLimitReached()){disableStandard();}
     else {enableStandard();}
@@ -210,109 +356,6 @@ function selectSeat(seatId) {
         + "&date=" + getSelectedText("days") + "&time=" + getSelectedText("times"), true);
     xhttp.send();
 }
-
-function isSeatLimitReached(){
-    let bookedCount = document.getElementsByClassName("booked").length;
-    let submitBooking = document.getElementById("submit-booking");
-
-    let total = getStandardTicketCount() + getVipTicketCount();
-
-
-    if(bookedCount !== total || total === 0) {
-        submitBooking.setAttribute("disabled", "true");
-    } else {
-        submitBooking.removeAttribute("disabled");
-    }
-
-    return bookedCount >= total;
-}
-
-
-
-function disableStandard() {
-    let elems = document.getElementsByClassName("standard");
-
-    for (let i = 0; i < elems.length; i++) {
-        if(!elems[i].classList.contains("booked")) {
-            elems[i].setAttribute("disabled", "true");
-            elems[i].classList.remove("available");
-            elems[i].classList.add("unavailable");
-        }
-    }
-    clearInterval(callback);
-}
-
-function disableVip(){
-    let elems = document.getElementsByClassName("vip");
-
-    for (let i = 0; i < elems.length; i++) {
-        if(!elems[i].classList.contains("booked")) {
-            elems[i].setAttribute("disabled", "true");
-            elems[i].classList.remove("available");
-            elems[i].classList.add("unavailable");
-        }
-    }
-    clearInterval(callback);
-}
-
-
-
-function setVipButton(seat){
-    seat.classList.remove("standard");
-    seat.classList.remove("vip");
-    seat.classList.add("vip");
-}
-
-function setDisButton(seat){
-    seat.classList.remove("dis");
-    seat.classList.add("dis");
-}
-
-function updateButton(json) {
-    let elem = document.getElementById("seat-" + json.seatid);
-    elem.classList.remove("standard");
-    elem.classList.add("standard");
-    elem.classList.remove("available");
-    elem.classList.remove("booked");
-    elem.classList.remove("unavailable");
-
-    if (json.available === "true") {
-        elem.classList.add("available");
-    } else if (json.available === "false" && json.bookedBy === "true") {
-        elem.classList.add("booked");
-    } else {
-        elem.classList.add("unavailable");
-        elem.setAttribute("disabled", "true");
-    }
-
-    if (json.type === "VIP"){
-        setVipButton(elem);
-    }
-    if (json.type === "DISABLED"){
-        setDisButton(elem);
-    }
-    if (json.type === "EMPTY"){
-        elem.classList.remove("standard");
-        elem.classList.add("empty");
-        elem.setAttribute("disabled", "true");
-    }
-}
-
-function updateButtons(arr) {
-    for (let i = 0; i < arr.length; i++) {
-        updateButton(arr[i]);
-    }
-
-    if(isStandardLimitReached()){
-        disableStandard();
-    }
-    if(isVipLimitReached()){
-        disableVip();
-    }
-
-}
-
-
 
 // ================================ Booking.js functions ============================== //
 function getTotal(){
@@ -349,6 +392,6 @@ function getTotal(){
 
 function submitBookings(){
     alert("Booking has been made, you will now be redirected to the payment");
-    window.location.href = "/bookings/topayment?amount=" + getTotal();
+    window.location.assign("/bookings/topayment?amount=" + getTotal());
 }
 
