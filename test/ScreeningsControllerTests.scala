@@ -18,7 +18,7 @@ class ScreeningsControllerTests extends Specification {
 
   val movieName = "Sample Booking"
   val apiKey = "8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU"
-  val seatId = 5
+  val seatId = 10
   val testMovie = "Test Movie"
 
   "ScreeningsController" should {
@@ -96,7 +96,7 @@ class ScreeningsControllerTests extends Specification {
     "submit bookings should redirect" in new WithApplication() {
       val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/submit?" +
         "key=8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU&name=Sample%20Booking&date=6%20AUG%202017&" +
-        "time=9:00").withSession(("loggedin","qacinema"),("bookingPrice","25"))).orNull
+        "time=9:00").withSession(("loggedin","qacinema"),("bookingPrice","5"))).orNull
       Await.result(getSeats, Duration.Inf)
       status(getSeats) must equalTo(SEE_OTHER)
     }
@@ -104,7 +104,7 @@ class ScreeningsControllerTests extends Specification {
     "submit bookings should redirect and add to generic db for no user" in new WithApplication() {
       val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/submit?" +
         "key=8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU&name=Sample%20Booking&date=6%20AUG%202017&" +
-        "time=9:00").withSession(("bookingPrice","25"))).orNull
+        "time=9:00").withSession(("bookingPrice","5"))).orNull
       Await.result(getSeats, Duration.Inf)
       status(getSeats) must equalTo(SEE_OTHER)
     }
