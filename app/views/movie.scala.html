@@ -1,0 +1,79 @@
+@(movie : Movie)
+
+@main("Movie") {
+    <!-- ADD SEARCH WHEN IMPLEMENTED -->
+  <hr>
+  <div class="giantmovie container-fluid" style="background-image: url(@movie.Poster);">
+    <div class="row gradientheight">
+      <div class="giantgradient" align="right">
+        <iframe  class="trailer" src="https://www.youtube.com/embed/@{movie.video}?autoplay=1"
+          frameborder="0">
+        </iframe>
+        <div class="card-block gianttext" >
+          <h4 class="card-title">@movie.Title</h4>
+          <p class="card-text">@movie.Plot</p>
+        </div>
+
+        <div class="card-block gianttext" >
+          <h4 class="card-title">Genre</h4>
+          <p class="card-text">@movie.Genre</p>
+        </div>
+
+        <div class="card-block gianttext" >
+          <h4 class="card-title">Certification</h4>
+          <img id="theCert" class="@movie.Rated" height="70px" width="85px">
+        </div>
+
+        <div class="card-block gianttext" >
+          <h4 class="card-title">Actors</h4>
+          <p class="card-text">@movie.Actors</p>
+        </div>
+
+        <div class="card-block gianttext" >
+          <h4 class="card-title">Director</h4>
+          <p class="card-text">@movie.Director</p>
+        </div>
+
+        <a href="/bookings?id=@{movie.Title}">
+          <b><button type="submit"  class="bookButton">Book now</button></b>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+    <!-- Page Content -->
+  <div class="container">
+
+
+
+    <hr>
+
+
+  </div>
+    <!-- /.container -->
+
+    <!-- Get movie certification image script -->
+  <script>
+    window.onload = function() {
+      document.getElementById("theCert").src = getCertPath(document.getElementById("theCert").getAttribute("class"))
+    }
+
+    function getCertPath(theRating) {
+      switch(theRating) {
+        case "G": case "U": return "/assets/images/uCert.png";
+        break;
+        case "PG": return "/assets/images/pgCert.png";
+        break;
+        case "PG-13": return "/assets/images/12aCert.png";
+        break;
+        case "R": case "NC-17": return "/assets/images/18Cert.png";
+        break;
+        default: return "brokenImage.png"
+      }
+    }
+  </script>
+}

@@ -1,0 +1,46 @@
+@(form: Form[(String, String, String, String, String)])(implicit messages: Messages)
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        @*<link rel="stylesheet" href='@routes.Assets.at("stylesheets/bootstrap.min.css")'>*@
+            <!-- custom scripts and stylesheets -->
+        <link rel="stylesheet" href='@routes.Assets.at("stylesheets/bookings.css")'>
+        <script src='@routes.Assets.at("javascripts/bookings.js")'></script>
+        <title>Register</title>
+    </head>
+
+    <body style="background-color: black">
+    @main("Register") {
+        <div class="container">
+            <div class="row track-list fill">
+                <div class="col-lg-12 card-text">
+                    @if(form.hasErrors) {
+                        @for(error <- form.errors) {
+                            <div class="well well-sm error">@error.message</div>
+                        }
+                    }
+                @helper.form(action = routes.UserController.regHandler(), 'class->"form-inline") {
+                    <div class="form-group">
+                    @helper.inputText(form("Name"), 'class->"form-control")
+                    </div><div class="form-group">
+                    @helper.inputText(form("Email"), 'class->"form-control")
+                    </div><div class="form-group">
+                    @helper.inputText(form("Username"), 'class->"form-control")
+                    </div><div class="form-group">
+                    @helper.inputPassword(form("Password"), 'class->"form-control")
+                    </div><div class="form-group">
+                    @helper.inputPassword(form("Confirm Password"), 'class->"form-control")
+                    </div><div class="form-group">
+                    <button type="submit" class="btn">Submit</button>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+        <br>
+    }
+    </body>
+</html>

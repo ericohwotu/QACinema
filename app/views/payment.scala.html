@@ -1,0 +1,53 @@
+@(token : String, amount : String)
+
+@main("test") {
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://js.braintreegateway.com/web/dropin/1.4.0/js/dropin.min.js"></script>
+        <title>Title</title>
+    </head>
+    <body>
+
+        <div class="container">
+            <div id="dropin-container"></div>
+            <button id="submit-button" class="bookButton">Make Payment</button>
+        </div>
+        <script>
+            var button = document.querySelector('#submit-button');
+
+            braintree.dropin.create({
+                authorization: '@token',
+                container: '#dropin-container',
+                paypal: {
+                    flow: 'checkout',
+                    amount: '@amount',
+                    currency: 'GBP'
+                }
+            }, function (createErr, instance) {
+                button.addEventListener('click', function () {
+                    instance.requestPaymentMethod(function (err, payload) {
+                        if (err) {
+                            alert(err);
+                            return;
+                        }
+
+                        $.ajax({
+                            url: "/payment/make",
+                            method: "POST",
+                            data: {
+                                "nonce" : payload.nonce,
+                                "amount" : '@amount'
+                            },
+                            success: function(res) {
+                                window.location.href = "/bookings/confirm";
+                            }
+                        })
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
+}

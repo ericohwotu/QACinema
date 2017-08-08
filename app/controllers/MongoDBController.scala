@@ -3,7 +3,6 @@ package controllers
 import javax.inject.Inject
 
 import akka.util.LineNumbers.Result
-
 import scala.concurrent.Future
 import play.api.mvc.{Action, AnyContent, Controller}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -62,29 +61,10 @@ class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extend
     Ok("Trending Movies Added!")
   }
 
-  def createBookings(seatList: List[Seat], bookingPrice: Double): Action[AnyContent] = Action.async {
-       val booking = Bookings(
-          seatList,
-          bookingPrice)
-
-          val futureResult = bookings.flatMap(_.insert(booking))
-       futureResult.map(_ => Ok("Added user " + booking.seats.head.author))
-      }
-
   def getTrending : List[trendingMovieList] = {
     val response = Http("https://api.themoviedb.org/3/movie/now_playing?api_key=f675a5619b10739ad98190b5599f50d9&language=en-US&page=1")
     val currentMovies = Json.parse(response.asString.body)
     (currentMovies \"results").get.validate[List[trendingMovieList]].get
-  }
-
-  def readByName(name: String): Action[AnyContent] = Action.async {
-    val cursor: Future[Cursor[Movie]] = movieDBTable.map {
-      _.find(Json.obj("Title" -> name))
-        .cursor[Movie]
-    }
-    val futureUsersList: Future[List[Movie]] = cursor.flatMap(_.collect[List]())
-    futureUsersList.map { persons => Ok(persons.headOption.get.Title)
-    }
   }
 
 }
