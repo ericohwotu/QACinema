@@ -82,7 +82,6 @@ footer {
   height: auto !important;
   height: 100%;
   margin: 0 auto 0px; /* the bottom margin is the negative value of the footer's height */
-
 }
 
 .giantmovie {
@@ -9635,6 +9634,5 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   height: 40px;
   text-align: center;
 }
-
 /*# sourceMappingURL=bootstrap.css.map */
 
