@@ -29,4 +29,15 @@ class MongoDBSpec extends PlaySpecification {
       }
     }
   }
+
+  "Admin Page listing Movies" should {
+    "should return OK listing movies" in new WithApplication() {
+      route(FakeApplication(), FakeRequest(GET, "/getallmovies")) match {
+        case Some(route) => status(route) must equalTo(OK)
+        case _ => failure
+      }
+    }
+  }
+
+
 }
