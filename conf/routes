@@ -43,6 +43,11 @@ GET     /logout                     controllers.UserController.logout
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 #MongoDB
-GET     /addMovies                  controllers.Mongo.createMoviesFromAPI()
-GET     /addCinemas                 controllers.Mongo.addLocations()
+GET     /addmovies                  controllers.MongoDBController.createMoviesFromAPI()
+GET     /addcinemas                 controllers.MongoDBController.addLocations()
 
+#Admin Page
+GET     /getallmovies               controllers.Admin.getAllMovies()
+GET     /delete/:name               controllers.Admin.delete(name: String)
+POST    /createmovie                controllers.Admin.createMovie()
+POST    /update                     controllers.Admin.updateMovie()
