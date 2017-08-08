@@ -5,14 +5,13 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
-                <h1 class="page-header">Movie Listings<br>
-                    <small>All movies that are currently showing</small>
-                </h1>
+              <h1 class="page-header card-title">Movie Listings<br></h1>
+                    <h4 class="card-text">All movies that are currently showing</h4>
             </div>
 
             <div class="col-lg-6" align="right">
-              <h1 class="page-header"><small>Filter by genre:</small></h1>
-              <select id="genreSelect" width="200px" height="150px">
+              <h1 class="page-header card-title"><small>Filter by genre</small></h1>
+              <select id="genreSelect" height="50px">
                 <option value="Action">Action</option>
                 <option value="Animation">Animation</option>
                 <option value="Adventure">Adventure</option>
@@ -25,8 +24,8 @@
                 <option value="Sci-Fi">Sci-Fi</option>
                 <option value="Thriller">Thriller</option>
               </select>
-              <form id="genreFilter" class="float-right" onsubmit="filterGenre();">
-                <button>Go</button>
+              <form id="genreFilter" style="float: right;" onsubmit="filterGenre();">
+                <p style="float: left;">&nbsp&nbsp&nbsp</p><button class="goButton">Go</button>
               </form>
             </div>
         </div>
