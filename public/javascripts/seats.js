@@ -19,7 +19,7 @@ function makeElemUnavailable(elem){
     elem.classList.add("unavailable");
 }
 function makeElemBooked(elem){
-    elem.classList.remove("unavailable")
+    elem.classList.remove("unavailable");
     elem.classList.add("booked");
 }
 function clearElemBooked(elem){elem.classList.remove("booked");}
@@ -309,10 +309,10 @@ function updateButton(json) {
     if (json.available === "true") {
         makeElemAvailable(elem);
     } else if (json.available === "false" && json.bookedBy === "true") {
-        makeElemBooked(elem)
+        makeElemBooked(elem);
     } else {
-        makeElemUnavailable(elem)
-        makeElemDisabled(elem)
+        makeElemUnavailable(elem);
+        makeElemDisabled(elem);
     }
 
     if (json.type === "VIP"){
