@@ -44,15 +44,13 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Con
   }
 
   def genericListingPage(criteria: Option[String], method : (AnyRef) => String): Action[AnyContent] = Action.async { implicit request =>
-    futureRefinedList[JsObject](criteria, method, Json.obj("_id" -> 1, "Genre" -> 1, "Title" -> 1)).flatMap(jsos => {
+    futureRefinedList[JsObject](criteria, method, Json.obj("_id" -> 1, "Genre" -> 1, "Title" -> 1)).flatMap(jsos =>
       futureRefinedList[Movie](criteria, method, Json.obj()).map {
-        movies => {
-          Ok(views.html.listings(movies.zip(jsos.map {
-            jso => ((jso \ "_id").as[JsObject] \ "$oid").as[String]
-          }).grouped(3).toList))
-        }
+        movies => Ok(views.html.listings(movies.zip(jsos.map {
+          jso => ((jso \ "_id").as[JsObject] \ "$oid").as[String]
+        }).grouped(3).toList))
       }
-    })
+    )
   }
 
   def listings(): Action[AnyContent] = {

@@ -12,7 +12,7 @@ class PaymentController extends Controller {
 
   def generateClientToken(): String = braintreeGateway.clientToken().generate(new ClientTokenRequest())
 
-  def getClientToken() : Action[AnyContent] = Action { implicit request =>
+  def initiateClientToken() : Action[AnyContent] = Action { implicit request =>
     request.session.get("bookingPrice") match {
       case Some(amount) => Ok(views.html.payment(generateClientToken(), amount))
       case None => BadRequest("No amount provided.")

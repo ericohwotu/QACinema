@@ -5,7 +5,7 @@
 # Home page
 GET     /                           controllers.Application.index()
 
-GET     /payment/token              controllers.PaymentController.getClientToken()
+GET     /payment                    controllers.PaymentController.initiateClientToken
 POST    /payment/make               controllers.PaymentController.makePayment
 
 GET     /movie/$id<[0-9a-z]+>       controllers.Application.movie(id : String)
