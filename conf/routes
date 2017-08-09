@@ -30,6 +30,7 @@ POST    /bookings/bookseat          controllers.ScreeningsApiController.bookSeat
 GET     /bookings/topayment         controllers.ScreeningsController.toPayment(amount: String)
 GET     /bookings/confirm           controllers.ScreeningsController.toSubmitBooking()
 GET     /bookings/submit            controllers.ScreeningsApiController.submitBooking(key: Option[String] ?= None,name: Option[String] ?= None, date: String, time: String)
+GET     /bookings/bookingConfirm    controllers.ScreeningsController.bookingConfirm()
 
 # User management
 GET     /register                   controllers.UserController.register

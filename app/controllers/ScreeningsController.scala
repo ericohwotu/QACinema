@@ -56,4 +56,8 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
     val tTime = request.session.get("time").getOrElse("none")
     Redirect(routes.ScreeningsApiController.submitBooking(date = tDate, time = tTime))
   }
+
+  def bookingConfirm: Action[AnyContent] = Action {
+    Ok(views.html.bookings.bookingConfirm())
+  }
 }
