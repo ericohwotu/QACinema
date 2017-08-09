@@ -700,17 +700,17 @@ h7 {
 }
 
 .bookButton {
-  background: #21de6d;
-  background-image: -webkit-linear-gradient(top, #21de6d, #1af01a);
-  background-image: -moz-linear-gradient(top, #21de6d, #1af01a);
-  background-image: -ms-linear-gradient(top, #21de6d, #1af01a);
-  background-image: -o-linear-gradient(top, #21de6d, #1af01a);
-  background-image: linear-gradient(to bottom, #21de6d, #1af01a);
+  background: #2ca9ec;
+  background-image: -webkit-linear-gradient(top, #2ca9ec, #0ECFEE);
+  background-image: -moz-linear-gradient(top, #2ca9ec, #0ECFEE);
+  background-image: -ms-linear-gradient(top, #2ca9ec, #0ECFEE);
+  background-image: -o-linear-gradient(top, #2ca9ec, #0ECFEE);
+  background-image: linear-gradient(to bottom, #2ca9ec, #0ECFEE);
   -webkit-border-radius: 28;
   -moz-border-radius: 28;
   border-radius: 28px;
   font-family: Arial;
-  color: #1157ff;
+  color: white;
   font-size: 24px;
   padding: 10px 20px 10px 20px;
   text-decoration: none;
@@ -718,27 +718,27 @@ h7 {
 }
 
 .bookButton:hover {
-  background: #3cfa68;
-  background-image: -webkit-linear-gradient(top, #3cfa68, #4fd934);
-  background-image: -moz-linear-gradient(top, #3cfa68, #4fd934);
-  background-image: -ms-linear-gradient(top, #3cfa68, #4fd934);
-  background-image: -o-linear-gradient(top, #3cfa68, #4fd934);
-  background-image: linear-gradient(to bottom, #3cfa68, #4fd934);
+  background: #0ebfde;
+  background-image: -webkit-linear-gradient(top, #0ECFEE, #2ca9ec);
+  background-image: -moz-linear-gradient(top, #0ECFEE, #2ca9ec);
+  background-image: -ms-linear-gradient(top, #0ECFEE, #2ca9ec);
+  background-image: -o-linear-gradient(top, #0ECFEE, #2ca9ec);
+  background-image: linear-gradient(to bottom, #0ECFEE, #2ca9ec);
   text-decoration: none;
 }
 
 .goButton {
-  background: #21de6d;
-  background-image: -webkit-linear-gradient(top, #21de6d, #1af01a);
-  background-image: -moz-linear-gradient(top, #21de6d, #1af01a);
-  background-image: -ms-linear-gradient(top, #21de6d, #1af01a);
-  background-image: -o-linear-gradient(top, #21de6d, #1af01a);
-  background-image: linear-gradient(to bottom, #21de6d, #1af01a);
+  background: #2ca9ec;
+  background-image: -webkit-linear-gradient(top, #2ca9ec, #0ECFEE);
+  background-image: -moz-linear-gradient(top, #2ca9ec, #0ECFEE);
+  background-image: -ms-linear-gradient(top, #2ca9ec, #0ECFEE);
+  background-image: -o-linear-gradient(top, #2ca9ec, #0ECFEE);
+  background-image: linear-gradient(to bottom, #2ca9ec, #0ECFEE);
   -webkit-border-radius: 28;
   -moz-border-radius: 28;
   border-radius: 28px;
   font-family: Arial;
-  color: #1157ff;
+  color: white;
   font-size: 18px;
   text-decoration: none;
   height: 35px;
@@ -746,12 +746,12 @@ h7 {
 }
 
 .goButton:hover {
-  background: #3cfa68;
-  background-image: -webkit-linear-gradient(top, #3cfa68, #4fd934);
-  background-image: -moz-linear-gradient(top, #3cfa68, #4fd934);
-  background-image: -ms-linear-gradient(top, #3cfa68, #4fd934);
-  background-image: -o-linear-gradient(top, #3cfa68, #4fd934);
-  background-image: linear-gradient(to bottom, #3cfa68, #4fd934);
+  background: #0ebfde;
+  background-image: -webkit-linear-gradient(top, #0ECFEE, #2ca9ec);
+  background-image: -moz-linear-gradient(top, #0ECFEE, #2ca9ec);
+  background-image: -ms-linear-gradient(top, #0ECFEE, #2ca9ec);
+  background-image: -o-linear-gradient(top, #0ECFEE, #2ca9ec);
+  background-image: linear-gradient(to bottom, #0ECFEE, #2ca9ec);
   text-decoration: none;
 }
 

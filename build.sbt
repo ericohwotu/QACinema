@@ -1,7 +1,7 @@
 name := "QACinema"
  
-version := "1.0" 
-      
+version := "1.0"
+
 lazy val `qacinema` = (project in file(".")).enablePlugins(PlayScala)
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
@@ -16,6 +16,10 @@ unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/
 
 libraryDependencies ++= Seq(
   "org.reactivemongo" %% "play2-reactivemongo" % "0.12.5-play25"
+)
+
+libraryDependencies ++= Seq(
+  "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0" % "test"
 )
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "test"

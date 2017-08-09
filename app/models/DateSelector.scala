@@ -17,8 +17,8 @@ object DateSelector{
       "days" -> Forms.of[String],
       "time" -> Forms.of[String],
       "screen" -> Forms.of[String]
-    )(DateSelector.apply _)(DateSelector.unapply _)
+    )(DateSelector.apply)(DateSelector.unapply)
   )
 
-  implicit val dateFormat = Json.format[DateSelector]
+  implicit val dateSelectorFormat = Json.format[DateSelector]
 }

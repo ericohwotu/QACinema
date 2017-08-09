@@ -39,13 +39,13 @@ class ContactUsTest extends Specification {
     }
 
     "send error on no name submitted" in new WithApplication() {
-      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?message=hello&email=me@you.com")).orNull
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?Message=hello&Email=me@you.com")).orNull
       status(result) must equalTo(BAD_REQUEST)
       contentAsString(result) must contain("Name")
     }
 
     "send error on no email submitted" in new WithApplication() {
-      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?name=eric%20Ohwotu&message=hello")).orNull
+      val result = route(FakeApplication(),FakeRequest(POST, "/contactus?Name=eric%20Ohwotu&message=hello")).orNull
       status(result) must equalTo(BAD_REQUEST)
 
       contentAsString(result) must contain("Email")

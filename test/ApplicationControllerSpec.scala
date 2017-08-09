@@ -2,6 +2,9 @@ import org.specs2.runner._
 import org.junit.runner._
 import play.api.test._
 
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+
 /**
  * Add your spec here.
  * You can mock out a whole application including requests, plugins etc.
@@ -75,7 +78,7 @@ class ApplicationControllerSpec extends PlaySpecification {
 
     "should be able to link to a route which contains a movie page" in new WithApplication {
       listingsRoute match {
-        case Some(route) => contentAsString(route) must contain("<a href='movie/")
+        case Some(route) => contentAsString(route) must contain("<a href='../movie/")
         case _ => failure
       }
     }
