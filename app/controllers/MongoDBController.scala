@@ -37,7 +37,6 @@ class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extend
     Ok("success")
   }
 
-
   def createMoviesFromAPI(): Action[AnyContent] = Action {
     movieDBTable.flatMap(_.drop(false))
     getTrending.foreach { movie =>
@@ -60,10 +59,10 @@ class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extend
   }
 
 
-  def getTrending : List[trendingMovieList] = {
+  def getTrending : List[TrendingMovie] = {
     val response = Http("https://api.themoviedb.org/3/movie/now_playing?api_key=f675a5619b10739ad98190b5599f50d9&language=en-US&page=1")
     val currentMovies = Json.parse(response.asString.body)
-    (currentMovies \"results").get.validate[List[trendingMovieList]].get
+    (currentMovies \"results").get.validate[List[TrendingMovie]].get
   }
 
 
