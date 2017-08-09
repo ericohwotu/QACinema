@@ -163,6 +163,8 @@ function enableScreens(){
     clearElemDisabled(screens);
     clearElemClassDisabled(screens);
 
+    refresh();
+
     enableTable();
 }
 function popTimes(day){
