@@ -65,7 +65,6 @@ class ScreeningsController @Inject()(implicit val messagesApi: MessagesApi,
     val tTime = request.session.get("time").getOrElse("none")
     val author = request.session.get("sessionKey").getOrElse("")
 
-    println(s"$movieName == $price == $tDate == $tTime == $author")
     val seatsList = mongoDbController.getSeatsBySlots(movieName,tDate,tTime)
       .getOrElse(List()).filter(_.author == author)
     val booking = Booking(author,movieName,tDate,tTime,seatsList,price)
