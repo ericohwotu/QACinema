@@ -102,7 +102,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
   }
 
   def getSeatsHelper(firstBatch: List[JsObject]): Option[List[Seat]] = {
-    val jsonResult = firstBatch.head.value
+    val jsonResult = firstBatch.headOption.orNull.value
     val seats = (Json.toJson(jsonResult) \ "dateSlots" \ "timeSlots" \ "seats").validate[List[Seat]]
 
     seats match {
