@@ -1,5 +1,7 @@
 package models
 
+import play.api.libs.json.{Json, OFormat}
+
 case class Booking(
                     reference: String,
                     movieName: String,
@@ -9,7 +11,4 @@ case class Booking(
                     price: Double
                   )
 
-object Booking {
-  import play.api.libs.json._
-  implicit val bookingFormat : OFormat[Booking] = Json.format[Booking]
-}
+object Booking{implicit val bookings :OFormat[Booking] = Json.format[Booking]}

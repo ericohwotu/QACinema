@@ -20,5 +20,5 @@ object DateSelector{
     )(DateSelector.apply)(DateSelector.unapply)
   )
 
-  implicit val dateFormat = Json.format[DateSelector]
+  implicit val dateSelectorFormat = Json.format[DateSelector]
 }
