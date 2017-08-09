@@ -392,7 +392,6 @@ function getTotal(){
 }
 
 function submitBookings(){
-    alert("Booking has been made, you will now be redirected to the payment");
     window.location.assign("/bookings/topayment?amount=" + getTotal());
 }
 

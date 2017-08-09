@@ -49,6 +49,13 @@ class ScreeningsControllerTests extends Specification {
       val toSubmit = route(FakeApplication(),FakeRequest(GET,"/bookings/confirm")).orNull
       status(toSubmit) must equalTo(SEE_OTHER)
     }
+
+    "render the receipt screen" in new WithApplication() {
+      val receipt = route(FakeApplication(),FakeRequest(GET,"/bookings/receipt")
+        .withSession(("sessionKey",apiKey),("movieName",movieName),
+          ("date", movieDate),("time", "9:00"))).orNull
+      status(receipt) must equalTo(OK)
+    }
   }
 
   "ScreeningsApiController" should {
@@ -58,24 +65,6 @@ class ScreeningsControllerTests extends Specification {
       status(getSeats) must equalTo(BAD_REQUEST)
     }
 
-    "give bad request if no moviename is available" in new WithApplication() {
-      val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/getseats")
-        .withSession(("sessionKey","8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU"))).orNull
-      status(getSeats) must equalTo(BAD_REQUEST)
-    }
-
-    "give ok if all parameters are available" in new WithApplication() {
-      val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/getseats?" +
-        s"name=$movieName&date=$movieDate&time=9:00")
-        .withSession(("sessionKey","8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU"))).orNull
-
-      status(getSeats) must equalTo(OK)
-    }
-
-    "give unauthorised if apikey is not recognised" in new WithApplication() {
-      val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/getseats" +
-        "?key=8Nv6XI2hrq6dRxzDbfY5W3AU&date=7 AUG 2017&time=9:00")).orNull
-      contentAsString(getSeats) must contain("Sorry you are not authorised")
       status(getSeats) must equalTo(UNAUTHORIZED)
     }
 

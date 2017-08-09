@@ -1,8 +1,11 @@
 package models
 
-case class CinemaLocation(latitude: String, longitude: String)
+import play.api.libs.json.{Json, OFormat}
 
-object CinemaLocation {
-  import play.api.libs.json._
-  implicit val cinemaLocationFormat : OFormat[CinemaLocation] = Json.format[CinemaLocation]
-}
+case class CinemaLocation(
+                           name: String,
+                           latitude: String,
+                           longitude: String
+                         )
+
+object CinemaLocation{ implicit val locations :OFormat[CinemaLocation] = Json.format[CinemaLocation]}
