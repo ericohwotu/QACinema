@@ -1,0 +1,55 @@
+@(cinemaCoords: List[Place])
+
+@main("Find Us") {
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="card-title text-center">Find us</h1> <br>
+    <h4 class="card-text text-center">If you're planning on visiting us, select your cinema in the box below to
+      view the best route from your current location. Also displayed on the map are nearby places of interest to help
+      you plan the rest of your day.</h4>
+  </div> <br>
+    <!-- /.container -->
+  <div id="mapContainer" class="container">
+    <div id="headerRow" class="row track-list">
+      <div class="col-lg-4">
+        <div class="input-group">
+          <span class="input-group-addon">Starting location:</span>
+          <input id="searchBar" class="form-control" type="text" placeholder="Start Point">
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="input-group">
+          <span class="input-group-addon">Mode of travel:</span>
+          <select id="travelMode" class="form-control">
+            <option value="DRIVING">Driving</option>
+            <option value="WALKING">Walking</option>
+            <option value="BICYCLING">Bicycling</option>
+            <option value="TRANSIT">Transit</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="input-group">
+          <span class="input-group-addon">Cinema:</span>
+          <select id="cinemaMode" class="form-control">
+          @for(cinema <- cinemaCoords) {
+            <option value="@(cinema.latitude.toDouble):@(cinema.longitude.toDouble)">@(cinema.name)</option>
+          }
+          </select>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div id="mapRow" class="row track-list">
+      <div id="mapColumn" class="col-lg-9">
+        <div id="map"></div>
+      </div>
+      <div id="pathColumn" class="col-lg-3 bg-directions">
+        <div id="rightPanel"></div>
+      </div>
+    </div>
+  </div> <br>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPb8yqimOk1bUNFeF7vxXM_npvHcfcWLc&libraries=places"></script>
+  <script src="@routes.Assets.at("javascripts/mapscript.js")"></script>
+}

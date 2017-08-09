@@ -1,7 +1,106 @@
-@(message: String)
+@(mainpageIDs : List[String])
 
-@main("Welcome to Play") {
+@main("Homepage") {
+    <!-- Page Content -->
+  <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel"
+  xmlns="http://www.w3.org/1999/html">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <div class="carousel-item active">
+        <a id="caro1" href="/movie/598b022b5baab58ce9380ab5">
+          <img class="carousel-img" src="@routes.Assets.at("images/spidermanCaro.png")" alt="First slide"></a>
+      </div>
+      <div class="carousel-item">
+       <a id="caro2" href="/movie/598b022c5baab58ce9380ab7">
+         <img class="carousel-img" src="@routes.Assets.at("images/dunkirkCaro.png")" alt="Second slide"></a>
+      </div>
+      <div class="carousel-item">
+        <a id="caro3" href="/movie/598b022c5baab58ce9380ab9">
+          <img class="carousel-img" src="@routes.Assets.at("images/valerianCaro.png")" alt="Third slide"></a>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
 
-    @play20.welcome(message)
+  <div class="container">
+    <h7>Featured</h7><br>
+    <div class="row">
 
+      <div class="col-lg-12">
+
+        <div class="row">
+
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card h-100">
+              <a href="/movie/598b022c5baab58ce9380ab8">
+                <img class="home-movie-img" src="@routes.Assets.at("images/apes.jpg")" alt="Planet of the Apes"></a>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card-block">
+              <a href="/movie/598b022c5baab58ce9380ab8"><h4 class="card-title">War for the Planet of the Apes</h4></a>
+              <p class="card-text">After the apes suffer unimaginable losses, Caesar wrestles with his darker instincts
+                and begins his own mythic quest to avenge his kind.</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card h-100">
+              <a href="/movie/598b022c5baab58ce9380abb">
+                <img class="home-movie-img" src="@routes.Assets.at("images/atomic.jpg")" alt="Atomic Blonde"></a>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card-block">
+              <a href="/movie/598b022c5baab58ce9380abb"><h4 class="card-title">Atomic Blonde</h4></a>
+              <p class="card-text">An undercover MI6 agent is sent to Berlin during the Cold War to investigate the
+                murder of a fellow agent and recover a missing list of double agents.</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">&#9733; &#9733; &#9733; &#9734; &#9734;</small>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card h-100">
+              <a href="/movie/598b022b5baab58ce9380ab6">
+                <img class="home-movie-img" src="@routes.Assets.at("images/despicable.jpg")" alt="Despicable Me"></a>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card-block">
+              <a href="/movie/598b022b5baab58ce9380ab6"><h4 class="card-title">Despicable Me 3</h4></a>
+              <p class="card-text">Gru meets his long-lost charming, cheerful, and more successful twin brother Dru
+                who wants to team up with him for one last criminal heist.</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">&#9733; &#9733; &#9733; &#9734; &#9734;</small>
+            </div>
+          </div>
+
+        </div>
+          <!-- /.row -->
+
+      </div>
+        <!-- /.col-lg-9 -->
+
+    </div>
+      <!-- /.row -->
+
+  </div>
+    <!-- /.container -->
 }

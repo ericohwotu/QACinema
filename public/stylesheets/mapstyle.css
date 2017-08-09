@@ -1,0 +1,51 @@
+#map {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 0;
+    border-radius: 5px;
+}
+
+#mapContainer {
+    width:80%;
+    height:80%;
+}
+
+#mapColumn {
+    height:500px;
+    margin: 0 auto;
+}
+
+#pathColumn {
+    height:500px;
+    overflow:auto;
+    border-radius: 5px;
+}
+
+.input-group, input, .input-group-addon{
+    height:40px;
+}
+#searchBar {
+    width:100%;
+}
+
+.bg-directions{
+    background-color: whitesmoke;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+    border-radius: 2px;
+
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    background-color: rgba(38, 67, 134, 0.7);
+}

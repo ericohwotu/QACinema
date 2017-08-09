@@ -13,3 +13,5 @@ dist
 /.project
 /RUNNING_PID
 /.settings
+conf/generated.keystore
+project/scalastyle-config.xml

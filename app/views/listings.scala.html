@@ -1,0 +1,86 @@
+@(movies: List[List[(Movie, String)]])
+@main("Listings") {
+    <hr>
+        <!-- ADD SEARCH WHEN IMPLEMENTED -->
+    <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-lg-4" align="right">
+            <h1 class="page-header card-title"><small>Filter by genre</small></h1>
+            <select id="genreSelect" height="50px">
+              <option value="Action">Action</option>
+              <option value="Animation">Animation</option>
+              <option value="Adventure">Adventure</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Crime">Crime</option>
+              <option value="Drama">Drama</option>
+              <option value="Drama">Fantasy</option>
+              <option value="History">History</option>
+              <option value="Mystery">Mystery</option>
+              <option value="Sci-Fi">Sci-Fi</option>
+              <option value="Thriller">Thriller</option>
+            </select>
+            <form id="genreFilter" style="float: right;" onsubmit="filterGenre();">
+              <p style="float: left;">&nbsp&nbsp&nbsp</p><button class="goButton">Go</button>
+            </form>
+          </div>
+
+          <div class="col-lg-4" align="center">
+            <h1 class="page-header card-title">Movie Listings<br></h1>
+            <h4 class="card-text">All movies that are currently showing</h4>
+          </div>
+
+          <div class="col-lg-4" align="left">
+            <h1 class="page-header card-title"><small>Search for movie title</small></h1>
+            <form id="searchListings" style="float: left;" onsubmit="search();">
+              <input id="searchInput" size="28" style="float: left;">
+              <p style="float: left;">&nbsp&nbsp&nbsp</p><button class="goButton">Go</button>
+            </form>
+          </div>
+        </div>
+
+    </div>
+        <!-- /.container -->
+        <!-- Page Content -->
+    <div class="container">
+
+            <!-- Page Heading -->
+
+        @for(moviegroup <- movies) {
+            <div class="row">
+            @for(movie <- moviegroup) {
+                <div class="tinymovie">
+                    <a href='../movie/@movie._2'>
+                        <img class="img-responsive" src="@movie._1.Poster">
+                        <div class="tinytext">@movie._1.Title</div>
+                    </a>
+                </div>
+            }
+            </div>
+            <br>
+            }
+
+            <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                </div>
+            </div>
+                <!-- /.row -->
+        </footer>
+
+    </div>
+        <!-- /.container -->
+
+    <script>
+      function filterGenre() {
+        document.getElementById("genreFilter").setAttribute("action", "/listings/" +
+                document.getElementById("genreSelect").value.toLowerCase());
+      }
+
+      function search() {
+        document.getElementById("searchListings").setAttribute("action", "/search/" +
+                document.getElementById("searchInput").value);
+      }
+    </script>
+}

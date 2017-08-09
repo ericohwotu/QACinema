@@ -1,0 +1,29 @@
+@()
+
+<div class="col-xs-12 track-list fill">
+  <p>TOTAL</p>
+  <div class="underline mid"></div>
+  <br>
+  <form id="timeSelection" class="form-inline">
+    <label for="total-field" >Total: £</label>
+    <input id="total-field" type="text" class="form-control" value="" placeholder="0">
+    <input type="button" class="button form-control" id="submit-booking" disabled value="Submit" onClick="submitBookings()">
+  </form>
+</div>
+
+<script>
+<!--
+var openPopupWindow=null;
+function openPopup(mypage,myname,w,h,pos,infocus){
+
+  if (pos == 'random')
+  {LeftPosition=(screen.width)?Math.floor(Math.random()*(screen.width-w)):100;TopPosition=(screen.height)?Math.floor(Math.random()*((screen.height-h)-75)):100;}
+  else
+  {LeftPosition=(screen.width)?(screen.width-w)/2:100;TopPosition=(screen.height)?(screen.height-h)/2:100;}
+  settings='width='+ w + ',height='+ h + ',top=' + TopPosition + ',left=' + LeftPosition + ',scrollbars=no,location=no,directories=no,status=no,menubar=no,toolbar=no,resizable=no';openPopupWindow=window.open('',myname,settings);
+  if(infocus=='front'){openPopupWindow.focus();openPopupWindow.location=mypage;}
+  if(infocus=='back'){openPopupWindow.blur();openPopupWindow.location=mypage;openPopupWindow.blur();}
+
+}
+// -->
+</script>
