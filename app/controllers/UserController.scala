@@ -141,7 +141,7 @@ class UserController @Inject()(
       error=>
         BadRequest(views.html.users.login(error))},{
       case (uName, pwd) =>
-        val user = getUserByPassword(uName,pwd).head
+        getUserByPassword(uName,pwd).headOption.orNull
         Redirect(routes.UserController.dashboard())
           .withSession(request.session + ("loggedin"->uName))
     })
