@@ -11,6 +11,18 @@ let longitude = 0.0;
 let markers = [];
 let infoWindow;
 
+function distCallback(response, status) {
+    if(status === "OK") {
+        for(let i = 0; i < response.rows[0].elements.length; i++) {
+            let cinema = document.getElementById("cinemaMode").options[i];
+            if(cinema.text.includes("|")) {
+                cinema.text = cinema.text.substring(0, cinema.text.indexOf("|") -1 );
+            }
+            cinema.text = cinema.text + " | " + response.rows[0].elements[i].distance.text;
+        }
+    }
+}
+
 function distance(latitude, longitude) {
     let origin = [new google.maps.LatLng(latitude, longitude)];
     let theDestinations = [];
@@ -27,18 +39,6 @@ function distance(latitude, longitude) {
             destinations: theDestinations,
             travelMode: google.maps.TravelMode[selectedMode],
         }, distCallback);
-}
-
-function distCallback(response, status) {
-    if(status === "OK") {
-        for(let i = 0; i < response.rows[0].elements.length; i++) {
-            let cinema = document.getElementById("cinemaMode").options[i];
-            if(cinema.text.includes("|")) {
-                cinema.text = cinema.text.substring(0, cinema.text.indexOf("|") -1 );
-            }
-            cinema.text = cinema.text + " | " + response.rows[0].elements[i].distance.text;
-        }
-    }
 }
 
 function route(latitude, longitude) {
