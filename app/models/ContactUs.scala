@@ -16,6 +16,6 @@ object ContactUs{
       "Message" -> nonEmptyText,
       "Email" -> nonEmptyText,
       "Number" -> default(text,"none")
-  )(ContactUs.apply _)(ContactUs.unapply _))
+  )(ContactUs.apply)(ContactUs.unapply))
 
 }
