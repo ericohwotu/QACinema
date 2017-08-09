@@ -19,8 +19,9 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi,
 
   //TODO: Add the hardcoded IDs and also bring the movie data with it so it is in the correct order.
   def index: Action[AnyContent] = Action.async { implicit request =>
-    movieController.findMainpageMovieIDs(List()).map {
-      ids => Ok(views.html.index(ids))
+    movieController.findMainpageMovieIDs(List("War for the Planet of the Apes","Atomic Blonde","Despicable Me 3")).map {
+      ids => println(ids)
+        Ok(views.html.index(ids))
     }
   }
 
