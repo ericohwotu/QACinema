@@ -18,7 +18,7 @@ class ScreeningsControllerTests extends Specification {
 
   val movieName = "Sample Booking"
   val apiKey = "8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU"
-  val seatId = 10
+  val seatId = 35
   val testMovie = "Test Movie"
 
   "ScreeningsController" should {

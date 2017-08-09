@@ -57,7 +57,11 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
         case "Unauthorised" => Unauthorized("Sorry you are not authorised")
 
         case bookingKey =>
-          val booking = Booking(bookingKey,movieName,date,time,List(),price)
+          val seatsList = mongoDbController.getSeatsBySlots(movieName,date,time)
+            .getOrElse(List()).filter(_.author == bookingKey)
+
+          val booking = Booking(bookingKey,movieName,date,time,seatsList,price)
+
           userController.addBooking(request.session.get("loggedin"), booking)
           mongoDbController.submitBooking(bookingKey,movieName,date,time)
           Redirect(routes.Application.index())
