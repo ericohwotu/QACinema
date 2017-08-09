@@ -14,35 +14,43 @@ GET     /certifications             controllers.Application.certifications
 GET     /contactus                  controllers.ContactController.contactUs
 POST    /contactus                  controllers.ContactController.formHandler
 GET     /findus                     controllers.Application.findUs
-
 GET     /listings                   controllers.Application.listings
 GET     /listings/$genre<[a-z-]+>       controllers.Application.listingsWithGenre(genre: String)
 GET     /search/$title<[%a-zA-Z0-9-]+>    controllers.Application.searchByTitle(title: String)
 
 GET     /about                      controllers.Application.about
 
-
 # bookings page
 GET     /bookings                   controllers.ScreeningsController.index(id: String ?= "Sample Booking", multipliers: String ?= "1,2,3")
 GET     /bookings/getseats          controllers.ScreeningsApiController.getAllSeats(key: Option[String] ?= None, name: Option[String] ?= None, date: String, time: String)
 GET     /key/getkey                 controllers.ScreeningsDbController.getKey
+GET     /key/unbook                 controllers.ScreeningsDbController.unbook
 POST    /bookings/bookseat          controllers.ScreeningsApiController.bookSeat(id: Int, key: Option[String] ?= None,name: Option[String] ?= None, date: String, time: String)
 GET     /bookings/topayment         controllers.ScreeningsController.toPayment(amount: String)
 GET     /bookings/confirm           controllers.ScreeningsController.toSubmitBooking()
 GET     /bookings/submit            controllers.ScreeningsApiController.submitBooking(key: Option[String] ?= None,name: Option[String] ?= None, date: String, time: String)
+GET     /bookings/delete            controllers.ScreeningsApiController.delete(name: String)
+GET     /bookings/receipt           controllers.ScreeningsController.printReceipt
 
 # User management
-GET     /register                   controllers.UserController.register
-POST    /register                   controllers.UserController.regHandler
-GET     /login                      controllers.UserController.login
-POST    /login                      controllers.UserController.loginHandler
-GET     /dashboard                  controllers.UserController.dashboard
-GET     /logout                     controllers.UserController.logout
+GET     /register              controllers.UserController.register
+POST    /register              controllers.UserController.regHandler
+GET     /login                 controllers.UserController.login
+POST    /login                 controllers.UserController.loginHandler
+GET     /dashboard             controllers.UserController.dashboard
+GET     /logout                controllers.UserController.logout
+GET     /delete                controllers.UserController.delete(username: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 #MongoDB
-GET     /addMovies                  controllers.Mongo.createMoviesFromAPI()
-GET     /addCinemas                 controllers.Mongo.addLocations()
+GET     /addmovies                  controllers.MongoDBController.createMoviesFromAPI()
+GET     /addcinemas                 controllers.MongoDBController.addLocations()
+
+#Admin Page
+GET     /getallmovies               controllers.Admin.getAllMovies()
+GET     /delete/:name               controllers.Admin.delete(name: String)
+POST    /createmovie                controllers.Admin.createMovie()
+POST    /update                     controllers.Admin.updateMovie()
 
