@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import play.api.libs.json.{JsArray, JsObject, Json, Reads}
+import play.api.libs.json.{JsObject, Json, Reads}
 import play.api.mvc.{Action, AnyContent, Controller, Result}
 import models.Movie
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -17,19 +17,15 @@ import scala.concurrent.Future
 class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Controller with MongoController with ReactiveMongoComponents {
 
   def collection: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
-  def getMongoID(jso : JsObject): String = ((jso \ "_id").as[JsObject] \ "$oid").as[String]
 
-  def applyCriteriaOnQuery[A <: AnyRef](collectedList : Future[List[A]], criteria : String, method : (AnyRef) => String) : Future[List[A]] =
-    collectedList.flatMap(movieList => Future {
-      movieList.filter(mov => method(mov).toLowerCase.contains(criteria))
-    })
-
-  def futureRefinedList[A <: AnyRef](criteria : Option[String], method : (AnyRef) => String, query: JsObject, returnData : JsObject)(implicit reads: Reads[A]) : Future[List[A]] = {
+  def futureRefinedList[A <: AnyRef](criteria : Option[String], method : (AnyRef) => String, jsonObj : JsObject)(implicit reads: Reads[A]) : Future[List[A]] = {
     val collectedList : Future[List[A]] = collection.map {
-      _.find(query, returnData).cursor[A]()
+      _.find(Json.obj(), jsonObj).cursor[A]()
     }.flatMap(_.collect[List]())
 
-    criteria.fold(collectedList)(crit => applyCriteriaOnQuery[A](collectedList, crit, method))
+    criteria.fold(collectedList)(crit => collectedList.flatMap(movieList => Future {
+      movieList.filter(mov => method(mov).toLowerCase.contains(crit))
+    }))
   }
 
   def genreExtract(source : AnyRef) : String = source match {
@@ -42,10 +38,10 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
   }
 
   def genericListingPage(criteria: Option[String], method : (AnyRef) => String): Action[AnyContent] = Action.async { implicit request =>
-    futureRefinedList[JsObject](criteria, method, Json.obj(), Json.obj("_id" -> 1, "Genre" -> 1, "Title" -> 1)).flatMap(jsos =>
-      futureRefinedList[Movie](criteria, method, Json.obj(), Json.obj()).map {
+    futureRefinedList[JsObject](criteria, method, Json.obj("_id" -> 1, "Genre" -> 1, "Title" -> 1)).flatMap(jsos =>
+      futureRefinedList[Movie](criteria, method, Json.obj()).map {
         movies => Ok(views.html.listings(movies.zip(jsos.map {
-          jso => getMongoID(jso)
+          jso => ((jso \ "_id").as[JsObject] \ "$oid").as[String]
         }).grouped(3).toList))
       }
     )
@@ -60,14 +56,6 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
     futureIDList.map {
       movieIDs => movieIDs.headOption.fold(BadRequest("Movie ID does not exist."))(res => Ok(views.html.movie(res)))
     }
-  }
-
-  def findMainpageMovieIDs(movieTitleStrings : List[String]) : Future[List[String]] = {
-    futureRefinedList[JsObject](None, x => x.toString,
-      Json.obj("Title" -> Json.obj("$in" -> Json.toJson(movieTitleStrings))),
-      Json.obj("_id" -> 1)).map(jsos => jsos.map {
-      jso => getMongoID(jso)
-    })
   }
 
 }

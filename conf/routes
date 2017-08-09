@@ -21,6 +21,7 @@ GET     /search/$title<[%a-zA-Z0-9-]+>    controllers.Application.searchByTitle(
 
 GET     /about                      controllers.Application.about
 
+
 # bookings page
 GET     /bookings                   controllers.ScreeningsController.index(id: String ?= "Sample Booking", multipliers: String ?= "1,2,3")
 GET     /bookings/getseats          controllers.ScreeningsApiController.getAllSeats(key: Option[String] ?= None, name: Option[String] ?= None, date: String, time: String)
@@ -29,7 +30,7 @@ POST    /bookings/bookseat          controllers.ScreeningsApiController.bookSeat
 GET     /bookings/topayment         controllers.ScreeningsController.toPayment(amount: String)
 GET     /bookings/confirm           controllers.ScreeningsController.toSubmitBooking()
 GET     /bookings/submit            controllers.ScreeningsApiController.submitBooking(key: Option[String] ?= None,name: Option[String] ?= None, date: String, time: String)
-GET     /bookings/delete            controllers.ScreeningsApiController.delete(name: String)
+GET     /bookings/bookingConfirm    controllers.ScreeningsController.bookingConfirm()
 
 # User management
 GET     /register                   controllers.UserController.register
@@ -43,13 +44,6 @@ GET     /logout                     controllers.UserController.logout
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 #MongoDB
-GET     /addmovies                  controllers.MongoDBController.createMoviesFromAPI()
-GET     /addcinemas                 controllers.MongoDBController.addLocations()
-#GET     /getmovie/:name             controllers.MongoDBController.readByName(name: String)
-
-#Admin Page
-GET     /getallmovies               controllers.Admin.getAllMovies()
-GET     /delete/:name               controllers.Admin.delete(name: String)
-POST    /createmovie                controllers.Admin.createMovie()
-POST    /update                     controllers.Admin.updateMovie()
+GET     /addMovies                  controllers.Mongo.createMoviesFromAPI()
+GET     /addCinemas                 controllers.Mongo.addLocations()
 

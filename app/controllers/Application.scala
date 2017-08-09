@@ -17,11 +17,8 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi,
                              val locationController: LocationController)
   extends Controller with MongoController with ReactiveMongoComponents {
 
-  //TODO: Add the hardcoded IDs and also bring the movie data with it so it is in the correct order.
-  def index: Action[AnyContent] = Action.async { implicit request =>
-    movieController.findMainpageMovieIDs(List()).map {
-      ids => Ok(views.html.index(ids))
-    }
+  def index: Action[AnyContent] = Action {
+    Ok(views.html.index())
   }
 
   def listings(): Action[AnyContent] = {
