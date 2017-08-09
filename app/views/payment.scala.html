@@ -41,6 +41,7 @@
                                 "amount" : '@amount'
                             },
                             success: function(res) {
+                                window.open("/bookings/receipt","_blank");
                                 window.location.href = "/bookings/confirm";
                             }
                         })

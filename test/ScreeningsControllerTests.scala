@@ -49,6 +49,13 @@ class ScreeningsControllerTests extends Specification {
       val toSubmit = route(FakeApplication(),FakeRequest(GET,"/bookings/confirm")).orNull
       status(toSubmit) must equalTo(SEE_OTHER)
     }
+
+    "render the receipt screen" in new WithApplication() {
+      val receipt = route(FakeApplication(),FakeRequest(GET,"/bookings/receipt")
+        .withSession(("sessionKey",apiKey),("movieName",movieName),
+          ("date", movieDate),("time", "9:00"))).orNull
+      status(receipt) must equalTo(OK)
+    }
   }
 
   "ScreeningsApiController" should {
