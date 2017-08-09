@@ -1,3 +1,5 @@
+/*global google*/
+
 let Center=new google.maps.LatLng(53.474140,-2.286074);
 let directionsDisplay;
 let directionsService = new google.maps.DirectionsService();
@@ -8,22 +10,6 @@ let latitude = 0.0;
 let longitude = 0.0;
 let markers = [];
 let infoWindow;
-
-function getPosition(position) {
-    latitude = position.coords.latitude;
-    longitude = position.coords.longitude;
-    route(latitude, longitude);
-    distance(latitude, longitude);
-    places();
-}
-
-function geolocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(getPosition);
-    } else {
-        alert("Geolocation is not supported by this browser\nPlease select your location")
-    }
-}
 
 function distance(latitude, longitude) {
     let origin = [new google.maps.LatLng(latitude, longitude)];
@@ -44,7 +30,7 @@ function distance(latitude, longitude) {
 }
 
 function distCallback(response, status) {
-    if(status === 'OK') {
+    if(status === "OK") {
         for(let i = 0; i < response.rows[0].elements.length; i++) {
             let cinema = document.getElementById("cinemaMode").options[i];
             if(cinema.text.includes("|")) {
@@ -94,8 +80,8 @@ function createMarker(place) {
     marker.setVisible(zoom <= 16);
 
     markers.push(marker);
-    google.maps.event.addListener(marker, 'click', function() {
-        infoWindow.setContent("<div class='text-primary'><b>" + place.name + "</b>" + "<br>" + place.vicinity + "</div>");
+    google.maps.event.addListener(marker, "click", function() {
+        infoWindow.setContent("<div class=\"text-primary\"><b>" + place.name + "</b>" + "<br>" + place.vicinity + "</div>");
         infoWindow.open(map, this);
     });
 }
@@ -121,8 +107,24 @@ function places() {
         location: end,
         openNow: true,
         rankBy: google.maps.places.RankBy.DISTANCE,
-        type: ['store']
+        type: ["store"]
     }, placeCallback);
+}
+
+function getPosition(position) {
+    latitude = position.coords.latitude;
+    longitude = position.coords.longitude;
+    route(latitude, longitude);
+    distance(latitude, longitude);
+    places();
+}
+
+function geolocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(getPosition);
+    } else {
+        alert("Geolocation is not supported by this browser\nPlease select your location")
+    }
 }
 
 function initialize() {
@@ -145,8 +147,6 @@ function initialize() {
     //Assign the map to a panel to display on
     directionsDisplay.setMap(map);
     directionsDisplay.setPanel(document.getElementById("rightPanel"));
-
-
 
     map.addListener("click", function(e) {
         latitude = e.latLng.lat();
@@ -177,7 +177,7 @@ function initialize() {
         places();
     });
 
-    google.maps.event.addListener(map, 'zoom_changed', function() {
+    google.maps.event.addListener(map, "zoom_changed", function() {
         let zoom = map.getZoom();
         for (i = 0; i < markers.length; i++) {
             markers[i].setVisible(zoom <= 16);
