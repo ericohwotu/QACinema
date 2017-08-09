@@ -65,8 +65,6 @@ class ScreeningsControllerTests extends Specification {
       status(getSeats) must equalTo(BAD_REQUEST)
     }
 
-      status(getSeats) must equalTo(UNAUTHORIZED)
-    }
 
     "return seats if all values provided" in new WithApplication() {
       FakeRequest(GET,"/bookings")
