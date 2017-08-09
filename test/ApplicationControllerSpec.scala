@@ -46,7 +46,7 @@ class ApplicationControllerSpec extends PlaySpecification {
           contentAsString(route) must contain("<div id=\"map\"")
           contentAsString(route) must contain("<div id=\"rightPanel\"")
           contentAsString(route) must contain("<select id=\"cinemaMode\"")
-          contentAsString(route) must contain("<title>Map</title>")
+          contentAsString(route) must contain("<title>Find Us</title>")
           contentAsString(route) must contain("input id=\"searchBar\"")
           contentAsString(route) must contain("<select id=\"travelMode\"")
           contentAsString(route) must contain("<select id=\"travelMode\"")
