@@ -279,7 +279,6 @@ function popTimes(day){
             timesOptions.appendChild(opt);
         }
     }
-
     enableScreens();
 }
 
@@ -294,9 +293,6 @@ function popDates(){
     }
     popTimes(0);
 }
-
-
-
 
 window.onload = function () {
     host = window.location.hostname;
