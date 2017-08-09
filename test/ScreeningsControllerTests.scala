@@ -18,6 +18,7 @@ class ScreeningsControllerTests extends Specification {
 
   val movieName = "Sample Booking"
   val apiKey = "8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU"
+  val movieDate = "9%20AUG%202017"
   val seatId = 35
   val testMovie = "Test Movie"
 
@@ -63,11 +64,11 @@ class ScreeningsControllerTests extends Specification {
       status(getSeats) must equalTo(BAD_REQUEST)
     }
 
-    "give bad request if no moviename is available" in new WithApplication() {
+    "give ok if all parameters are available" in new WithApplication() {
       val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/getseats?" +
-        "name=Created&date=7 AUG 2017&time=9:00")
+        s"name=$movieName&date=$movieDate&time=9:00")
         .withSession(("sessionKey","8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU"))).orNull
-      contentAsString(getSeats) must contain("hope")
+
       status(getSeats) must equalTo(OK)
     }
 
@@ -81,9 +82,9 @@ class ScreeningsControllerTests extends Specification {
     "return seats if all values provided" in new WithApplication() {
       FakeRequest(GET,"/bookings")
       val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/getseats?" +
-        "date=6%20AUG%202017&time=9:00").withSession(
+        s"date=$movieDate&time=9:00").withSession(
         ("sessionKey","8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU"),
-        ("movieName","Created"))).orNull
+        ("movieName",movieName))).orNull
 
       status(getSeats) must equalTo(OK)
     }
@@ -111,7 +112,7 @@ class ScreeningsControllerTests extends Specification {
 
     "submit bookings should redirect and add to generic with booking price of 10" in new WithApplication() {
       val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/submit?" +
-        "key=8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU&name=Sample%20Booking&date=6%20AUG%202017&" +
+        s"key=8Nv6XI2hrq6zoqORrdRxzDbfDJY5W3AU&name=Sample%20Booking&date=$movieDate&" +
         "time=9:00")).orNull
       Await.result(getSeats, Duration.Inf)
       status(getSeats) must equalTo(SEE_OTHER)
@@ -129,7 +130,7 @@ class ScreeningsControllerTests extends Specification {
 
     "return success on booking" in new WithApplication() {
       val bookSeat = route(FakeApplication(), FakeRequest(POST, "/bookings/bookseat?" +
-        s"id=$seatId&date=7%20AUG%202017&time=9:00")
+        s"id=$seatId&date=$movieDate&time=9:00")
         .withSession(("sessionKey",apiKey),("movieName", movieName))).orNull
 
       val outcome = (contentAsJson(bookSeat) \ "outcome").as[String]

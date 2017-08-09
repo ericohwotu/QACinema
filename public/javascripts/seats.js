@@ -156,51 +156,6 @@ function enableTable(){
     });
 }
 
-function enableScreens(){
-    let screens = document.getElementById("screens");
-    let total = getStandardTicketCount() + getVipTicketCount();
-
-    clearElemDisabled(screens);
-    clearElemClassDisabled(screens);
-
-    refresh();
-
-    enableTable();
-}
-function popTimes(day){
-    let timesOptions = document.getElementById("times");
-    let total = getStandardTicketCount() + getVipTicketCount();
-    let curHours = hours[day];
-
-    timesOptions.innerHTML = "";
-    clearElemDisabled(timesOptions);
-    clearElemClassDisabled(timesOptions);
-
-    for(let i = 0; i< curHours.length; i+=1){
-        if(curHours[i] !== 0 || curHours[i]){
-            let opt = document.createElement("option");
-            let text = document.createTextNode(curHours[i]);
-            opt.value = i;
-            opt.appendChild(text);
-            timesOptions.appendChild(opt);
-        }
-    }
-
-    enableScreens();
-}
-
-function popDates(){
-    let daysOptions = document.getElementById("days");
-    for(let i = 0; i< days.length; i++){
-        let opt = document.createElement("option");
-        let text = document.createTextNode(days[i]);
-        opt.value = i;
-        opt.appendChild(text);
-        daysOptions.appendChild(opt);
-    }
-    popTimes(0);
-}
-
 function setVipButton(seat){
     clearElemStandard(seat);
     clearElemVip(seat);
@@ -294,6 +249,54 @@ function refresh() {
         getSelectedText("days") + "&time=" + getSelectedText("times"), true);
     xhttp.send();
 }
+
+function enableScreens(){
+    let screens = document.getElementById("screens");
+    let total = getStandardTicketCount() + getVipTicketCount();
+
+    clearElemDisabled(screens);
+    clearElemClassDisabled(screens);
+
+    refresh();
+
+    enableTable();
+}
+function popTimes(day){
+    let timesOptions = document.getElementById("times");
+    let total = getStandardTicketCount() + getVipTicketCount();
+    let curHours = hours[day];
+
+    timesOptions.innerHTML = "";
+    clearElemDisabled(timesOptions);
+    clearElemClassDisabled(timesOptions);
+
+    for(let i = 0; i< curHours.length; i+=1){
+        if(curHours[i] !== 0 || curHours[i]){
+            let opt = document.createElement("option");
+            let text = document.createTextNode(curHours[i]);
+            opt.value = i;
+            opt.appendChild(text);
+            timesOptions.appendChild(opt);
+        }
+    }
+
+    enableScreens();
+}
+
+function popDates(){
+    let daysOptions = document.getElementById("days");
+    for(let i = 0; i< days.length; i++){
+        let opt = document.createElement("option");
+        let text = document.createTextNode(days[i]);
+        opt.value = i;
+        opt.appendChild(text);
+        daysOptions.appendChild(opt);
+    }
+    popTimes(0);
+}
+
+
+
 
 window.onload = function () {
     host = window.location.hostname;
