@@ -39,5 +39,38 @@ class MongoDBSpec extends PlaySpecification {
     }
   }
 
+  "Admin Page creating a movie" should {
+    "should return OK listing movies" in new WithApplication() {
+      route(FakeApplication(), FakeRequest(GET, "/createmovie").withFormUrlEncodedBody(
+        ("Title", "Test"),("Rated","Test"),("Released","Test"),("Runtime","Test"),("Genre","Test"),("Director","Test"),
+        ("Actors","John Doe"),("Plot",""),("Poster","N/A"),("video","N/A")
+      )) match {
+        case Some(route) => status(route) must equalTo(OK)
+        case _ => failure
+      }
+    }
+  }
+
+  "Admin Page updating a movie" should {
+    "should return OK listing movies" in new WithApplication() {
+      route(FakeApplication(), FakeRequest(GET, "/update").withFormUrlEncodedBody(
+        ("Title", "Test"),("Rated","Test"),("Released","Test"),("Runtime","Test"),("Genre","Test"),("Director","Test"),
+        ("Actors","Updated Doe"),("Plot",""),("Poster","N/A"),("video","N/A")
+      )) match {
+        case Some(route) => status(route) must equalTo(OK)
+        case _ => failure
+      }
+    }
+  }
+
+  "Admin Page deleting a movie" should {
+    "should return OK listing movies" in new WithApplication() {
+      route(FakeApplication(), FakeRequest(GET, "/delete/Test")) match {
+        case Some(route) => status(route) must equalTo(OK)
+        case _ => failure
+      }
+    }
+  }
+
 
 }
