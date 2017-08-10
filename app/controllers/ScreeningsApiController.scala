@@ -35,9 +35,11 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
       case "Unauthorised" => Unauthorized("Sorry you are not authorised")
 
       case bookingKey =>
-
+        println(s"bk = $bookingKey")
         val result = mongoDbController.bookSeat(movieName, date, time,
           Seat(id, bookingKey, booked = false, Seat.getExpiryDate,""))
+
+        println(result)
 
         Ok(Json.parse(result))
           .withSession(request.session + ("date" -> date) + ("time" -> time))
@@ -52,6 +54,7 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
       val price = request.session.get("bookingPrice")
         .getOrElse("10.0").toDouble
 
+      println(s" submitBooking $key == $movieName == $date == $time == $price")
       jsonApiHelper(key, request) match {
 
         case "Unauthorised" => Unauthorized("Sorry you are not authorised")
@@ -61,7 +64,6 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
             .getOrElse(List()).filter(_.author == bookingKey)
 
           val booking = Booking(bookingKey,movieName,date,time,seatsList,price)
-
           userController.addBooking(request.session.get("loggedin"), booking)
           mongoDbController.submitBooking(bookingKey,movieName,date,time)
           Redirect(routes.Application.index())
