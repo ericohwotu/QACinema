@@ -15,7 +15,8 @@
     @main("login") {
         <div class="container">
             <div class="row track-list">
-                <div class="col-lg-12 card-text">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4 card-text">
 
                     @if(form.hasErrors) {
                         @for(error <- form.errors) {
@@ -23,18 +24,16 @@
                         }
                     }
 
-
-                    @helper.form(action = routes.UserController.loginHandler(), 'class -> "form-inline") {
+                    @helper.form(action = routes.UserController.loginHandler()) {
 
                     @helper.inputText(form("Username"), 'class -> "form-control")
 
                     @helper.inputPassword(form("Password"), 'class->"form-control")
-
-                        <button class="btn form-control">Login</button>
-
+                        <button class="btn">Login</button>
 
                 }
                 </div>
+                <div class="col-sm-4"></div>
             </div>
         </div>
     }
