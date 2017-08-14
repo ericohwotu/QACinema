@@ -120,6 +120,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
     val seats = getSeatsBySlots(name, date, time).getOrElse(List())
     val reqSeats = seats.filter(_.id == seat.id)
 
+    println(s"seat-id: ")
     def bookHelper(author: String) = Await.result(Await.result(moviesCol.map {
       _.update(Json.obj("name" -> name),
         Json.obj("$set" -> Json.obj(s"$setAuthor" -> author,
@@ -205,10 +206,12 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
 
         submitHelper(position - 1)
     }
-
+    println(s"bout to getseatsbyslot $name == $date == $time == $key")
     getSeatsBySlots(name, date, time).fold {} {
       seats =>
-        val count = seats.count(seat => seat.author == key && !seat.booked)
+
+        val count = seats.count{seat => println(seat); seat.author == key && !seat.booked}
+        println(count)
         submitHelper(count + 1)
     }
 
@@ -218,7 +221,7 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
 
   def unbook: Action[AnyContent] = Action { request: Request[AnyContent] =>
     request.session.get("isTest").fold{ Unauthorized("Sorry Functionality not available to you")}{
-      _ => unbookRunner
+      _ => //unbookRunner
         Ok("Started")
     }
   }

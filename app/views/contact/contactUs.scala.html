@@ -28,7 +28,8 @@
 
   <div class="container">
     <div class="row track-list">
-      <div class="col-lg-12 card-text">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 card-text">
       @helper.form(action = routes.ContactController.formHandler(), 'class -> "inline-form") {
         @helper.inputText(form("Name"), 'class -> "form-control", 'style -> "width:100%")
         @helper.inputText(form("Email"), 'class -> "form-control", 'style -> "width:100%")
@@ -38,6 +39,7 @@
         <button class="btn">Submit</button>
       }
       </div>
+      <div class="col-sm-3"></div>
     </div>
   </div> <br>
 }
