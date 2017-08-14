@@ -3,13 +3,11 @@ package controllers
 import javax.inject.Inject
 
 import play.api.libs.json.{JsArray, JsObject, Json, Reads}
-import play.api.mvc.{Action, AnyContent, Controller, Result}
-import models.Movie
-import play.api.data._
-import play.api.data.Forms._
+import play.api.mvc._
+import models.{Movie, MovieSearch}
+import play.api.data.Form
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
-import play.mvc.Http.Request
 import reactivemongo.play.json._
 import reactivemongo.api.Cursor
 import reactivemongo.bson.BSONObjectID
@@ -73,22 +71,18 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
     })
   }
 
-  case class MovieSearch(title : Option[String], genre : Option[String], actors: Option[String], director: Option[String], genres : Option[String])
-  val movieSearchForm: Form[MovieSearch] = Form(
-    mapping(
-      "title" -> optional(text),
-      "genre" -> optional(text),
-      "director" -> optional(text),
-      "actors" -> optional(text),
-      "genres" -> optional(text)
-    )(MovieSearch.apply)(MovieSearch.unapply)
-  )
+  def movieSearchForm() : Form[MovieSearch] = MovieSearch.movieSearchForm
 
-//  def takeMovieSearchForm(request : Request) : Future[List[Movie]] = {
-//    movieSearchForm.bindFromRequest().fold(
-//      errs => Future {List()},
-//      moviesearch => futureRefinedList[JsObject]()
-//    )
-//  }
-
+  def takeMovieSearchForm()(implicit request : Request[AnyContent]) : Future[List[List[(Movie, String)]]] = {
+    MovieSearch.movieSearchForm.bindFromRequest.fold(
+      errs => Future {List()},
+      moviesearch => futureRefinedList[JsObject](None, x => x.toString, moviesearch.jsonObject, Json.obj("_id" -> 1)).flatMap(jsos =>
+        futureRefinedList[Movie](None, x => x.toString, moviesearch.jsonObject, Json.obj()).map {
+          movies => movies.zip(jsos.map {
+            jso => getMongoID(jso)
+          }).grouped(3).toList
+        }
+      )
+    )
+  }
 }

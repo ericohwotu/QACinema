@@ -111,6 +111,17 @@ class ApplicationControllerSpec extends PlaySpecification {
       }
     }
 
+    "should not allow a rich search with no params" in new WithApplication {
+      route(FakeApplication(), FakeRequest(GET, "/search")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+          contentAsString(route) must contain("Search Results")
+          contentAsString(route) must contain("No search parameters provided.")
+        case _ => failure
+      }
+    }
+
     "providing an invalid ID should return a bad request" in new WithApplication {
       route(FakeApplication(), FakeRequest(GET, "/movie/badid")) match {
         case Some(route) =>
