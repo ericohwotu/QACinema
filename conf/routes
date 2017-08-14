@@ -24,12 +24,12 @@ GET     /about                      controllers.Application.about
 GET     /bookings                   controllers.ScreeningsController.index(id: String ?= "Sample Booking", multipliers: String ?= "1,2,3")
 GET     /bookings/getseats          controllers.ScreeningsApiController.getAllSeats(key: Option[String] ?= None, name: Option[String] ?= None, date: String, time: String)
 GET     /key/getkey                 controllers.ScreeningsDbController.getKey
-#GET     /key/unbook                 controllers.ScreeningsDbController.unbook
+GET     /key/unbook                 controllers.ScreeningsDbController.unbook
 POST    /bookings/bookseat          controllers.ScreeningsApiController.bookSeat(id: Int, key: Option[String] ?= None,name: Option[String] ?= None, date: String, time: String)
 GET     /bookings/topayment         controllers.ScreeningsController.toPayment(amount: String)
 GET     /bookings/confirm           controllers.ScreeningsController.toSubmitBooking()
 GET     /bookings/submit            controllers.ScreeningsApiController.submitBooking(key: Option[String] ?= None,name: Option[String] ?= None, date: String, time: String)
-#GET     /bookings/delete            controllers.ScreeningsApiController.delete(name: String)
+GET     /bookings/delete            controllers.ScreeningsApiController.delete(name: String)
 GET     /bookings/receipt           controllers.ScreeningsController.printReceipt
 
 # User management
@@ -40,6 +40,7 @@ POST    /login                 controllers.UserController.loginHandler
 GET     /dashboard             controllers.UserController.dashboard
 GET     /logout                controllers.UserController.logout
 GET     /delete                controllers.UserController.delete(username: String)
+GET     /user/recommendations  controllers.ScreeningsApiController.getRecommendations()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
