@@ -8,6 +8,12 @@
  */
 /*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
 
+/*not working yet*/
+@media print {
+  .noprint{
+    display:none;
+  }
+}
 
 html {
   font-family: sans-serif;
@@ -9635,4 +9641,5 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   text-align: center;
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
 

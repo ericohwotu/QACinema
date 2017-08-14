@@ -6,7 +6,7 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bookings.css")">
     </head>
     <body class="track-list" style="text-align: left">
-        <div class="fill">
+        <div class="container">
             <h4>Thank you for choosing to view <span class="card-title">@booking.movieName</span> with us</h4>
             <h1>Your booking reference is <span class="card-title small">@booking.reference</span></h1>
             <h3 class="card-title">Movie Name: <span class="card-text small">@booking.movieName</span></h3>
@@ -20,7 +20,7 @@
                 </h3>
             }
             <h3 class="card-title">Total: <span class="card-text small">@booking.price</span></h3>
-            <button onclick="printReciept()" class="btn btn-info">Print</button>
+            <button onclick="printReciept()" class="btn btn-info noprint">Print</button>
         </div>
         <script>
             function printReciept(){
@@ -28,6 +28,4 @@
             }
         </script>
     </body>
-
-
 </html>
