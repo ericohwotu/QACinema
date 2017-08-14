@@ -263,6 +263,7 @@ function enableScreens(){
 }
 function popTimes(day){
     let timesOptions = document.getElementById("times");
+    let cinemaScreenType = document.getElementById("screens");
     let total = getStandardTicketCount() + getVipTicketCount();
     let curHours = hours[day];
 
