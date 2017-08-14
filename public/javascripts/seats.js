@@ -261,17 +261,30 @@ function enableScreens(){
 
     enableTable();
 }
+
+function getSlotsForScreen(){
+    let selectedScreen = getSelectedText("screens");
+    switch(selectedScreen){
+        case "Standard":
+            return 0;
+        case "3D":
+            return 1;
+        case "Imax":
+            return 2;
+        default:
+            return 0;
+    }
+}
 function popTimes(day){
     let timesOptions = document.getElementById("times");
-    let cinemaScreenType = document.getElementById("screens");
     let total = getStandardTicketCount() + getVipTicketCount();
     let curHours = hours[day];
-
+    console.log(getSlotsForScreen())
     timesOptions.innerHTML = "";
     clearElemDisabled(timesOptions);
     clearElemClassDisabled(timesOptions);
 
-    for(let i = 0; i< curHours.length; i+=1){
+    for(let i = getSlotsForScreen(); i< curHours.length; i+=3){
         if(curHours[i] !== 0 || curHours[i]){
             let opt = document.createElement("option");
             let text = document.createTextNode(curHours[i]);
