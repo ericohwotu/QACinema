@@ -13,6 +13,7 @@ import reactivemongo.api._
 import reactivemongo.play.json._
 import reactivemongo.play.json.collection.JSONCollection
 import reactivemongo.play.json.commands.JSONAggregationFramework.{Cursor => _, _}
+import traits.MovieRecActions
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -22,6 +23,8 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
   with ReactiveMongoComponents with MongoController {
 
   def moviesCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("MoviesCollectionCustom"))
+
+  def movieInfoCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
 
   def apiKeyCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("ApiCollection"))
 
@@ -137,24 +140,6 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
       }
     }
   }
-
-//  def getSeatString(name: String, date: String, time: String, id: Long)(author: String): String = {
-//    getSeatsBySlots(name, date, time).fold {
-//      "{\"outcome\":\"Error\",\"message\":\"couldn't retrieve seats\"}"
-//    }{
-//      seats => getSeatJson(seats.filter(_.id == id).headOption, author)
-//    }
-//  }
-
-//  def getSeatJson(seat: Option[Seat], author: String): String = seat.fold{
-//    "{\"outcome\":\"error\",\"message\":\"seat was null\"}"
-//  }{
-//    reqSeat => reqSeat.author match {
-//      case `author` =>
-//      case "" =>
-//      case "" => "{\"outcome\": \"success\",\"message\": \"seat unbooked\"}"
-//    }
-//  }
 
   def doesSeatExist(checkSeats: List[Seat], seat: Seat): Boolean = {
     checkSeats match {
@@ -273,5 +258,16 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
     }
     dateSlotHelper(uniqueList.reverse)
   }
+
+  //===================================== viewing recommendation ======================================//
+
+  def getMoviesPerUser(bookings: List[Booking]): List[Movie] = {
+    movieInfoCol.map{
+      _.find(Json.obj("Title"))
+    }
+  }
+  def getPopularGenre(movies: List[Movie]): String = ???
+  def getRecommendations(genre: String): List[Movie] = ???
+
 
 }

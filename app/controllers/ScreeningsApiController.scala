@@ -103,4 +103,20 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
       Ok("Successful")
     }
   }
+
+  def getRecommendations(): Action[AnyContent] = Action{ request: Request[AnyContent] =>
+    request.session.get("loggedin").fold{
+      Unauthorized("You are not logged in")
+    }{
+      uname =>
+        val bookings  = userController.getUsers(uname).headOption match{
+          case None => List()
+          case Some(user) => user.bookings
+        }
+        val movies = mongoDbController.getMoviesPerUser(bookings)
+        val genre = mongoDbController.getPopularGenre(movies)
+        val result = mongoDbController.getRecommendations(genre)
+        Ok(Json.toJson(result))
+    }
+  }
 }
