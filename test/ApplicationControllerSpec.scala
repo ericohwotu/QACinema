@@ -92,11 +92,21 @@ class ApplicationControllerSpec extends PlaySpecification {
       }
     }
 
-    "should be able to search for movies via their title" in new WithApplication {
-      route(FakeApplication(), FakeRequest(GET, "/search/spider")) match {
+    "should be able to search for movies via their title in a simple search" in new WithApplication {
+      route(FakeApplication(), FakeRequest(GET, "/listings/title")) match {
         case Some(route) =>
           status(route) must equalTo(OK)
           contentType(route) must beSome.which(_ == "text/html")
+        case _ => failure
+      }
+    }
+
+    "should be able to do a rich search with optional search parameters" in new WithApplication {
+      route(FakeApplication(), FakeRequest(GET, "/search?title=movie")) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+          contentAsString(route) must contain("Search Results")
         case _ => failure
       }
     }
