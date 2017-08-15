@@ -7,10 +7,10 @@ import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
 import reactivemongo.bson.BSONObjectID
 
-import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success}
 
 class Application @Inject() (val movieController: MovieController,
@@ -18,11 +18,18 @@ class Application @Inject() (val movieController: MovieController,
                              implicit val messagesApi: MessagesApi)
   extends Controller with I18nSupport {
 
-  //TODO: Add the hardcoded IDs and also bring the movie data with it so it is in the correct order.
-  def index: Action[AnyContent] = Action.async { implicit request =>
-    movieController.findMainpageMovieIDs(List()).map {
-      ids => Ok(views.html.index(ids))
-    }
+  def deconstructMainpageElems[A](rem: List[Future[A]], elems : List[A]) : List[A] = rem match {
+    case Nil => elems
+    case element :: other => deconstructMainpageElems(other, Await.result(element, Duration.Inf) match {
+      case elem => elems :+ elem
+    })
+  }
+
+  def index: Action[AnyContent] = Action { implicit request =>
+    val carelems: List[(String, String)] = deconstructMainpageElems(movieController.findMainpageCarouselMovies, List())
+    val preids: List[String] = deconstructMainpageElems(movieController.findMainpagePreviewIDs, List())
+
+    Ok(views.html.index(carelems, preids))
   }
 
   def listings(): Action[AnyContent] = {

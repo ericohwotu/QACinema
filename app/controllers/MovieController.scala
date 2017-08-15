@@ -42,12 +42,14 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
     case mov : Movie => mov.Title
   }
 
+  def moviesZippedIDsOnRows(jsos : List[JsObject], movies : List[Movie]): List[List[(Movie, String)]] = movies.zip(jsos.map {
+    jso => getMongoID(jso)
+  }).grouped(3).toList
+
   def genericListingPage(criteria: Option[String], method : (AnyRef) => String): Action[AnyContent] = Action.async { implicit request =>
     futureRefinedList[JsObject](criteria, method, Json.obj(), Json.obj("_id" -> 1, "Genre" -> 1, "Title" -> 1)).flatMap(jsos =>
       futureRefinedList[Movie](criteria, method, Json.obj(), Json.obj()).map {
-        movies => Ok(views.html.listings(movies.zip(jsos.map {
-          jso => getMongoID(jso)
-        }).grouped(3).toList))
+        movies => Ok(views.html.listings(moviesZippedIDsOnRows(jsos, movies)))
       }
     )
   }
@@ -63,13 +65,23 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
     }
   }
 
-  def findMainpageMovieIDs(movieTitleStrings : List[String]) : Future[List[String]] = {
-    futureRefinedList[JsObject](None, x => x.toString,
-      Json.obj("Title" -> Json.obj("$in" -> Json.toJson(movieTitleStrings))),
-      Json.obj("_id" -> 1)).map(jsos => jsos.map {
-      jso => getMongoID(jso)
-    })
-  }
+  val movieCarouselMovies = List("Spider-Man: Homecoming", "Dunkirk", "Valerian and the City of a Thousand Planets")
+  val mainpageCarouselImages = List("images/spidermanCaro.png", "images/dunkirkCaro.png", "images/valerianCaro.png")
+  def findMainpageCarouselMovies : List[Future[(String, String)]] =
+    movieCarouselMovies.zip(mainpageCarouselImages).map{data =>
+      futureRefinedList[JsObject](None, x => x.toString, Json.obj("Title" -> data._1), Json.obj("_id" -> 1)).map(
+        jsos => (data._2, getMongoID(jsos.head))
+      )
+    }
+
+
+  val moviePreviewMovies = List("War for the Planet of the Apes", "Atomic Blonde", "Despicable Me 3")
+  def findMainpagePreviewIDs : List[Future[String]] =
+    moviePreviewMovies.map{data =>
+      futureRefinedList[JsObject](None, x => x.toString, Json.obj("Title" -> data), Json.obj("_id" -> 1)).map(
+        jsos => getMongoID(jsos.head)
+      )
+    }
 
   def movieSearchForm() : Form[MovieSearch] = MovieSearch.movieSearchForm
 
@@ -78,9 +90,7 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
       errs => Future {List()},
       moviesearch => futureRefinedList[JsObject](None, x => x.toString, moviesearch.jsonObject, Json.obj("_id" -> 1)).flatMap(jsos =>
         futureRefinedList[Movie](None, x => x.toString, moviesearch.jsonObject, Json.obj()).map {
-          movies => movies.zip(jsos.map {
-            jso => getMongoID(jso)
-          }).grouped(3).toList
+          movies => moviesZippedIDsOnRows(jsos, movies)
         }
       )
     )
