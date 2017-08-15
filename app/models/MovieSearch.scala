@@ -31,13 +31,21 @@ case class MovieSearch(title : Option[String], genres : Option[String], actors: 
 }
 
 object MovieSearch {
+  def validation(vlu : Option[String]) = vlu.getOrElse("") match {
+    case alphanumericRegex(_*) => true
+    case _ => false
+  }
+
+  val alphanumericRegex = """[A-Za-z]*""".r
+  val message = "Invalid characters used in search query."
+
   val movieSearchForm: Form[MovieSearch] = Form(
     mapping(
-      "Title" -> optional(text),
-      "Genre" -> optional(text),
-      "Actors" -> optional(text),
-      "Director" -> optional(text),
-      "Plot" -> optional(text)
+      "Title" -> optional(text).verifying(message, vlu => validation(vlu)),
+      "Genre" -> optional(text).verifying(message, vlu => validation(vlu)),
+      "Actors" -> optional(text).verifying(message, vlu => validation(vlu)),
+      "Director" -> optional(text).verifying(message, vlu => validation(vlu)),
+      "Plot" -> optional(text).verifying(message, vlu => validation(vlu))
     )(MovieSearch.apply)(MovieSearch.unapply)
   )
 }
