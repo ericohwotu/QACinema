@@ -5,23 +5,32 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bookings.css")">
     </head>
-    <body class="track-list" style="text-align: left">
-        <div class="container">
-            <h4>Thank you for choosing to view <span class="card-title">@booking.movieName</span> with us</h4>
-            <h1>Your booking reference is <span class="card-title small">@booking.reference</span></h1>
-            <h3 class="card-title">Movie Name: <span class="card-text small">@booking.movieName</span></h3>
-            <h3 class="card-title">Show Date: <span class="card-text small">@booking.date</span></h3>
-            <h3 class="card-title">Show Time: <span class="card-text small">@booking.time</span></h3>
-            <h3 class="card-title">Seats:</h3>
-            @for(seat <- booking.seats) {
-                <h3 class="card-title">
-                    Seat No: <span class="card-text small"> @seat.id </span>
-                    Seat Type: <span class="card-text small"> @seat.kind </span>
-                </h3>
-            }
-            <h3 class="card-title">Total: <span class="card-text small">@booking.price</span></h3>
-            <button onclick="printReciept()" class="btn btn-info noprint">Print</button>
+    <body>
+
+        <div class="container" style="width:700px">
+            <div class="track-list" style="text-align: left">
+
+                <h1 class="card-block gianttext card-title">QA <span class="card-text">Cinemas</span></h1>
+                <hr style="border-color: white">
+
+
+
+                <h3 class="card-title">Movie Name: <span class="card-text small" style="float:right">@booking.movieName</span></h3>
+                <h3 class="card-title">Show Date: <span class="card-text small" style="float:right">@booking.date</span></h3>
+                <h3 class="card-title">Show Time: <span class="card-text small" style="float:right">@booking.time</span></h3>
+                <h3 class="card-title">Seats:</h3>
+                @for(seat <- booking.seats) {
+                    <h3 class="card-title">
+                        <span class="card-title small">Seat No: <span class="card-text small"> @seat.id </span></span>
+                        <span class="card-title small" style="float:right">Seat Type: <span class="card-text small"> @seat.kind </span></span>
+                    </h3>
+                }
+                <h3 class="card-title">Reference: <span class="card-text small" style="float:right">@booking.reference</span></h3>
+                <h3 class="card-title">Total:     <span class="card-text small" style="float:right">@booking.price</span></h3>
+            </div>
+            <button onclick="printReciept()" class="btn btn-info">Print</button>
         </div>
+
         <script>
             function printReciept(){
                 window.print()
