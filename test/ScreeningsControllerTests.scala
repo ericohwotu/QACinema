@@ -65,10 +65,6 @@ class ScreeningsControllerTests extends Specification {
       status(getSeats) must equalTo(BAD_REQUEST)
     }
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     "return seats if all values provided" in new WithApplication() {
       FakeRequest(GET,"/bookings")
       val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/getseats?" +
