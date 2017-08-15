@@ -2,14 +2,14 @@ package controllers
 
 import javax.inject.Inject
 
-import play.api.libs.json.{JsArray, JsObject, Json, Reads}
+import play.api.libs.json.{JsObject, Json, Reads}
 import play.api.mvc._
 import models.{Movie, MovieSearch}
 import play.api.data.Form
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
 import reactivemongo.play.json._
-import reactivemongo.api.Cursor
+import reactivemongo.api.{Cursor, ReadPreference}
 import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.collection.JSONCollection
 
@@ -27,8 +27,8 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
 
   def futureRefinedList[A <: AnyRef](criteria : Option[String], method : (AnyRef) => String, query: JsObject, returnData : JsObject)(implicit reads: Reads[A]) : Future[List[A]] = {
     val collectedList : Future[List[A]] = collection.map {
-      _.find(query, returnData).cursor[A]()
-    }.flatMap(_.collect[List]())
+      _.find(query, returnData).cursor[A](ReadPreference.primary)
+    }.flatMap(_.collect[List](-1, Cursor.FailOnError[List[A]]()))
 
     criteria.fold(collectedList)(crit => applyCriteriaOnQuery[A](collectedList, crit, method))
   }
@@ -56,7 +56,7 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
     val futureIDCursor: Future[Cursor[Movie]] = collection.map {
       _.find(Json.obj("_id" -> id)).cursor[Movie]()
     }
-    val futureIDList: Future[List[Movie]] = futureIDCursor.flatMap(_.collect[List]())
+    val futureIDList: Future[List[Movie]] = futureIDCursor.flatMap(_.collect[List](-1, Cursor.FailOnError[List[Movie]]()))
 
     futureIDList.map {
       movieIDs => movieIDs.headOption.fold(BadRequest(views.html.noMovie()))(res => Ok(views.html.movie(res)))
