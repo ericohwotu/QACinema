@@ -39,12 +39,17 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi,
   }
 
   def searchPage: Action[AnyContent] = Action {
-    Ok(views.html.search(List(), movieController.movieSearchForm()))
+    Ok(views.html.search(List(), movieController.movieSearchForm(), None))
   }
 
   def richSearch() : Action[AnyContent] = Action.async {implicit request =>
     movieController.takeMovieSearchForm().map {
-      results => Ok(views.html.search(results, movieController.movieSearchForm()))
+      results => Ok(views.html.search(results, movieController.movieSearchForm(),
+        movieController.movieSearchForm().bindFromRequest.fold(
+          errs => Some("An error occured in your search."),
+          moviesearch => Some("Search query - " + moviesearch.toString)
+        )
+      ))
     }
   }
 
