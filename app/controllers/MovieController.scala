@@ -17,6 +17,9 @@ import scala.concurrent.Future
 
 class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Controller with MongoController with ReactiveMongoComponents {
 
+  type movieIDRow = List[(Movie, String)]
+  type resultMovieIDRow = Future[List[movieIDRow]]
+
   def collection: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
   def getMongoID(jso : JsObject): String = ((jso \ "_id").as[JsObject] \ "$oid").as[String]
 
@@ -42,17 +45,17 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
     case mov : Movie => mov.Title
   }
 
-  def moviesZippedIDsOnRows(jsos : List[JsObject], movies : List[Movie]): List[List[(Movie, String)]] = movies.zip(jsos.map {
+  def moviesZippedIDsOnRows(jsos : List[JsObject], movies : List[Movie]): List[movieIDRow] = movies.zip(jsos.map {
     jso => getMongoID(jso)
   }).grouped(3).toList
 
-  def genericListingPage(criteria: Option[String], method : (AnyRef) => String): Action[AnyContent] = Action.async { implicit request =>
+  def genericListingPage(criteria: Option[String], method : (AnyRef) => String): resultMovieIDRow =
     futureRefinedList[JsObject](criteria, method, Json.obj(), Json.obj("_id" -> 1, "Genre" -> 1, "Title" -> 1)).flatMap(jsos =>
       futureRefinedList[Movie](criteria, method, Json.obj(), Json.obj()).map {
-        movies => Ok(views.html.listings(moviesZippedIDsOnRows(jsos, movies)))
+        movies => moviesZippedIDsOnRows(jsos, movies)
       }
     )
-  }
+
 
   def getMovieAction(id: BSONObjectID): Future[Result] = {
     val futureIDCursor: Future[Cursor[Movie]] = collection.map {
@@ -85,7 +88,7 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
 
   def movieSearchForm() : Form[MovieSearch] = MovieSearch.movieSearchForm
 
-  def takeMovieSearchForm()(implicit request : Request[AnyContent]) : Future[List[List[(Movie, String)]]] = {
+  def takeMovieSearchForm(implicit request : Request[AnyContent]) : resultMovieIDRow = {
     MovieSearch.movieSearchForm.bindFromRequest.fold(
       errs => Future {List()},
       moviesearch => futureRefinedList[JsObject](None, x => x.toString, moviesearch.jsonObject, Json.obj("_id" -> 1)).flatMap(jsos =>

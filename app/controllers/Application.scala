@@ -32,16 +32,22 @@ class Application @Inject() (val movieController: MovieController,
     Ok(views.html.index(carelems, preids))
   }
 
-  def listings(): Action[AnyContent] = {
-    movieController.genericListingPage(None, x => x.toString)
+  def listings(): Action[AnyContent] = Action.async {
+    movieController.genericListingPage(None, x => x.toString).map {movies =>
+      Ok(views.html.listings(movies))
+    }
   }
 
-  def listingsWithGenre(genre: String): Action[AnyContent] = {
-    movieController.genericListingPage(Some(genre.toLowerCase), movieController.genreExtract)
+  def listingsWithGenre(genre: String): Action[AnyContent] = Action.async {
+    movieController.genericListingPage(Some(genre.toLowerCase), movieController.genreExtract).map { movies =>
+      Ok(views.html.listings(movies))
+    }
   }
 
-  def listingsByTitle(title: String): Action[AnyContent] = {
-    movieController.genericListingPage(Some(URLDecoder.decode(title.toLowerCase, Charset.forName("utf-8").name())), movieController.titleExtract)
+  def listingsByTitle(title: String): Action[AnyContent] = Action.async {
+    movieController.genericListingPage(Some(URLDecoder.decode(title.toLowerCase, Charset.forName("utf-8").name())), movieController.titleExtract).map { movies =>
+      Ok(views.html.listings(movies))
+    }
   }
 
   def searchPage: Action[AnyContent] = Action {
@@ -49,7 +55,7 @@ class Application @Inject() (val movieController: MovieController,
   }
 
   def richSearch() : Action[AnyContent] = Action.async {implicit request =>
-    movieController.takeMovieSearchForm().map {
+    movieController.takeMovieSearchForm.map {
       results => Ok(views.html.search(results, movieController.movieSearchForm(),
         movieController.movieSearchForm().bindFromRequest.fold(
           errs => Some("An error occured in your search."),
