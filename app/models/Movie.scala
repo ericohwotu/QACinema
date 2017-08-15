@@ -17,7 +17,7 @@ case class Movie(
                  Actors: String,
                  Plot: String,
                  Poster: String,
-                 var video: Option[String] = None
+                 var Video: Option[String] = None
                )
 
 object Movie{
@@ -34,7 +34,7 @@ object Movie{
       "Actors" -> nonEmptyText,
       "Plot" -> nonEmptyText,
       "Poster" -> nonEmptyText,
-      "video" -> optional(text)
+      "Video" -> optional(text)
     )(Movie.apply)(Movie.unapply)
   )
 }

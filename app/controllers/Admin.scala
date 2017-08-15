@@ -82,7 +82,7 @@ class Admin @Inject()( @NamedCache("controller-cache") cachedCon: Cached,
         "Actors" -> newMovie.Actors,
         "Plot" -> newMovie.Plot,
         "Poster" -> newMovie.Poster,
-        "video" -> newMovie.video
+        "Video" -> newMovie.Video
       )
 
       movieDBTable.map(_.findAndUpdate(selector, modifier))
