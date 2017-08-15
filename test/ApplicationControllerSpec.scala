@@ -102,11 +102,33 @@ class ApplicationControllerSpec extends PlaySpecification {
     }
 
     "should be able to do a rich search with optional search parameters" in new WithApplication {
-      route(FakeApplication(), FakeRequest(GET, "/search?title=movie")) match {
+      val body : List[(String, String)] = List(
+        ("Title", "dunkirk")
+      )
+
+      route(FakeApplication(), FakeRequest(POST, "/search").withFormUrlEncodedBody(body : _*)) match {
         case Some(route) =>
           status(route) must equalTo(OK)
           contentType(route) must beSome.which(_ == "text/html")
-          contentAsString(route) must contain("Search Results")
+          contentAsString(route) must contain("Movie Search")
+          contentAsString(route) must not(contain("Please enter a query."))
+          contentAsString(route) must contain("Title: dunkirk")
+        case _ => failure
+      }
+    }
+
+    "should not be able to do a rich search with invalid params" in new WithApplication {
+      val body : List[(String, String)] = List(
+        ("Title", ".x@ASDADA~")
+      )
+
+      route(FakeApplication(), FakeRequest(POST, "/search").withFormUrlEncodedBody(body : _*)) match {
+        case Some(route) =>
+          status(route) must equalTo(OK)
+          contentType(route) must beSome.which(_ == "text/html")
+          contentAsString(route) must contain("Movie Search")
+          contentAsString(route) must not(contain("Please enter a query."))
+          contentAsString(route) must contain("An error occured in your search.")
         case _ => failure
       }
     }
@@ -116,8 +138,8 @@ class ApplicationControllerSpec extends PlaySpecification {
         case Some(route) =>
           status(route) must equalTo(OK)
           contentType(route) must beSome.which(_ == "text/html")
-          contentAsString(route) must contain("Search Results")
-          contentAsString(route) must contain("No search parameters provided.")
+          contentAsString(route) must contain("Movie Search")
+          contentAsString(route) must contain("Please enter a query.")
         case _ => failure
       }
     }
@@ -136,7 +158,7 @@ class ApplicationControllerSpec extends PlaySpecification {
       val movieRoute = route(FakeApplication(), FakeRequest(GET, "/movie/deadbeefdeadbeefdeadbeef")) match {
         case Some(route) =>
           status(route) must equalTo(BAD_REQUEST)
-          contentAsString(route) must contain("Movie ID does not exist.")
+          contentAsString(route) must contain("The requested movie ID does not exist...")
         case _ => failure
       }
     }
