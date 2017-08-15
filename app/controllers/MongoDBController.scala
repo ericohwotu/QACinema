@@ -13,13 +13,12 @@ import reactivemongo.play.json._
 import collection._
 import reactivemongo.bson.{BSONDocument, BSONObjectID}
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scalaj.http._
 
 class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
   with MongoController with ReactiveMongoComponents{
 
-  def movieDBTable: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
   def cinemaLocationsTable: Future[JSONCollection] = database.map(_.collection[JSONCollection]("locations"))
 
   def addLocations(): Action[AnyContent] = Action {
@@ -37,27 +36,40 @@ class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extend
     Ok("success")
   }
 
+def dropDatabases(listOfCinemas: List[String]): Unit ={
+  listOfCinemas.foreach(cin => database.map(_.collection[JSONCollection](cin)).flatMap(_.drop(false)))
+}
+
   def createMoviesFromAPI(): Action[AnyContent] = Action {
-    movieDBTable.flatMap(_.drop(false))
-    getTrending.foreach { movie =>
-      val improvedFormat = movie.title.replaceAll("\\s", "+")
-      val trendingNamesReq = Http("http://www.omdbapi.com/?t=" + improvedFormat + "&r=json&plot=full&apikey=313dd87a")
-      val newMovie = Json.parse(trendingNamesReq.asString.body).validate[Movie]
+    val trendingList = getTrending
+    val listOfCinemas = List("QACinema","QA DockCinema", "QA Theatre","QA FilmCentre")
+    dropDatabases(listOfCinemas)
+    var listOfMovies = ListBuffer[Movie]()
 
-      newMovie match {
-        case s: JsSuccess[Movie] =>
-          val video = Http("https://api.themoviedb.org/3/movie/"+movie.id+"/videos?api_key=f675a5619b10739ad98190b5599f50d9&language=en-US")
-          val currentTrailer = Json.parse(video.asString.body)
-          val trailerList = (currentTrailer \"results").get.validate[List[Trailer]].get
-          s.get.video = Some(trailerList.headOption.get.key)
-          movieDBTable.flatMap(_.insert(s.get))
+      trendingList.foreach { movie =>
+        val improvedFormat = movie.title.replaceAll("\\s", "+")
+        val trendingNamesReq = Http("http://www.omdbapi.com/?t=" + improvedFormat + "&r=json&plot=full&apikey=313dd87a")
+        val newMovie = Json.parse(trendingNamesReq.asString.body).validate[Movie]
 
-        case e: JsError => println("Errors: " + JsError.toJson(e).toString())
+        newMovie match {
+          case s: JsSuccess[Movie] =>
+            val video = Http("https://api.themoviedb.org/3/movie/"+movie.id+"/videos?api_key=f675a5619b10739ad98190b5599f50d9&language=en-US")
+            val currentTrailer = Json.parse(video.asString.body)
+            (currentTrailer \"results").get.validate[List[Trailer]] match {
+              case x: JsSuccess[List[Trailer]] =>  s.get.video = Some(x.get.headOption.get.key)
+               listOfMovies += s.get
+              case y: JsError => println("Trailer Error: " + JsError.toJson(y).toString())
+            }
+          case e: JsError => println("Movie Error: " + JsError.toJson(e).toString())
+        }
       }
-    }
+
+    listOfCinemas.foreach(cin =>
+     listOfMovies.foreach(mov =>
+       database.map(_.collection[JSONCollection](cin)).flatMap(_.insert(mov)))
+    )
     Ok("Trending Movies Added!")
   }
-
 
   def getTrending : List[trendingMovieList] = {
     val response = Http("https://api.themoviedb.org/3/movie/now_playing?api_key=f675a5619b10739ad98190b5599f50d9&language=en-US&page=1")

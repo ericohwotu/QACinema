@@ -58,15 +58,7 @@ class ScreeningsControllerTests extends Specification {
     }
   }
 
-  "ScreeningsApiController" should {
 
-    "give bad request if no key is provided" in new WithApplication() {
-      val getSeats = route(FakeApplication(),FakeRequest(GET,"/bookings/getseats")).orNull
-      status(getSeats) must equalTo(BAD_REQUEST)
-    }
-
-      status(getSeats) must equalTo(UNAUTHORIZED)
-    }
 
     "return seats if all values provided" in new WithApplication() {
       FakeRequest(GET,"/bookings")
@@ -106,7 +98,7 @@ class ScreeningsControllerTests extends Specification {
       Await.result(getSeats, Duration.Inf)
       status(getSeats) must equalTo(SEE_OTHER)
     }
-  }
+
 
   "ScreenindsDbController" should {
 
