@@ -59,7 +59,7 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
     val futureIDList: Future[List[Movie]] = futureIDCursor.flatMap(_.collect[List]())
 
     futureIDList.map {
-      movieIDs => movieIDs.headOption.fold(BadRequest("Movie ID does not exist."))(res => Ok(views.html.movie(res)))
+      movieIDs => movieIDs.headOption.fold(BadRequest(views.html.noMovie()))(res => Ok(views.html.movie(res)))
     }
   }
 
