@@ -75,7 +75,7 @@ class Admin @Inject()(val reactiveMongoApi: ReactiveMongoApi, val messagesApi: M
         "Actors" -> newMovie.Actors,
         "Plot" -> newMovie.Plot,
         "Poster" -> newMovie.Poster,
-        "video" -> newMovie.video
+        "Video" -> newMovie.Video
       )
 
       movieDBTable.map(_.findAndUpdate(selector, modifier))
