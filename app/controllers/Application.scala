@@ -13,11 +13,10 @@ import reactivemongo.bson.BSONObjectID
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi,
-                             val movieController: MovieController,
+class Application @Inject() (val movieController: MovieController,
                              val locationController: LocationController,
                              implicit val messagesApi: MessagesApi)
-  extends Controller with MongoController with ReactiveMongoComponents with I18nSupport {
+  extends Controller with I18nSupport {
 
   //TODO: Add the hardcoded IDs and also bring the movie data with it so it is in the correct order.
   def index: Action[AnyContent] = Action.async { implicit request =>
