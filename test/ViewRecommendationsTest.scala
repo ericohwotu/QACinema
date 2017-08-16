@@ -31,10 +31,16 @@ class ViewRecommendationsTest extends Specification {
 
   "Dashboard" should {
     "return a of recommended movies" in new WithApplication{
-      val bookings = route(FakeApplication(),FakeRequest(GET, "/user/recommendations").withSession("loggedin"->"john")).orNull
+      val bookings = route(FakeApplication(),FakeRequest(GET, "/user/recommendations").withSession("loggedin"->"Ladon")).orNull
 
       status(bookings) must equalTo(OK)
-      contentAsString(bookings) must contain ("\"name\": \"Dunkirk\"")
+      contentAsString(bookings) must contain ("\"Title\":\"King\"")
+    }
+
+    "return unauthorised if user is not logged in" in new WithApplication{
+      val bookings = route(FakeApplication(),FakeRequest(GET, "/user/recommendations")).orNull
+
+      status(bookings) must equalTo(UNAUTHORIZED)
     }
   }
 }

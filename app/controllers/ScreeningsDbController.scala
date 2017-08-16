@@ -13,7 +13,6 @@ import reactivemongo.api._
 import reactivemongo.play.json._
 import reactivemongo.play.json.collection.JSONCollection
 import reactivemongo.play.json.commands.JSONAggregationFramework.{Cursor => _, _}
-import traits.MovieRecActions
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -124,15 +123,16 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
     val reqSeats = seats.filter(_.id == seat.id)
 
     println(s"seat-id: ")
+
     def bookHelper(author: String) = Await.result(Await.result(moviesCol.map {
       _.update(Json.obj("name" -> name),
         Json.obj("$set" -> Json.obj(s"$setAuthor" -> author,
           s"$setExpiry" -> Seat.getExpiryDate)))
-    },Duration.Inf),Duration.Inf)
+    }, Duration.Inf), Duration.Inf)
 
-    doesSeatExist(reqSeats, seat) match{
+    doesSeatExist(reqSeats, seat) match {
       case false => "{\"outcome\": \"failure\",\"message\": \"Seat already booked by someone else\"}"
-      case true => toBook(reqSeats.head, seat) match{
+      case true => toBook(reqSeats.head, seat) match {
         case true => bookHelper(seat.author)
           "{\"outcome\": \"success\",\"message\": \"seat booked\"}"
         case false => bookHelper("")
@@ -187,15 +187,16 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
       case _ => Await.result(Await.result(moviesCol.map {
         _.update(Json.obj("name" -> name, findAuthor -> key, findBooked -> false),
           Json.obj("$set" -> Json.obj(s"$updateString" -> true)), multi = true)
-      }, Duration.Inf),Duration.Inf)
+      }, Duration.Inf), Duration.Inf)
 
         submitHelper(position - 1)
     }
+
     println(s"bout to getseatsbyslot $name == $date == $time == $key")
     getSeatsBySlots(name, date, time).fold {} {
       seats =>
 
-        val count = seats.count{seat => println(seat); seat.author == key && !seat.booked}
+        val count = seats.count { seat => println(seat); seat.author == key && !seat.booked }
         println(count)
         submitHelper(count + 1)
     }
@@ -205,7 +206,9 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
   //=============================================== Unbook Seats =============================//
 
   def unbook: Action[AnyContent] = Action { request: Request[AnyContent] =>
-    request.session.get("isTest").fold{ Unauthorized("Sorry Functionality not available to you")}{
+    request.session.get("isTest").fold {
+      Unauthorized("Sorry Functionality not available to you")
+    } {
       _ => //unbookRunner
         Ok("Started")
     }
@@ -230,9 +233,9 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
               }
               case false =>
                 moviesCol.map {
-                _.update(Json.obj("name" -> movie.name),
-                  Json.obj("$set" -> Json.obj(updateExpiry -> 0, updateAuthor -> "")), multi = true)
-              }
+                  _.update(Json.obj("name" -> movie.name),
+                    Json.obj("$set" -> Json.obj(updateExpiry -> 0, updateAuthor -> "")), multi = true)
+                }
             }
           }
         }
@@ -241,7 +244,8 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
   }
 
   def dateSlotUpdater(movie: Screening): Unit = {
-    val uniqueList = DateSlot.getDateSlots.filter{ newSlot => movie.dateSlots.forall{
+    val uniqueList = DateSlot.getDateSlots.filter { newSlot =>
+      movie.dateSlots.forall {
         dateSlot => dateSlot.name != newSlot.name
       }
     }
@@ -250,24 +254,51 @@ class ScreeningsDbController @Inject()(val reactiveMongoApi: ReactiveMongoApi) e
       case true => None
       case false =>
         Await.result(Await.result(moviesCol.map {
-          _.update(Json.obj("name"->movie.name),
+          _.update(Json.obj("name" -> movie.name),
             Json.obj("$push" -> Json.obj("dateSlots" ->
-              Json.obj("$each"->List(dateSlots.head),"$position"->0))))
-        },Duration.Inf),Duration.Inf)
+              Json.obj("$each" -> List(dateSlots.head), "$position" -> 0))))
+        }, Duration.Inf), Duration.Inf)
         dateSlotHelper(dateSlots.tail)
     }
+
     dateSlotHelper(uniqueList.reverse)
   }
 
   //===================================== viewing recommendation ======================================//
 
+  def getAllMovies: List[Movie] = {
+    val cursor = movieInfoCol.map {
+      _.find(Json.obj())
+        .cursor[Movie](ReadPreference.primary)
+    }
+    val list: Future[List[Movie]] = cursor.flatMap(_.collect[List]())
+    Await.result(list, Duration.Inf)
+  }
+
   def getMoviesPerUser(bookings: List[Booking]): List[Movie] = {
-    movieInfoCol.map{
-      _.find(Json.obj("Title"))
+    val movieNames = bookings.map(_.movieName)
+    getAllMovies.filter{
+      case movie => movieNames.contains(movie.Title)
     }
   }
-  def getPopularGenre(movies: List[Movie]): String = ???
-  def getRecommendations(genre: String): List[Movie] = ???
+
+  def getGenres(movies: List[Movie]) = movies.flatMap(_.Genre.split(","))
+
+  def getPopularGenre(genres: List[String]) = genres.groupBy(identity).mapValues(_.size).toSeq.sortBy(_._2).reverse.head._1
+
+  def getMoviesByGenre(genre: String, bookings: List[String]): List[Movie] = {
+    getAllMovies.filter(movie => movie.Genre.contains(genre) && !bookings.contains(movie.Title))
+  }
+
+  def getRecommendations(bookings: List[Booking]): List[Movie] = bookings.length match {
+    case 0 => List()
+    case _ =>
+      val movies = getAllMovies
+      val userMovies = getMoviesPerUser(bookings)
+      val genres = getGenres(userMovies)
+      val topGenre = getPopularGenre(genres)
+      getMoviesByGenre(topGenre, bookings.map(_.movieName))
+  }
 
 
 }

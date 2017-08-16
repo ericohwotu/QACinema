@@ -1,6 +1,6 @@
-@(user: User)
+@(user: User, movies: List[Movie])
 
-@if(user == null){
+@if(user == null) {
     @routes.UserController.login()
 }
 <!DOCTYPE html>
@@ -32,6 +32,18 @@
                 @bookingstable(user.bookings)
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <div class="fill track-list">
+                    <h3 class="card-title">Recommendations</h3>
+                    <div class="underline mid"></div>
+                    <br>
+                    @for(movie <- movies){
+                        @moviediv(movie)
+                    }
+                </div>
+            </div>
+            <br>
 
 
         </div>
