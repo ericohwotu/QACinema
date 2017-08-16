@@ -26,9 +26,9 @@
 
                     @helper.form(action = routes.UserController.loginHandler()) {
 
-                    @helper.inputText(form("Username"), 'class -> "form-control")
+                    @helper.inputText(form("Username"), 'required -> "required", 'class -> "form-control")
 
-                    @helper.inputPassword(form("Password"), 'class->"form-control")
+                    @helper.inputPassword(form("Password"), 'required -> "required", 'class->"form-control")
                         <button class="btn">Login</button>
 
                 }
