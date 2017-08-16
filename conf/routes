@@ -51,7 +51,7 @@ GET     /addmovies                  controllers.MongoDBController.createMoviesFr
 GET     /addcinemas                 controllers.MongoDBController.addLocations()
 
 #Admin Page
-GET     /getallmovies               controllers.Admin.getAllMovies()
+GET     /admin                      controllers.Admin.getAllMovies()
 GET     /delete/:name               controllers.Admin.delete(name: String)
 POST    /createmovie                controllers.Admin.createMovie()
 POST    /update                     controllers.Admin.updateMovie()

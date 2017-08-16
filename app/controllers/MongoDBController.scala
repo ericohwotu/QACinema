@@ -49,7 +49,7 @@ class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extend
           val video = Http("https://api.themoviedb.org/3/movie/"+movie.id+"/videos?api_key=f675a5619b10739ad98190b5599f50d9&language=en-US")
           val currentTrailer = Json.parse(video.asString.body)
           val trailerList = (currentTrailer \"results").get.validate[List[Trailer]].get
-          s.get.video = Some(trailerList.headOption.get.key)
+          s.get.Video = Some(trailerList.headOption.get.key)
           movieDBTable.flatMap(_.insert(s.get))
 
         case e: JsError => println("Errors: " + JsError.toJson(e).toString())

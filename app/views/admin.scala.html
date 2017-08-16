@@ -1,101 +1,107 @@
 @(movies: List[Movie], form: Form[Movie])(implicit messages: Messages)
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Administrator</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    </head>
-    <body>
-        <script>
-                var deleteName = " ";
-                function promptCheck(movieName){
-                    deleteName=movieName;
-                    $("#safetyCheck").modal("show");
-                }
+@main("Administrator") {
+  <div class="container text-center">
+    <button onclick="showCreateModal();" class="bookButton">Create new movie</button>
+  </div><br>
 
-                function showUpdateModal(){
-                    $("#updateMenu").modal("show");
-                }
-
-                function toDelete() {
-                    window.location.href ="/delete/"+deleteName;
-                }
-        </script>
-
-        <ul>
-            <li><a data-toggle = "modal" data-target="#createMenu">Create Entry</a></li>
-            <li><a>Read</a></li>
-        </ul>
-
-        <div id="createMenu" class ="modal fade" role="dialog">
-            <div align="center"><b><u>Create new Movie</u></b></div>
-        @helper.form(routes.Admin.createMovie(), 'id -> "updateContent") {
-            @helper.inputText(form("Title"), 'id -> "title")
-            @helper.inputText(form("Rated"), 'id -> "rated")
-            @helper.inputText(form("Released"), 'id -> "released")
-            @helper.inputText(form("Runtime"), 'id -> "runtime")
-            @helper.inputText(form("Genre"), 'id -> "genre")
-            @helper.inputText(form("Director"), 'id -> "director")
-            @helper.inputText(form("Actors"), 'id -> "actors")
-            @helper.textarea(form("Plot"), 'id -> "plot", 'style -> "width:100%; height:300px; resize:none")
-            @helper.inputText(form("Poster"), 'id -> "poster")
-            @helper.inputText(form("video"), 'id -> "video")
-            <button type="submit">Create Movie</button>
-            <input type ="button" value="Cancel Entry" data-dismiss="modal">
-        }
-        </div>
-
-      <div id="safetyCheck" class="modal fade" role="dialog">
-          <div id="safetyCheckContent">
-              <p> Are you sure?</p><br>
-              <input type ="button" value="Yes" onclick="toDelete()">
-              <input type ="button" value="No" data-dismiss="modal">
-          </div>
-      </div>
-
-            <div id="updateMenu" class ="modal fade" role="dialog">
-                <div align="center"><b><u>Update Movie</u></b></div>
-            @helper.form(routes.Admin.updateMovie(), 'id -> "updateContent") {
-                @helper.inputText(form("Title"), 'id -> "title")
-                @helper.inputText(form("Rated"), 'id -> "rated")
-                @helper.inputText(form("Released"), 'id -> "released")
-                @helper.inputText(form("Runtime"), 'id -> "runtime")
-                @helper.inputText(form("Genre"), 'id -> "genre")
-                @helper.inputText(form("Director"), 'id -> "director")
-                @helper.inputText(form("Actors"), 'id -> "actors")
-                @helper.textarea(form("Plot"), 'id -> "plot", 'style -> "width:100%; height:300px; resize:none")
-                @helper.inputText(form("Poster"), 'id -> "poster")
-                @helper.inputText(form("video"), 'id -> "video")
-                <button type="submit">Update Movie</button>
-                <input type ="button" value="Cancel Entry" data-dismiss="modal">
-                }
-            </div>
-
-
-
+  <div class="container" style="width: 70%;">
+    <div class="row">
     @for(movie <- movies) {
-        <div id = "container">
-        <div id="movTitle">Name: @movie.Title </div>
-        <div>Certification: @movie.Rated</div>
-        <div>Release Date: @movie.Released</div>
-        <div>Runtime: @movie.Runtime</div>
-        <div>Genres: @movie.Genre</div>
-        <div>Director: @movie.Director</div>
-        <div>Actors: @movie.Actors</div>
-        <div>Synopsis: @movie.Plot</div>
-        <img src=@movie.Poster><br>
-            <input type="button" id="test" onclick='promptCheck("@movie.Title")' class="button" value="Delete">
-            <input type="button" class="button" onclick="showUpdateModal()" value="Update">
+      <div class="col-lg-6 mb-5">
+        <div>
+          <img style="width: 300px; height: 475px; float: left; padding-right: 5px;" src=@movie.Poster>
+          <p class="card-title" align="right" style="font-size: 19px;">Name: @movie.Title </p>
+          <p class="card-text" align="right">Certification: @movie.Rated<br>
+          Release Date: @movie.Released<br>
+          Runtime: @movie.Runtime<br>
+          Genres: @movie.Genre<br>
+          Director: @movie.Director<br>
+          Actors: @movie.Actors</p><br>
+          <p class="card-text" align="right" style="height: 150px; overflow: auto;">Synopsis: @movie.Plot</p>
+        </div><br>
+        <div align="left">
+          <p style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>
+          <input type="button" class="bookButton" onclick="showUpdateModal()" value="Update" style="float: left;">
+          <p style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp</p>
+          <input type="button" id="test" onclick='promptCheck("@movie.Title")' class="bookButton" value="Delete"
+          style="float: left;">
         </div>
-        <br>
+      </div>
     }
-    </body>
-</html>
+    </div>
+  </div>
+
+  <div id="createMenu" class ="modal adminModal card-title" role="dialog">
+    <div align="center" style="font-size: 20pt; padding: 10px;"><b>Create new Movie</b></div>
+    @helper.form(routes.Admin.createMovie(), 'id -> "updateContent") {
+      @helper.inputText(form("Title"), 'id -> "title")
+      @helper.inputText(form("Rated"), 'id -> "rated")
+      @helper.inputText(form("Released"), 'id -> "released")
+      @helper.inputText(form("Runtime"), 'id -> "runtime")
+      @helper.inputText(form("Genre"), 'id -> "genre")
+      @helper.inputText(form("Director"), 'id -> "director")
+      @helper.inputText(form("Actors"), 'id -> "actors")
+      @helper.textarea(form("Plot"), 'id -> "plot", 'style -> "width:100%; height:300px; resize:none")
+      @helper.inputText(form("Poster"), 'id -> "poster")
+      @helper.inputText(form("Video"), 'id -> "video")
+      <br><button class="bookButton" type="submit" style="float: left;">Create Movie</button>
+      <p style="float: left; padding: 20px;">&nbsp</p>
+      <input type="button" class="bookButton" value="Cancel Entry" data-dismiss="modal" style="float: left;">
+      }
+  </div>
+
+  <div id="safetyCheck" class="modal adminModal card-title text-center" role="dialog">
+    <div id="safetyCheckContent" class="text-center" role="dialog">
+      <div style="font-size: 20pt; padding: 10px;">Are you sure?</div><br>
+      <input type="button" class="bookButton" value="Yes" onclick="toDelete()" style="float: left;">
+      <p style="float: left;">&nbsp&nbsp&nbsp</p>
+      <input type="button" class="bookButton" value="No" data-dismiss="modal" style="float: left;">
+    </div>
+  </div>
+
+  <div id="updateMenu" class ="modal adminModal card-title" role="dialog">
+    <div align="center" style="font-size: 20pt; padding: 10px;"><b>Update Movie</b></div>
+    @helper.form(routes.Admin.updateMovie(), 'id -> "updateContent") {
+      @helper.inputText(form("Title"), 'id -> "title")
+      @helper.inputText(form("Rated"), 'id -> "rated")
+      @helper.inputText(form("Released"), 'id -> "released")
+      @helper.inputText(form("Runtime"), 'id -> "runtime")
+      @helper.inputText(form("Genre"), 'id -> "genre")
+      @helper.inputText(form("Director"), 'id -> "director")
+      @helper.inputText(form("Actors"), 'id -> "actors")
+      @helper.textarea(form("Plot"), 'id -> "plot", 'style -> "width:100%; height:300px; resize:none")
+      @helper.inputText(form("Poster"), 'id -> "poster")
+      @helper.inputText(form("video"), 'id -> "video")
+      <br><button class="bookButton" type="submit" style="float: left;">Update Movie</button>
+      <p style="float: left; padding: 20px;">&nbsp</p>
+      <input type="button" class="bookButton" value="Cancel Entry" data-dismiss="modal" style="float: left;">
+    }
+  </div>
+
+  <script src="@routes.Assets.at("javascripts/jquery.js")" type="text/javascript"></script>
+  <script src="@routes.Assets.at("javascripts/admin.js")"></script>
+  <script>
+    var deleteName = " ";
+
+    function promptCheck(movieName) {
+      deleteName = movieName;
+      $("#safetyCheck").modal("show");
+    }
+
+    function showUpdateModal() {
+      $("#updateMenu").modal("show");
+    }
+
+    function showCreateModal() {
+      $("#createMenu").modal("show");
+    }
+
+    function toDelete() {
+      window.location.href = "/delete/" + deleteName;
+    }
+  </script>
+}
 
 
 

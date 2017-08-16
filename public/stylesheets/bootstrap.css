@@ -5679,8 +5679,14 @@ button.close {
   z-index: 1050;
   display: none;
   overflow: hidden;
-
   outline: 0;
+}
+
+.adminModal {
+  background-image: linear-gradient(to top right,#4b5257,black);
+  background-repeat: no-repeat;
+  border-width: 2px;
+  border-color: white;
 }
 
 .modal.fade .modal-dialog {
@@ -9633,6 +9639,45 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   width: 265px;
   height: 40px;
   text-align: center;
+}
+
+#createMenu, #updateMenu {
+  border: solid;
+  border-color: white;
+  height: 80%;
+  width: 45%;
+  top: 50%;
+  left: 50%;
+  margin-top: -20%;
+  margin-left: -20%;
+  position: fixed;
+}
+
+#updateContent{
+  margin-left: 10%;
+  margin-top: 5%;
+  width: 80%;
+  position: absolute;
+}
+
+#safetyCheck{
+  border: solid;
+  border-color: white;
+  min-height: 200px;
+  min-width: 226px;
+  max-height: 20%;
+  max-width: 226px;
+  top: 60%;
+  left: 50%;
+  margin-top: -20%;
+  margin-left: -20%;
+  position: fixed;
+}
+
+#safetyCheckContent{
+  margin-left: 10%;
+  margin-top: 5%;
+  position: absolute;
 }
 /*# sourceMappingURL=bootstrap.css.map */
 
