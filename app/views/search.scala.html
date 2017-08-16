@@ -1,0 +1,68 @@
+@(movies: List[List[(Movie, String)]], form: Form[MovieSearch], query : Option[String])(implicit messages: Messages)
+@main("Search") {
+    <hr>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8" align="center">
+                <h1 class="page-header card-title">Movie Search<br></h1>
+                <h4 class="card-text">Search for a particular movie</h4>
+            </div>
+            <div class="col-lg-2" align="center">
+                @helper.form(action = routes.Application.richSearch(), 'class -> "inline-form") {
+                    @helper.inputText(form("Title"), 'class -> "form-control", 'style -> "width:100%")
+                    @helper.inputText(form("Genre"), 'class -> "form-control", 'style -> "width:100%")
+                    @helper.inputText(form("Actors"), 'class -> "form-control", 'style -> "width:100%")
+                    @helper.inputText(form("Director"), 'class -> "form-control", 'style -> "width:100%")
+                    @helper.inputText(form("Plot"), 'class -> "form-control", 'style -> "width:100%")
+                    <button class="btn">Submit</button>
+                }
+            </div>
+        </div>
+
+    </div>
+        <!-- /.container -->
+        <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+            <h1 class="page-header card-title">@query.getOrElse("Please enter a query.")<br></h1>
+        </div>
+        @for(moviegroup <- movies) {
+            <div class="row">
+            @for(movie <- moviegroup) {
+                <div class="tinymovie">
+                    <a href='../movie/@movie._2'>
+                        <img class="img-responsive" src="@movie._1.Poster">
+                        <div class="tinytext">@movie._1.Title</div>
+                    </a>
+                </div>
+            }
+            </div>
+            <br>
+        }
+
+
+            <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                </div>
+            </div>
+                <!-- /.row -->
+        </footer>
+
+    </div>
+        <!-- /.container -->
+
+    <script>
+      function filterGenre() {
+        document.getElementById("genreFilter").setAttribute("action", "/listings/" +
+                document.getElementById("genreSelect").value.toLowerCase());
+      }
+
+      function search() {
+        document.getElementById("searchListings").setAttribute("action", "/listings/title/" +
+                document.getElementById("searchInput").value);
+      }
+    </script>
+}

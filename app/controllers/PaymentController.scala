@@ -9,15 +9,15 @@ import play.api.mvc._
   */
 class PaymentController extends Controller {
   val braintreeGateway : BraintreeGateway = new BraintreeGateway("access_token$sandbox$2ywzyb5rtfnk6m6h$10bfae954e82add885cac2188735ccda")
+  val noAmount : Result = BadRequest("No amount provided.")
 
   def generateClientToken(): String = braintreeGateway.clientToken().generate(new ClientTokenRequest())
-
   def initiateClientToken() : Action[AnyContent] = Action { implicit request =>
-    request.session.get("bookingPrice") match {
-      case Some(amount) => Ok(views.html.payment(generateClientToken(), amount))
-      case None => BadRequest("No amount provided.")
-    }
+    request.session.get("bookingPrice").fold(noAmount)(am => Ok(views.html.payment(generateClientToken(), am)))
   }
+
+  def makeTransactionRequest(nonce : String, request : Request[AnyContent]) : Result =
+    request.session.get("bookingPrice").fold(noAmount)(am => finalizeRequest(nonce, BigDecimal(am.toString)))
 
   def finalizeRequest(nonce: String, amount: BigDecimal) : Result = {
     val transactionRequest : TransactionRequest = new TransactionRequest()
@@ -31,20 +31,9 @@ class PaymentController extends Controller {
     }
   }
 
-  def makeTransactionRequest(nonce : String, request : Request[AnyContent]) : Result = {
-    request.session.get("bookingPrice") match {
-      case Some(amount) => finalizeRequest(nonce, BigDecimal(amount.toString))
-      case None => BadRequest("No amount provided.")
-    }
-  }
-
   def makePayment : Action[AnyContent] = Action { implicit request =>
-    val urlencoded: Map[String, Seq[String]] = request.body.asFormUrlEncoded.getOrElse(Map())
-    val nonce : Seq[String] = urlencoded.getOrElse("nonce", List[String]())
+    val nonce : Seq[String] = request.body.asFormUrlEncoded.getOrElse(Map()).getOrElse("nonce", List[String]())
 
-    nonce.headOption match {
-      case Some(no) => makeTransactionRequest(no, request)
-      case _ => BadRequest("No nonce provided!")
-    }
+    nonce.headOption.fold(BadRequest("No nonce provided!"))(no => makeTransactionRequest(no, request))
   }
 }
