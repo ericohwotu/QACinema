@@ -21,7 +21,8 @@ import scala.concurrent.{Await, Future}
 
 class UserController @Inject()(
                                 implicit val messagesApi: MessagesApi,
-                                val reactiveMongoApi: ReactiveMongoApi
+                                val reactiveMongoApi: ReactiveMongoApi,
+                                screeningsDbController: ScreeningsDbController
                               ) extends Controller with I18nSupport
   with ReactiveMongoComponents with MongoController {
 
@@ -155,7 +156,7 @@ class UserController @Inject()(
         getUsers(username).headOption.fold{
           Redirect(routes.UserController.login())
         } {
-          user => Ok(views.html.users.dashboard(user))
+          user => Ok(views.html.users.dashboard(user, screeningsDbController.getRecommendations(user.bookings)))
         }
     }
   }
