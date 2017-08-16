@@ -25,15 +25,15 @@
                     }
                 @helper.form(action = routes.UserController.regHandler()) {
                     <div class="form-group">
-                    @helper.inputText(form("Name"), 'class->"form-control")
+                    @helper.inputText(form("Name"), 'required -> "required", 'pattern -> "[a-zA-Z ]{6,16}", 'class->"form-control")
                     </div><div class="form-group">
-                    @helper.inputText(form("Email"), 'class->"form-control")
+                    @helper.inputText(form("Email"), 'type -> "email", 'required -> "required", 'class->"form-control")
                     </div><div class="form-group">
-                    @helper.inputText(form("Username"), 'class->"form-control")
+                    @helper.inputText(form("Username"), 'required -> "required", 'class->"form-control")
                     </div><div class="form-group">
-                    @helper.inputPassword(form("Password"), 'class->"form-control")
+                    @helper.inputPassword(form("Password"), 'required -> "required", 'pattern -> ".{6,16}",  'class->"form-control")
                     </div><div class="form-group">
-                    @helper.inputPassword(form("Confirm Password"), 'class->"form-control")
+                    @helper.inputPassword(form("Confirm Password"), 'required -> "required", 'pattern -> "[a-zA-Z ]{6,16}", 'class->"form-control")
                     </div><div class="form-group">
                     <button type="submit" class="btn">Submit</button>
                     </div>
