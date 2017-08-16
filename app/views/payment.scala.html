@@ -38,7 +38,8 @@
                             method: "POST",
                             data: {
                                 "nonce" : payload.nonce,
-                                "amount" : '@amount'
+                                "amount" : '@amount',
+                                "pointsUsed" : 20
                             },
                             success: function(res) {
                                 window.open("/bookings/receipt","_blank");
