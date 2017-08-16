@@ -12,7 +12,7 @@
     <select disabled id="times" class="form-control disabled" onchange="enableScreens()">
         <!-- the times go here -->
     </select>
-    <select disabled id="screens" class="form-control disabled" onchange="getTotal()">
+    <select disabled id="screens" class="form-control disabled" onchange="popTimes(document.getElementById('days').selectedIndex);getTotal()">
       <option value="@vals(0)">Standard</option>
       <option value="@vals(1)">3D</option>
       <option value="@vals(2)">Imax</option>
