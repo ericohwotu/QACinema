@@ -113,9 +113,7 @@ class ScreeningsApiController @Inject()(val mongoDbController: ScreeningsDbContr
           case None => List()
           case Some(user) => user.bookings
         }
-        val movies = mongoDbController.getMoviesPerUser(bookings)
-        val genre = mongoDbController.getPopularGenre(movies)
-        val result = mongoDbController.getRecommendations(genre)
+        val result = mongoDbController.getRecommendations(bookings)
         Ok(Json.toJson(result))
     }
   }

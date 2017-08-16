@@ -3,7 +3,6 @@ package controllers
 import javax.inject.Inject
 
 import models.{Booking, User}
-import play.api.cache.{CacheApi, NamedCache}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -20,11 +19,12 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 import scala.concurrent.{Await, Future}
 
-class UserController @Inject()(@NamedCache("document-cache") cached: CacheApi,
-                               implicit val messagesApi: MessagesApi,
-                               val reactiveMongoApi: ReactiveMongoApi
-                              )
-  extends Controller with I18nSupport  with ReactiveMongoComponents with MongoController {
+class UserController @Inject()(
+                                implicit val messagesApi: MessagesApi,
+                                val reactiveMongoApi: ReactiveMongoApi,
+                                screeningsDbController: ScreeningsDbController
+                              ) extends Controller with I18nSupport
+  with ReactiveMongoComponents with MongoController {
 
   val byteLength = 16
   val minPwdLen = 6
@@ -57,13 +57,9 @@ class UserController @Inject()(@NamedCache("document-cache") cached: CacheApi,
     })
   )
 
-  def usersCol: Future[JSONCollection] = cached.getOrElse[Future[JSONCollection]]("userCollection") {
-    database.map(_.collection[JSONCollection]("UserCollection"))
-  }
+  def usersCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("UserCollection"))
 
-  def bookingsCol: Future[JSONCollection] = cached.getOrElse[Future[JSONCollection]]("anonBookingsCollection") {
-    database.map(_.collection[JSONCollection]("AnonBookingsCollection"))
-  }
+  def bookingsCol: Future[JSONCollection] = database.map(_.collection[JSONCollection]("AnonBookingsCollection"))
 
   def addUserToDb(user: User): Unit = usersCol.flatMap(_.insert(user))
 
@@ -160,7 +156,7 @@ class UserController @Inject()(@NamedCache("document-cache") cached: CacheApi,
         getUsers(username).headOption.fold{
           Redirect(routes.UserController.login())
         } {
-          user => Ok(views.html.users.dashboard(user))
+          user => Ok(views.html.users.dashboard(user, screeningsDbController.getRecommendations(user.bookings)))
         }
     }
   }
