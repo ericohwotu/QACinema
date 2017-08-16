@@ -16,7 +16,11 @@
             } else {
                 carousel-item
             }'>
-                <a id="caro1" href="/movie/@elem._2">
+                <a href="/movie/@elem._2" @if(carousel.head == elem) {
+                  id="caro1">
+                } else {
+                  >
+                }
                     <img class="carousel-img" src="@routes.Assets.at(elem._1)" alt="First slide">
                 </a>
             </div>
