@@ -18,6 +18,7 @@
                 <h3 class="card-title">Movie Name: <span class="card-text small" style="float:right">@booking.movieName</span></h3>
                 <h3 class="card-title">Show Date: <span class="card-text small" style="float:right">@booking.date</span></h3>
                 <h3 class="card-title">Show Time: <span class="card-text small" style="float:right">@booking.time</span></h3>
+                <hr style="border-color: white">
                 <h3 class="card-title">Seats:</h3>
                 @for(seat <- booking.seats) {
                     <h3 class="card-title">
@@ -25,10 +26,12 @@
                         <span class="card-title small" style="float:right">Seat Type: <span class="card-text small"> @seat.kind </span></span>
                     </h3>
                 }
+                <hr style="border-color: white">
                 <h3 class="card-title">Reference: <span class="card-text small" style="float:right">@booking.reference</span></h3>
                 <h3 class="card-title">Total:     <span class="card-text small" style="float:right">@booking.price</span></h3>
+                <button onclick="printReciept()" class="bookButton">Print</button>
             </div>
-            <button onclick="printReciept()" class="btn btn-info">Print</button>
+
         </div>
 
         <script>
