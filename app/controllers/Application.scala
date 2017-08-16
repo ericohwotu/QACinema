@@ -67,7 +67,9 @@ class Application @Inject() (val movieController: MovieController,
 
   def movie(id: String): Action[AnyContent] = Action.async { implicit request =>
     BSONObjectID.parse(id) match {
-      case Success(res) => movieController.getMovieAction(res)
+      case Success(res) => movieController.getMovieAction(res).map {
+        option => option.fold(BadRequest(views.html.noMovie()))(res => Ok(views.html.movie(res)))
+      }
       case Failure(err) => Future {
         BadRequest("Invalid ID")
       }

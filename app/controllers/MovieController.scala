@@ -57,14 +57,14 @@ class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends
     )
 
 
-  def getMovieAction(id: BSONObjectID): Future[Result] = {
+  def getMovieAction(id: BSONObjectID): Future[Option[Movie]] = {
     val futureIDCursor: Future[Cursor[Movie]] = collection.map {
       _.find(Json.obj("_id" -> id)).cursor[Movie]()
     }
     val futureIDList: Future[List[Movie]] = futureIDCursor.flatMap(_.collect[List](-1, Cursor.FailOnError[List[Movie]]()))
 
     futureIDList.map {
-      movieIDs => movieIDs.headOption.fold(BadRequest(views.html.noMovie()))(res => Ok(views.html.movie(res)))
+      movieIDs => movieIDs.headOption
     }
   }
 
