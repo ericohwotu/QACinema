@@ -9,13 +9,14 @@ import reactivemongo.bson.BSONDocument
 import play.api.http.HttpEntity
 import models.Movie
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Controller, _}
+import play.api.mvc._
 import HttpEntity.Streamed
 import akka.actor.FSM.Failure
 import akka.actor.Status.Success
 import akka.stream.scaladsl.{FileIO, Source, StreamConverters}
 import akka.util.ByteString
 import models.Movie
+import play.api.cache._
 import play.api.libs.json.Json
 import play.api.libs.json._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -30,22 +31,28 @@ import scala.concurrent.Future
 /**
   * Created by Administrator on 07/08/2017.
   */
-class Admin @Inject()(val reactiveMongoApi: ReactiveMongoApi, val messagesApi: MessagesApi) extends Controller
-  with MongoController with ReactiveMongoComponents with I18nSupport{
+class Admin @Inject()( @NamedCache("controller-cache") cachedCon: Cached,
+                       @NamedCache("document-cache") cached: CacheApi,
+                       val reactiveMongoApi: ReactiveMongoApi,
+                       val messagesApi: MessagesApi)
+  extends Controller with MongoController with ReactiveMongoComponents with I18nSupport {
 
-  def movieDBTable: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
-
-  def getAllMovies(): Action[AnyContent] = Action.async{
-    val cursor: Future[Cursor[Movie]] = movieDBTable.map {
-      _.find(Json.obj())
-        .cursor[Movie]
-    }
-
-    val futureUsersList: Future[List[Movie]] = cursor.flatMap(_.collect[List]())
-    futureUsersList.map { persons => Ok(views.html.admin(persons,Movie.createMovieForm))
-    }
+  def movieDBTable: Future[JSONCollection] = cached.getOrElse[Future[JSONCollection]]("movieCollection") {
+    database.map(_.collection[JSONCollection]("movieDB"))
   }
 
+  def getAllMovies: EssentialAction = cachedCon("getallmovies") {
+    Action.async {
+      val cursor: Future[Cursor[Movie]] = movieDBTable.map {
+        _.find(Json.obj())
+          .cursor[Movie]
+      }
+
+      val futureUsersList: Future[List[Movie]] = cursor.flatMap(_.collect[List]())
+      futureUsersList.map { persons => Ok(views.html.admin(persons, Movie.createMovieForm))
+      }
+    }
+  }
 
   def createMovie :Action[AnyContent] = Action { implicit request =>
     val formValidationResult = Movie.createMovieForm.bindFromRequest

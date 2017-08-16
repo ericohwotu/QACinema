@@ -11,36 +11,42 @@ import reactivemongo.bson.BSONObjectID
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
+import play.api.cache._
 
-class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi,
+class Application @Inject() (@NamedCache("controller-cache") cached: Cached,
+                             val reactiveMongoApi: ReactiveMongoApi,
                              val movieController: MovieController,
                              val locationController: LocationController)
   extends Controller with MongoController with ReactiveMongoComponents {
 
   //TODO: Add the hardcoded IDs and also bring the movie data with it so it is in the correct order.
-  def index: Action[AnyContent] = Action.async { implicit request =>
-    movieController.findMainpageMovieIDs(List()).map {
-      ids => Ok(views.html.index(ids))
+  def index: EssentialAction = cached("index") {
+    Action.async { implicit request =>
+      movieController.findMainpageMovieIDs(List()).map {
+        ids => Ok(views.html.index(ids))
+      }
     }
   }
 
-  def listings(): Action[AnyContent] = {
+  def listings: EssentialAction = cached("listings") {
     movieController.genericListingPage(None, x => x.toString)
   }
 
-  def listingsWithGenre(genre: String): Action[AnyContent] = {
+  def listingsWithGenre(genre: String): EssentialAction = cached("listings_" + genre.toLowerCase) {
     movieController.genericListingPage(Some(genre.toLowerCase), movieController.genreExtract)
   }
 
-  def searchByTitle(title: String): Action[AnyContent] = {
+  def searchByTitle(title: String): EssentialAction = cached("search_" + title.toLowerCase) {
     movieController.genericListingPage(Some(URLDecoder.decode(title.toLowerCase, Charset.forName("utf-8").name())), movieController.titleExtract)
   }
 
-  def movie(id: String): Action[AnyContent] = Action.async { implicit request =>
-    BSONObjectID.parse(id) match {
-      case Success(res) => movieController.getMovieAction(res)
-      case Failure(err) => Future {
-        BadRequest("Invalid ID")
+  def movie(id: String): EssentialAction = cached("movie_" + id) {
+    Action.async { implicit request =>
+      BSONObjectID.parse(id) match {
+        case Success(res) => movieController.getMovieAction(res)
+        case Failure(err) => Future {
+          BadRequest("Invalid ID")
+        }
       }
     }
   }
@@ -53,8 +59,8 @@ class Application @Inject() (val reactiveMongoApi: ReactiveMongoApi,
     Ok(views.html.certifications())
   }
 
-  def findUs : Action[AnyContent] = Action.async {
-    locationController.cinemasList.map {cinemas =>
+  def findUs: Action[AnyContent] = Action.async {
+    locationController.cinemasList.map { cinemas =>
       Ok(views.html.findUs(cinemas))
     }
   }
