@@ -63,16 +63,16 @@
   <div id="updateMenu" class ="modal adminModal card-title" role="dialog">
     <div align="center" style="font-size: 20pt; padding: 10px;"><b>Update Movie</b></div>
     @helper.form(routes.Admin.updateMovie(), 'id -> "updateContent") {
-      @helper.inputText(form("Title"), 'id -> "title")
-      @helper.inputText(form("Rated"), 'id -> "rated")
-      @helper.inputText(form("Released"), 'id -> "released")
-      @helper.inputText(form("Runtime"), 'id -> "runtime")
-      @helper.inputText(form("Genre"), 'id -> "genre")
-      @helper.inputText(form("Director"), 'id -> "director")
-      @helper.inputText(form("Actors"), 'id -> "actors")
-      @helper.textarea(form("Plot"), 'id -> "plot", 'style -> "width:100%; height:300px; resize:none")
-      @helper.inputText(form("Poster"), 'id -> "poster")
-      @helper.inputText(form("video"), 'id -> "video")
+      @helper.inputText(form("Title"), 'required -> "required", 'id -> "title")
+      @helper.inputText(form("Rated"), 'required -> "required", 'id -> "rated")
+      @helper.inputText(form("Released"), 'required -> "required", 'id -> "released")
+      @helper.inputText(form("Runtime"), 'required -> "required", 'id -> "runtime")
+      @helper.inputText(form("Genre"), 'required -> "required", 'id -> "genre")
+      @helper.inputText(form("Director"), 'required -> "required", 'id -> "director")
+      @helper.inputText(form("Actors"), 'required -> "required", 'id -> "actors")
+      @helper.textarea(form("Plot"), 'required -> "required", 'id -> "plot", 'style -> "width:100%; height:300px; resize:none")
+      @helper.inputText(form("Poster"), 'required -> "required", 'id -> "poster")
+      @helper.inputText(form("Video"), 'required -> "required", 'id -> "video")
       <br><button class="bookButton" type="submit" style="float: left;">Update Movie</button>
       <p style="float: left; padding: 20px;">&nbsp</p>
       <input type="button" class="bookButton" value="Cancel Entry" data-dismiss="modal" style="float: left;">
