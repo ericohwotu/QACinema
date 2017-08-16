@@ -2,10 +2,12 @@ package controllers
 
 import javax.inject.Inject
 
-import play.api.libs.json.{JsObject, Json, Reads}
 import play.api.mvc._
 import models.{Movie, MovieSearch}
 import play.api.data.Form
+import play.api.libs.json.{JsObject, Json, Reads}
+import play.api.mvc.{AnyContent, Controller}
+import play.api.cache.{CacheApi, NamedCache}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
 import reactivemongo.play.json._
@@ -15,12 +17,16 @@ import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.Future
 
-class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Controller with MongoController with ReactiveMongoComponents {
+class MovieController @Inject() (@NamedCache("document-cache") cached: CacheApi,
+                                 val reactiveMongoApi: ReactiveMongoApi)
+  extends Controller with MongoController with ReactiveMongoComponents {
 
   type movieIDRow = List[(Movie, String)]
   type resultMovieIDRow = Future[List[movieIDRow]]
 
-  def collection: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
+  def collection: Future[JSONCollection] = cached.getOrElse[Future[JSONCollection]]("movieCollection") {
+    database.map(_.collection[JSONCollection]("movieDB"))
+  }
   def getMongoID(jso : JsObject): String = ((jso \ "_id").as[JsObject] \ "$oid").as[String]
 
   def applyCriteriaOnQuery[A <: AnyRef](collectedList : Future[List[A]], criteria : String, method : (AnyRef) => String) : Future[List[A]] =

@@ -32,6 +32,8 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0" % "test"
 )
 
+libraryDependencies += "org.joda" % "joda-convert" % "1.8.1"
+
 
 
 

@@ -11,16 +11,22 @@ import models._
 import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
 import reactivemongo.play.json._
 import collection._
+import play.api.cache.{CacheApi, NamedCache}
 import reactivemongo.bson.{BSONDocument, BSONObjectID}
 
 import scala.collection.mutable.ArrayBuffer
 import scalaj.http._
 
-class MongoDBController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
-  with MongoController with ReactiveMongoComponents{
+class MongoDBController @Inject()(@NamedCache("document-cache") cached: CacheApi,
+                                  val reactiveMongoApi: ReactiveMongoApi)
+  extends Controller with MongoController with ReactiveMongoComponents {
 
-  def movieDBTable: Future[JSONCollection] = database.map(_.collection[JSONCollection]("movieDB"))
-  def cinemaLocationsTable: Future[JSONCollection] = database.map(_.collection[JSONCollection]("locations"))
+  def movieDBTable: Future[JSONCollection] = cached.getOrElse[Future[JSONCollection]]("movieCollection") {
+    database.map(_.collection[JSONCollection]("movieDB"))
+  }
+  def cinemaLocationsTable: Future[JSONCollection] = cached.getOrElse[Future[JSONCollection]]("locationCollection") {
+    database.map(_.collection[JSONCollection]("locations"))
+  }
 
   def addLocations(): Action[AnyContent] = Action {
     cinemaLocationsTable.flatMap(_.drop(false))
