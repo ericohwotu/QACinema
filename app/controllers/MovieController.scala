@@ -2,31 +2,21 @@ package controllers
 
 import javax.inject.Inject
 
-import play.api.mvc._
-import models.{Movie, MovieSearch}
-import play.api.data.Form
-import play.api.libs.json.{JsObject, Json, Reads}
-import play.api.mvc.{AnyContent, Controller}
-import play.api.cache.{CacheApi, NamedCache}
+import play.api.libs.json.{JsArray, JsObject, Json, Reads}
+import play.api.mvc.{Action, AnyContent, Controller, Result}
+import models.Movie
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
 import reactivemongo.play.json._
-import reactivemongo.api.{Cursor, ReadPreference}
+import reactivemongo.api.Cursor
 import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.Future
 
-class MovieController @Inject() (@NamedCache("document-cache") cached: CacheApi,
-                                 val reactiveMongoApi: ReactiveMongoApi)
-  extends Controller with MongoController with ReactiveMongoComponents {
+class MovieController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Controller with MongoController with ReactiveMongoComponents {
 
-  type movieIDRow = List[(Movie, String)]
-  type resultMovieIDRow = Future[List[movieIDRow]]
 
-  def collection: Future[JSONCollection] = cached.getOrElse[Future[JSONCollection]]("movieCollection") {
-    database.map(_.collection[JSONCollection]("movieDB"))
-  }
   def getMongoID(jso : JsObject): String = ((jso \ "_id").as[JsObject] \ "$oid").as[String]
 
   def applyCriteriaOnQuery[A <: AnyRef](collectedList : Future[List[A]], criteria : String, method : (AnyRef) => String) : Future[List[A]] =
@@ -34,10 +24,11 @@ class MovieController @Inject() (@NamedCache("document-cache") cached: CacheApi,
       movieList.filter(mov => method(mov).toLowerCase.contains(criteria))
     })
 
-  def futureRefinedList[A <: AnyRef](criteria : Option[String], method : (AnyRef) => String, query: JsObject, returnData : JsObject)(implicit reads: Reads[A]) : Future[List[A]] = {
+  def futureRefinedList[A <: AnyRef](criteria : Option[String], method : (AnyRef) => String, query: JsObject, returnData : JsObject)(implicit reads: Reads[A], cinemaName: String) : Future[List[A]] = {
+    def collection: Future[JSONCollection] = database.map(_.collection[JSONCollection](cinemaName))
     val collectedList : Future[List[A]] = collection.map {
-      _.find(query, returnData).cursor[A](ReadPreference.primary)
-    }.flatMap(_.collect[List](-1, Cursor.FailOnError[List[A]]()))
+      _.find(query, returnData).cursor[A]()
+    }.flatMap(_.collect[List]())
 
     criteria.fold(collectedList)(crit => applyCriteriaOnQuery[A](collectedList, crit, method))
   }
@@ -51,57 +42,34 @@ class MovieController @Inject() (@NamedCache("document-cache") cached: CacheApi,
     case mov : Movie => mov.Title
   }
 
-  def moviesZippedIDsOnRows(jsos : List[JsObject], movies : List[Movie]): List[movieIDRow] = movies.zip(jsos.map {
-    jso => getMongoID(jso)
-  }).grouped(3).toList
-
-  def genericListingPage(criteria: Option[String], method : (AnyRef) => String): resultMovieIDRow =
+  def genericListingPage(criteria: Option[String], method : (AnyRef) => String): Action[AnyContent] = Action.async { implicit request =>
     futureRefinedList[JsObject](criteria, method, Json.obj(), Json.obj("_id" -> 1, "Genre" -> 1, "Title" -> 1)).flatMap(jsos =>
       futureRefinedList[Movie](criteria, method, Json.obj(), Json.obj()).map {
-        movies => moviesZippedIDsOnRows(jsos, movies)
+        movies => Ok(views.html.listings(movies.zip(jsos.map {
+          jso => getMongoID(jso)
+        }).grouped(3).toList))
       }
     )
+  }
 
-
-  def getMovieAction(id: BSONObjectID): Future[Option[Movie]] = {
+  def getMovieAction(id: BSONObjectID, cinemaName: String): Future[Result] = {
+    def collection: Future[JSONCollection] = database.map(_.collection[JSONCollection](cinemaName))
     val futureIDCursor: Future[Cursor[Movie]] = collection.map {
       _.find(Json.obj("_id" -> id)).cursor[Movie]()
     }
-    val futureIDList: Future[List[Movie]] = futureIDCursor.flatMap(_.collect[List](-1, Cursor.FailOnError[List[Movie]]()))
+    val futureIDList: Future[List[Movie]] = futureIDCursor.flatMap(_.collect[List]())
 
     futureIDList.map {
-      movieIDs => movieIDs.headOption
+      movieIDs => movieIDs.headOption.fold(BadRequest(views.html.noMovie()))(res => Ok(views.html.movie(res)))
     }
   }
 
-  val movieCarouselMovies = List("Spider-Man: Homecoming", "Dunkirk", "Valerian and the City of a Thousand Planets")
-  val mainpageCarouselImages = List("images/spidermanCaro.png", "images/dunkirkCaro.png", "images/valerianCaro.png")
-  def findMainpageCarouselMovies : List[Future[(String, String)]] =
-    movieCarouselMovies.zip(mainpageCarouselImages).map{data =>
-      futureRefinedList[JsObject](None, x => x.toString, Json.obj("Title" -> data._1), Json.obj("_id" -> 1)).map(
-        jsos => (data._2, getMongoID(jsos.head))
-      )
-    }
-
-
-  val moviePreviewMovies = List("War for the Planet of the Apes", "Atomic Blonde", "Despicable Me 3")
-  def findMainpagePreviewIDs : List[Future[String]] =
-    moviePreviewMovies.map{data =>
-      futureRefinedList[JsObject](None, x => x.toString, Json.obj("Title" -> data), Json.obj("_id" -> 1)).map(
-        jsos => getMongoID(jsos.head)
-      )
-    }
-
-  def movieSearchForm() : Form[MovieSearch] = MovieSearch.movieSearchForm
-
-  def takeMovieSearchForm(implicit request : Request[AnyContent]) : resultMovieIDRow = {
-    MovieSearch.movieSearchForm.bindFromRequest.fold(
-      errs => Future {List()},
-      moviesearch => futureRefinedList[JsObject](None, x => x.toString, moviesearch.jsonObject, Json.obj("_id" -> 1)).flatMap(jsos =>
-        futureRefinedList[Movie](None, x => x.toString, moviesearch.jsonObject, Json.obj()).map {
-          movies => moviesZippedIDsOnRows(jsos, movies)
-        }
-      )
-    )
+  def findMainpageMovieIDs(movieTitleStrings : List[String]) : Future[List[String]] = {
+    futureRefinedList[JsObject](None, x => x.toString,
+      Json.obj("Title" -> Json.obj("$in" -> Json.toJson(movieTitleStrings))),
+      Json.obj("_id" -> 1)).map(jsos => jsos.map {
+      jso => getMongoID(jso)
+    })
   }
+
 }

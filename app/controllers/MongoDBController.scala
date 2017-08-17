@@ -14,7 +14,7 @@ import collection._
 import play.api.cache.{CacheApi, NamedCache}
 import reactivemongo.bson.{BSONDocument, BSONObjectID}
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scalaj.http._
 
 class MongoDBController @Inject()(@NamedCache("document-cache") cached: CacheApi,
