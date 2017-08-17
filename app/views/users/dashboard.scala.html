@@ -3,15 +3,7 @@
 @if(user == null) {
     @routes.UserController.login()
 }
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href='@routes.Assets.at("stylesheets/bookings.css")'>
-        <link rel="stylesheet" href='@routes.Assets.at("stylesheets/bootstrap.css")'>
-        <title>Dashboard</title>
-    </head>
-    <body>
+
     @main("Dashboard") {
         <div class="container">
 
@@ -48,5 +40,3 @@
 
         </div>
     }
-    </body>
-</html>
