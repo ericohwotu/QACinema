@@ -8,6 +8,9 @@
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bookings.css")">
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/mapstyle.css")">
+    <link rel="stylesheet" href='@routes.Assets.at("stylesheets/bookings.css")'>
+    <script src='@routes.Assets.at("javascripts/bookings.js")'></script>
+
     <!-- Navigation -->
     <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -18,19 +21,21 @@
         <a class="navbar-brand" href="/">QA Cinemas</a>
         <div class="collapse navbar-collapse" id="navbarExample">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
+            <li class="nav-item @if(title=="Homepage") { active }">
               <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item @if(title=="Listings") { active }">
               <a class="nav-link" href="/listings">Listings</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item @if(title=="Find Us") { active }">
               <a class="nav-link" href="/findus">Find Us</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item @if(title=="Contact Us") { active }">
               <a class="nav-link" href="/contactus">Contact Us</a>
             </li>
-            @account
+            <li class="dropdown nav-item @if(title=="Login"||title=="Dashboard"||title=="Register") { active }">
+              @account
+            </li>
           </ul>
         </div>
       </div>

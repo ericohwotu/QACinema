@@ -1,18 +1,7 @@
 @(form: Form[(String, String)])(implicit messages: Messages)
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        @*<link rel="stylesheet" href='@routes.Assets.at("stylesheets/bootstrap.min.css")'>*@
-            <!-- custom scripts and stylesheets -->
-        <link rel="stylesheet" href='@routes.Assets.at("stylesheets/bookings.css")'>
-        <script src='@routes.Assets.at("javascripts/bookings.js")'></script>
-        <title>Login</title>
-    </head>
 
     <body style="background-color: black">
-    @main("login") {
+    @main("Login") {
         <div class="container">
             <div class="row track-list">
                 <div class="col-sm-4"></div>
@@ -37,5 +26,3 @@
             </div>
         </div>
     }
-    </body>
-</html>
